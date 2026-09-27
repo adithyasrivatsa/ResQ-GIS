@@ -4,7 +4,7 @@ import { useAppStore } from '../../store/useAppStore';
 
 type BasemapType = 'osm' | 'satellite' | 'dark' | 'topo';
 
-const BASEMAP_URLS: Record<BasemapType, { url: string; attribution: string; maxZoom?: number }> = {
+const BASEMAP_URLS: Record<BasemapType, { url: string; attribution: string; maxZoom?: number; labelUrl?: string }> = {
   osm: {
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     attribution: '&copy; OpenStreetMap contributors',
@@ -14,6 +14,7 @@ const BASEMAP_URLS: Record<BasemapType, { url: string; attribution: string; maxZ
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
     maxZoom: 18,
+    labelUrl: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
   },
   dark: {
     url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
@@ -34,10 +35,12 @@ export default function Map2D() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const labelLayerRef = useRef<L.TileLayer | null>(null);
   const layersGroupRef = useRef<L.FeatureGroup | null>(null);
   const pathwayGroupRef = useRef<L.FeatureGroup | null>(null);
 
   const [activeBasemap, setActiveBasemap] = useState<BasemapType>('satellite');
+  const [showLabels, setShowLabels] = useState<boolean>(true);
 
   const {
     habitations,
@@ -69,13 +72,40 @@ export default function Map2D() {
     setActiveBasemap(type);
     if (tileLayerRef.current) {
       mapRef.current.removeLayer(tileLayerRef.current);
+      tileLayerRef.current = null;
+    }
+    if (labelLayerRef.current) {
+      mapRef.current.removeLayer(labelLayerRef.current);
+      labelLayerRef.current = null;
     }
     const def = BASEMAP_URLS[type];
     tileLayerRef.current = L.tileLayer(def.url, {
       attribution: def.attribution,
       maxZoom: def.maxZoom || 18,
     }).addTo(mapRef.current);
-  }, []);
+
+    if (def.labelUrl && showLabels) {
+      labelLayerRef.current = L.tileLayer(def.labelUrl, {
+        maxZoom: def.maxZoom || 18,
+        pane: 'overlayPane',
+      }).addTo(mapRef.current);
+    }
+  }, [showLabels]);
+
+  // Synchronize reference label layer when showLabels or activeBasemap changes
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const def = BASEMAP_URLS[activeBasemap];
+    if (showLabels && def.labelUrl && !labelLayerRef.current) {
+      labelLayerRef.current = L.tileLayer(def.labelUrl, {
+        maxZoom: def.maxZoom || 18,
+        pane: 'overlayPane',
+      }).addTo(mapRef.current);
+    } else if (!showLabels && labelLayerRef.current) {
+      mapRef.current.removeLayer(labelLayerRef.current);
+      labelLayerRef.current = null;
+    }
+  }, [showLabels, activeBasemap]);
 
   // Initialize Leaflet map instance once
   useEffect(() => {
@@ -95,6 +125,13 @@ export default function Map2D() {
       maxZoom: initialDef.maxZoom || 18,
     }).addTo(map);
 
+    if (initialDef.labelUrl && showLabels) {
+      labelLayerRef.current = L.tileLayer(initialDef.labelUrl, {
+        maxZoom: initialDef.maxZoom || 18,
+        pane: 'overlayPane',
+      }).addTo(map);
+    }
+
     layersGroupRef.current = L.featureGroup().addTo(map);
     pathwayGroupRef.current = L.featureGroup().addTo(map);
 
@@ -103,6 +140,8 @@ export default function Map2D() {
     return () => {
       map.remove();
       mapRef.current = null;
+      labelLayerRef.current = null;
+      tileLayerRef.current = null;
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -279,29 +318,54 @@ export default function Map2D() {
         const isSelected = selectedRiverId === river.id;
         const statusColor =
           river.status === 'danger' ? '#dc2626' : river.status === 'warning' ? '#ea580c' : '#0284c7';
+        const circleSize = isSelected ? 24 : 18;
 
         const icon = L.divIcon({
           className: 'retro-marker-station',
           html: `
-            <div style="
-              width: ${isSelected ? '24px' : '18px'};
-              height: ${isSelected ? '24px' : '18px'};
-              background: ${statusColor};
-              border: 1.5px solid #ffffff;
-              box-shadow: ${isSelected ? '0 0 0 2px #0284c7, 0 2px 4px rgba(0,0,0,0.15)' : '0 1px 3px rgba(0,0,0,0.2)'};
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: #fff;
-              font-size: 8px;
-              cursor: pointer;
-            ">
-              💧
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 140px; pointer-events: auto; user-select: none;">
+              <div style="
+                width: ${circleSize}px;
+                height: ${circleSize}px;
+                background: ${statusColor};
+                border: 1.5px solid #ffffff;
+                box-shadow: ${isSelected ? '0 0 0 2px #0284c7, 0 2px 6px rgba(0,0,0,0.25)' : '0 1px 3px rgba(0,0,0,0.2)'};
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: ${isSelected ? '10px' : '8px'};
+                cursor: pointer;
+              ">
+                💧
+              </div>
+              ${
+                showLabels
+                  ? `<div style="
+                      margin-top: 2px;
+                      background: #f0fdfa;
+                      color: #0f766e;
+                      font-size: 9px;
+                      font-weight: 700;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                      padding: 1px 6px;
+                      border-radius: 9999px;
+                      border: 1px solid #99f6e4;
+                      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+                      white-space: nowrap;
+                      letter-spacing: -0.01em;
+                      line-height: 1.35;
+                      pointer-events: none;
+                    ">
+                      ${river.name}
+                    </div>`
+                  : ''
+              }
             </div>
           `,
-          iconSize: [isSelected ? 24 : 18, isSelected ? 24 : 18],
-          iconAnchor: [isSelected ? 12 : 9, isSelected ? 12 : 9],
+          iconSize: [140, showLabels ? 42 : circleSize],
+          iconAnchor: [70, circleSize / 2],
         });
 
         const marker = L.marker([river.location.lat, river.location.lng], { icon });
@@ -319,25 +383,49 @@ export default function Map2D() {
         const icon = L.divIcon({
           className: 'retro-marker-idrn',
           html: `
-            <div style="
-              width: 18px;
-              height: 18px;
-              background: #10b981;
-              border: 2px solid #000;
-              box-shadow: 2px 2px 0px #000;
-              border-radius: 4px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: #fff;
-              font-size: 10px;
-              cursor: pointer;
-            ">
-              ⛑️
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 140px; pointer-events: auto; user-select: none;">
+              <div style="
+                width: 18px;
+                height: 18px;
+                background: #10b981;
+                border: 2px solid #ffffff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: 10px;
+                cursor: pointer;
+              ">
+                ⛑️
+              </div>
+              ${
+                showLabels
+                  ? `<div style="
+                      margin-top: 2px;
+                      background: #ecfdf5;
+                      color: #047857;
+                      font-size: 9px;
+                      font-weight: 600;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                      padding: 1px 6px;
+                      border-radius: 9999px;
+                      border: 1px solid #a7f3d0;
+                      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                      white-space: nowrap;
+                      letter-spacing: -0.01em;
+                      line-height: 1.35;
+                      pointer-events: none;
+                    ">
+                      ${res.name}
+                    </div>`
+                  : ''
+              }
             </div>
           `,
-          iconSize: [18, 18],
-          iconAnchor: [9, 9],
+          iconSize: [140, showLabels ? 40 : 18],
+          iconAnchor: [70, 9],
         });
 
         const marker = L.marker([res.location.lat, res.location.lng], { icon });
@@ -352,30 +440,54 @@ export default function Map2D() {
     if (layerVis['relocation-sites'] ?? true) {
       relocationSites.forEach((site) => {
         const isSelected = selectedSiteId === site.id;
+        const boxSize = isSelected ? 28 : 24;
         const icon = L.divIcon({
           className: 'retro-marker-site',
           html: `
-            <div style="
-              min-width: ${isSelected ? '28px' : '24px'};
-              height: ${isSelected ? '28px' : '24px'};
-              background: #2563eb;
-              border: 1.5px solid #ffffff;
-              box-shadow: ${isSelected ? '0 0 0 2px #2563eb, 0 4px 6px rgba(0,0,0,0.15)' : '0 2px 4px rgba(0,0,0,0.12)'};
-              border-radius: 6px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: #ffffff;
-              font-size: ${isSelected ? '12px' : '10px'};
-              cursor: pointer;
-              transform: ${isSelected ? 'scale(1.1)' : 'none'};
-              transition: all 0.15s ease;
-            ">
-              🏰
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 140px; pointer-events: auto; user-select: none;">
+              <div style="
+                width: ${boxSize}px;
+                height: ${boxSize}px;
+                background: #2563eb;
+                border: 2px solid #ffffff;
+                box-shadow: ${isSelected ? '0 0 0 2px #2563eb, 0 4px 8px rgba(0,0,0,0.25)' : '0 2px 5px rgba(0,0,0,0.2)'};
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                font-size: ${isSelected ? '12px' : '11px'};
+                cursor: pointer;
+                transition: transform 0.15s ease;
+              ">
+                🏰
+              </div>
+              ${
+                showLabels
+                  ? `<div style="
+                      margin-top: 3px;
+                      background: #eff6ff;
+                      color: #1d4ed8;
+                      font-size: 10px;
+                      font-weight: 700;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                      padding: 1px 7px;
+                      border-radius: 9999px;
+                      border: 1px solid #bfdbfe;
+                      box-shadow: 0 2px 5px rgba(0,0,0,0.14);
+                      white-space: nowrap;
+                      letter-spacing: -0.01em;
+                      line-height: 1.35;
+                      pointer-events: none;
+                    ">
+                      ${site.name}
+                    </div>`
+                  : ''
+              }
             </div>
           `,
-          iconSize: [isSelected ? 28 : 24, isSelected ? 28 : 24],
-          iconAnchor: [isSelected ? 14 : 12, isSelected ? 14 : 12],
+          iconSize: [140, showLabels ? 48 : boxSize],
+          iconAnchor: [70, boxSize / 2],
         });
 
         const marker = L.marker([site.location.lat, site.location.lng], { icon, zIndexOffset: 200 });
@@ -401,32 +513,56 @@ export default function Map2D() {
             ? '#eab308'
             : '#10b981';
 
+        const circleSize = isSelected ? 28 : 22;
         const icon = L.divIcon({
           className: 'retro-marker-hab',
           html: `
-            <div style="
-              width: ${isSelected ? '28px' : '20px'};
-              height: ${isSelected ? '28px' : '20px'};
-              background: ${riskColor};
-              border: 1.5px solid #ffffff;
-              box-shadow: ${isSelected ? `0 0 0 2px ${riskColor}, 0 4px 8px rgba(0,0,0,0.2)` : '0 2px 4px rgba(0,0,0,0.15)'};
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: #ffffff;
-              font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-              font-weight: 700;
-              font-size: ${isSelected ? '10px' : '8px'};
-              cursor: pointer;
-              transform: ${isSelected ? 'scale(1.15)' : 'none'};
-              transition: all 0.15s ease;
-            ">
-              ${(hab.riskScore * 100).toFixed(0)}
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 140px; pointer-events: auto; user-select: none;">
+              <div style="
+                width: ${circleSize}px;
+                height: ${circleSize}px;
+                background: ${riskColor};
+                border: 2px solid #ffffff;
+                box-shadow: ${isSelected ? `0 0 0 2px ${riskColor}, 0 4px 10px rgba(0,0,0,0.3)` : '0 2px 5px rgba(0,0,0,0.22)'};
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                font-weight: 700;
+                font-size: ${isSelected ? '11px' : '9px'};
+                cursor: pointer;
+                transition: transform 0.15s ease;
+              ">
+                ${(hab.riskScore * 100).toFixed(0)}
+              </div>
+              ${
+                showLabels
+                  ? `<div style="
+                      margin-top: 3px;
+                      background: #ffffff;
+                      color: #0f172a;
+                      font-size: 11px;
+                      font-weight: 700;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                      padding: 1px 7px;
+                      border-radius: 9999px;
+                      border: 1px solid rgba(15, 23, 42, 0.12);
+                      box-shadow: 0 2px 5px rgba(0,0,0,0.18);
+                      white-space: nowrap;
+                      letter-spacing: -0.01em;
+                      line-height: 1.35;
+                      pointer-events: none;
+                    ">
+                      ${hab.name}
+                    </div>`
+                  : ''
+              }
             </div>
           `,
-          iconSize: [isSelected ? 28 : 20, isSelected ? 28 : 20],
-          iconAnchor: [isSelected ? 14 : 10, isSelected ? 14 : 10],
+          iconSize: [140, showLabels ? 48 : circleSize],
+          iconAnchor: [70, circleSize / 2],
         });
 
         const marker = L.marker([hab.location.lat, hab.location.lng], { icon, zIndexOffset: isSelected ? 500 : 300 });
@@ -450,6 +586,7 @@ export default function Map2D() {
     selectedSiteId,
     selectedRiverId,
     layers,
+    showLabels,
     getLayerVisibilityMap,
     selectHabitation,
     selectSite,
@@ -620,6 +757,31 @@ export default function Map2D() {
               </button>
             ))}
           </div>
+
+          {/* City & Place Labels Toggle Button */}
+          <button
+            onClick={() => setShowLabels((prev) => !prev)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              fontSize: 11,
+              fontWeight: showLabels ? 600 : 500,
+              padding: '4px 9px',
+              border: '1px solid',
+              borderColor: showLabels ? '#cbd5e1' : '#e2e8f0',
+              background: showLabels ? '#ffffff' : '#f8fafc',
+              color: showLabels ? '#0f172a' : '#64748b',
+              boxShadow: showLabels ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+              borderRadius: 8,
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+            title="Toggle City, Town, and Village Name Badges on Map"
+          >
+            <span>🏷️</span>
+            <span>Labels {showLabels ? 'ON' : 'OFF'}</span>
+          </button>
 
           {/* Recenter Button */}
           <button

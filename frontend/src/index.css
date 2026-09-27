@@ -945,6 +945,15 @@ input[type="range"] {
   cursor: pointer;
 }
 
+/* Apple-style Leaflet Markers & DivIcons */
+.retro-marker-hab,
+.retro-marker-site,
+.retro-marker-station,
+.retro-marker-idrn {
+  background: transparent !important;
+  border: none !important;
+}
+
 /* Apple-style Leaflet Tooltips & Popups */
 .retro-leaflet-tooltip {
   background: #ffffff !important;
