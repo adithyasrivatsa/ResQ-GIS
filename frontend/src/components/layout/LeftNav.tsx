@@ -35,7 +35,7 @@ const NAV_ITEMS: NavItemDef[] = [
   { id: 'workspaces', label: 'Workspaces', icon: FolderKanban, targetPanel: 'workspaces' },
   { id: 'surveillance', label: 'Surveillance & AOI', icon: Scan, targetPanel: 'surveillance' },
   { id: 'habitations', label: 'Habitations', icon: Home, targetPanel: 'habitations' },
-  { id: 'relocation', label: 'Safe Havens', icon: Navigation, targetPanel: 'relocation' },
+  { id: 'relocation', label: 'Relocation & Havens', icon: Navigation, targetPanel: 'relocation' },
   { id: 'infrastructure', label: 'Infrastructure', icon: Building, targetPanel: 'rivers' },
   { id: 'hazard_layers', label: 'Hazard Layers', icon: Layers, targetPanel: 'layers' },
   { id: 'alerts', label: 'Alerts Feed', icon: AlertTriangle, targetPanel: 'alerts' },
@@ -185,21 +185,40 @@ export default function LeftNav() {
                 )}
                 <Icon
                   size={16}
-                  color={isActive ? 'var(--accent-blue)' : 'var(--text-secondary)'}
-                  strokeWidth={isActive ? 2.5 : 2}
+                  color={isActive ? 'var(--accent-blue)' : (item.id === 'relocation' ? '#10b981' : 'var(--text-secondary)')}
+                  strokeWidth={isActive || item.id === 'relocation' ? 2.5 : 2}
                 />
                 {!isLeftNavCollapsed && (
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: 12,
-                      fontWeight: isActive ? 700 : 500,
-                      color: isActive ? 'var(--accent-blue)' : 'var(--text-primary)',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {item.label}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', overflow: 'hidden' }}>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: 12,
+                        fontWeight: isActive ? 700 : (item.id === 'relocation' ? 700 : 500),
+                        color: isActive ? 'var(--accent-blue)' : (item.id === 'relocation' ? '#10b981' : 'var(--text-primary)'),
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                    {item.id === 'relocation' && (
+                      <span
+                        style={{
+                          fontSize: 9,
+                          fontWeight: 800,
+                          padding: '1px 5px',
+                          borderRadius: 'var(--radius-pill)',
+                          background: 'rgba(16, 185, 129, 0.15)',
+                          color: '#10b981',
+                          letterSpacing: '0.4px',
+                          marginLeft: 4,
+                          flexShrink: 0,
+                        }}
+                      >
+                        CORE
+                      </span>
+                    )}
+                  </div>
                 )}
               </button>
             );

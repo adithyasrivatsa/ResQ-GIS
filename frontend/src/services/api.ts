@@ -83,6 +83,7 @@ function normalizeSite(s: any): RelocationSite {
   return {
     id: s.id,
     name: s.name,
+    facilityType: s.facility_type || s.facilityType || 'Community Safe Haven',
     location: s.location,
     district: s.district,
     state: s.state || 'Uttarakhand',
@@ -98,6 +99,12 @@ function normalizeSite(s: any): RelocationSite {
     hasRoadAccess: s.has_road_access ?? s.hasRoadAccess ?? false,
     hasWaterAccess: s.has_water_access ?? s.hasWaterAccess ?? false,
     nearInfrastructure: s.near_infrastructure ?? s.nearInfrastructure ?? false,
+    elevationAboveFloodPlane: s.elevation_above_flood_plane ?? s.elevationAboveFloodPlane,
+    structuralType: s.structural_type || s.structuralType,
+    managingAgency: s.managing_agency || s.managingAgency,
+    amenities: s.amenities || [],
+    operationalStatus: s.operational_status || s.operationalStatus || 'READY',
+    lifelineCorridor: s.lifeline_corridor || s.lifelineCorridor,
   };
 }
 

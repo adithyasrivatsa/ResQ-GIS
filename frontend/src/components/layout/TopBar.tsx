@@ -9,9 +9,23 @@ import {
   Layers,
   Globe,
   Check,
+  Navigation,
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
-import { flyToDistrict } from '../../cesium/camera';
+import { flyToDistrict, flyToState } from '../../cesium/camera';
+
+const STATES_AND_DISTRICTS: Record<string, string[]> = {
+  'Uttarakhand': ['Chamoli', 'Rudraprayag', 'Pithoragarh', 'Uttarkashi'],
+  'Himachal Pradesh': ['Kullu', 'Mandi', 'Kinnaur'],
+  'Kerala': ['Wayanad', 'Idukki', 'Alappuzha'],
+  'Andhra Pradesh': ['Dr. B.R. Ambedkar Konaseema', 'Visakhapatnam'],
+  'Assam': ['Majuli', 'Cachar', 'Dima Hasao'],
+  'Sikkim': ['Mangan', 'Gangtok'],
+  'Odisha': ['Jagatsinghpur', 'Puri', 'Ganjam'],
+  'Jammu & Kashmir': ['Anantnag', 'Srinagar'],
+  'Meghalaya': ['East Khasi Hills'],
+  'Manipur & Nagaland': ['Noney', 'Kohima'],
+};
 
 export default function TopBar() {
   const {
@@ -27,10 +41,10 @@ export default function TopBar() {
     addWorkspace,
     isSurveillanceActive,
     toggleSurveillance,
+    selectedState,
+    setSelectedState,
     selectedDistrict,
     setSelectedDistrict,
-    selectedBlock,
-    setSelectedBlock,
     selectedHazardType,
     setSelectedHazardType,
     setActiveNav,
@@ -85,6 +99,17 @@ export default function TopBar() {
     setNewWsDescription('');
     setNewWorkspaceModalOpen(false);
     setWorkspaceMenuOpen(false);
+  };
+
+  const handleStateChange = (stateName: string) => {
+    setSelectedState(stateName);
+    const dists = STATES_AND_DISTRICTS[stateName] || [];
+    if (dists.length > 0) {
+      setSelectedDistrict(dists[0]);
+      flyToDistrict(dists[0]);
+    } else {
+      flyToState(stateName);
+    }
   };
 
   const handleDistrictChange = (dist: string) => {
@@ -297,6 +322,31 @@ export default function TopBar() {
 
       {/* 2. Unified Filter Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'nowrap' }}>
+        {/* State Select */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>State</span>
+          <select
+            value={selectedState || 'Uttarakhand'}
+            onChange={(e) => handleStateChange(e.target.value)}
+            style={{
+              padding: '4px 8px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+          >
+            {Object.keys(STATES_AND_DISTRICTS).map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+
         {/* District Select */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>District</span>
@@ -314,39 +364,12 @@ export default function TopBar() {
               borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
               outline: 'none',
+              maxWidth: 140,
             }}
           >
-            <option value="Chamoli">Chamoli</option>
-            <option value="Rudraprayag">Rudraprayag</option>
-            <option value="Pithoragarh">Pithoragarh</option>
-            <option value="Uttarkashi">Uttarkashi</option>
-          </select>
-        </div>
-
-        {/* Block Select */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>Block</span>
-          <select
-            value={selectedBlock ?? 'all'}
-            onChange={(e) => setSelectedBlock(e.target.value === 'all' ? null : e.target.value)}
-            style={{
-              padding: '4px 8px',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 11,
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              background: 'var(--bg-subtle)',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              outline: 'none',
-            }}
-          >
-            <option value="all">All Blocks</option>
-            <option value="Joshimath">Joshimath</option>
-            <option value="Dasholi">Dasholi</option>
-            <option value="Ghat">Ghat</option>
-            <option value="Ukhimath">Ukhimath</option>
+            {(STATES_AND_DISTRICTS[selectedState] || ['Chamoli', 'Rudraprayag', 'Pithoragarh', 'Uttarkashi']).map((d) => (
+              <option key={d} value={d}>{d}</option>
+            ))}
           </select>
         </div>
 
@@ -370,12 +393,37 @@ export default function TopBar() {
             }}
           >
             <option value="all">All Hazards</option>
-            <option value="landslide">Landslide</option>
-            <option value="flood">Riverine Flood</option>
-            <option value="glof">GLOF</option>
-            <option value="earthquake">Seismic Risk</option>
+            <option value="landslide">Landslide & Slope Slide</option>
+            <option value="flood">Riverine & Flash Flood</option>
+            <option value="glof">GLOF (Lake Outburst)</option>
+            <option value="cyclone">Cyclone & Storm Surge</option>
+            <option value="earthquake">Seismic & Subsidence</option>
           </select>
         </div>
+
+        {/* Relocation Core USP CTA */}
+        <button
+          onClick={() => setActiveNav('relocation')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(6, 182, 212, 0.16))',
+            border: '1px solid rgba(16, 185, 129, 0.4)',
+            padding: '3px 9px',
+            borderRadius: 'var(--radius-pill)',
+            cursor: 'pointer',
+            color: '#10b981',
+            fontSize: 11,
+            fontWeight: 700,
+            whiteSpace: 'nowrap',
+            boxShadow: '0 1px 4px rgba(16, 185, 129, 0.15)',
+          }}
+          title="Open Flagship Relocation & Safe Haven Logistics Hub"
+        >
+          <Navigation size={12} color="#10b981" />
+          <span>Relocation Hub</span>
+        </button>
 
         {/* Live Alert Ticker Pill */}
         {topAlert && (

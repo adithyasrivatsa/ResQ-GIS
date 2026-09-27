@@ -41,7 +41,8 @@ export default function BottomDataTable() {
       const matchesSearch =
         !tableSearch ||
         h.name.toLowerCase().includes(tableSearch.toLowerCase()) ||
-        h.district.toLowerCase().includes(tableSearch.toLowerCase());
+        h.district.toLowerCase().includes(tableSearch.toLowerCase()) ||
+        (h.state && h.state.toLowerCase().includes(tableSearch.toLowerCase()));
       const matchesRisk =
         selectedRiskFilter === 'all' ||
         (selectedRiskFilter === 'high' && (h.riskLevel === 'HIGH' || h.riskLevel === 'CRITICAL')) ||
@@ -54,6 +55,20 @@ export default function BottomDataTable() {
       return matchesSearch && matchesRisk && matchesBlock;
     });
   }, [habitations, tableSearch, selectedRiskFilter, selectedBlockFilter]);
+
+  // Filtered Safe Haven Sites
+  const filteredSites = useMemo(() => {
+    return relocationSites.filter((s) => {
+      if (!tableSearch) return true;
+      const q = tableSearch.toLowerCase();
+      return (
+        s.name.toLowerCase().includes(q) ||
+        s.district.toLowerCase().includes(q) ||
+        (s.state && s.state.toLowerCase().includes(q)) ||
+        (s.facilityType && s.facilityType.toLowerCase().includes(q))
+      );
+    });
+  }, [relocationSites, tableSearch]);
 
   const handleExport = () => {
     let csvHeader = '';
@@ -325,7 +340,9 @@ export default function BottomDataTable() {
                       >
                         <td style={{ padding: '5px 8px', textAlign: 'center', fontWeight: 600, color: 'var(--text-muted)' }}>{idx + 1}</td>
                         <td style={{ padding: '5px 10px', fontWeight: 700, color: 'var(--text-primary)' }}>{hab.name}</td>
-                        <td style={{ padding: '5px 10px', fontWeight: 500, color: 'var(--text-secondary)' }}>{hab.block || 'Joshimath'}</td>
+                        <td style={{ padding: '5px 10px', fontWeight: 500, color: 'var(--text-secondary)' }}>
+                          {hab.block ? `${hab.block}, ${hab.district}` : `${hab.district}, ${hab.state || ''}`}
+                        </td>
                         <td style={{ padding: '5px 10px', textAlign: 'right', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
                           {hab.population.toLocaleString()}
                         </td>
@@ -374,7 +391,7 @@ export default function BottomDataTable() {
                   <tr style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', position: 'sticky', top: 0, zIndex: 10 }}>
                     <th style={{ padding: '6px 8px', textAlign: 'center', width: 35, fontWeight: 700 }}>#</th>
                     <th style={{ padding: '6px 10px', textAlign: 'left', fontWeight: 700 }}>Safe Haven Name</th>
-                    <th style={{ padding: '6px 10px', textAlign: 'left', fontWeight: 700 }}>District</th>
+                    <th style={{ padding: '6px 10px', textAlign: 'left', fontWeight: 700 }}>District & State</th>
                     <th style={{ padding: '6px 10px', textAlign: 'right', fontWeight: 700 }}>Capacity (Beds)</th>
                     <th style={{ padding: '6px 10px', textAlign: 'center', fontWeight: 700 }}>Suitability</th>
                     <th style={{ padding: '6px 10px', textAlign: 'left', fontWeight: 700 }}>Slope Gradient</th>
@@ -382,7 +399,7 @@ export default function BottomDataTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {relocationSites.map((site, idx) => (
+                  {filteredSites.map((site, idx) => (
                     <tr
                       key={site.id}
                       style={{
@@ -392,7 +409,7 @@ export default function BottomDataTable() {
                     >
                       <td style={{ padding: '5px 8px', textAlign: 'center', color: 'var(--text-muted)' }}>{idx + 1}</td>
                       <td style={{ padding: '5px 10px', fontWeight: 700, color: 'var(--text-primary)' }}>{site.name}</td>
-                      <td style={{ padding: '5px 10px', color: 'var(--text-secondary)' }}>{site.district}</td>
+                      <td style={{ padding: '5px 10px', color: 'var(--text-secondary)' }}>{site.district}, {site.state}</td>
                       <td style={{ padding: '5px 10px', textAlign: 'right', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{site.capacity.toLocaleString()}</td>
                       <td style={{ padding: '5px 10px', textAlign: 'center' }}>
                         <span className="risk-badge risk-badge--sm risk--low">

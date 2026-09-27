@@ -1,90 +1,78 @@
 {
   "type": "FeatureCollection",
-  "name": "Uttarakhand_Habitations",
+  "name": "National_Disaster_Habitations",
   "features": [
     {
       "type": "Feature",
       "id": "hab-joshimath",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.566, 30.555, 1890.0]
+        "coordinates": [
+          79.566,
+          30.555,
+          1890
+        ]
       },
       "properties": {
         "id": "hab-joshimath",
-        "name": "Joshimath",
-        "village": "Joshimath Town",
+        "name": "Joshimath Town",
         "district": "Chamoli",
         "state": "Uttarakhand",
+        "region": "Western Himalayas",
+        "block": "Joshimath",
         "latitude": 30.555,
         "longitude": 79.566,
-        "elevation": 1890.0,
+        "elevation": 1890,
         "population": 4213,
         "households": 892,
-        "riskScore": 0.78,
-        "riskLevel": "HIGH",
-        "vulnerability": {
-          "kutchaHousePercentage": 35.0,
-          "elderlyCount": 612,
-          "childrenCount": 845,
-          "roadCutoffRisk": 0.85
-        },
+        "riskScore": 0.88,
+        "riskLevel": "CRITICAL",
         "vulnerabilityIndex": {
-          "overall": 0.78,
-          "level": "HIGH",
-          "exposure": 0.82,
-          "sensitivity": 0.74,
-          "adaptiveCapacity": 0.31
-        },
-        "hazardExposure": [
-          { "type": "landslide", "level": "HIGH", "score": 0.85, "contributors": ["High landslide susceptibility", "Active subsidence zone", "Steep slope gradient"] },
-          { "type": "flood", "level": "MODERATE", "score": 0.55, "contributors": ["Proximity to Alaknanda", "Recent rainfall anomaly"] },
-          { "type": "glof", "level": "MODERATE", "score": 0.52, "contributors": ["Upstream glacial lakes", "Climate warming trend"] },
-          { "type": "earthquake", "level": "LOW", "score": 0.35, "contributors": ["Seismic Zone V"] }
-        ],
-        "recommendedAction": "Prioritize phased relocation along NH-7 corridor",
-        "nearestRelocationSite": "site-pipalkoti"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "hab-reni",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [79.756, 30.593, 2200.0]
-      },
-      "properties": {
-        "id": "hab-reni",
-        "name": "Reni",
-        "village": "Reni Village",
-        "district": "Chamoli",
-        "state": "Uttarakhand",
-        "latitude": 30.593,
-        "longitude": 79.756,
-        "elevation": 2200.0,
-        "population": 380,
-        "households": 85,
-        "riskScore": 0.75,
-        "riskLevel": "HIGH",
-        "vulnerability": {
-          "kutchaHousePercentage": 68.0,
-          "elderlyCount": 54,
-          "childrenCount": 88,
-          "roadCutoffRisk": 0.95
-        },
-        "vulnerabilityIndex": {
-          "overall": 0.75,
-          "level": "HIGH",
-          "exposure": 0.85,
-          "sensitivity": 0.72,
+          "overall": 0.84,
+          "level": "CRITICAL",
+          "exposure": 0.88,
+          "sensitivity": 0.82,
           "adaptiveCapacity": 0.28
         },
         "hazardExposure": [
-          { "type": "landslide", "level": "CRITICAL", "score": 0.92, "contributors": ["Feb 2021 rock/ice avalanche zone", "Extreme slope"] },
-          { "type": "flood", "level": "HIGH", "score": 0.70, "contributors": ["Rishiganga valley", "Debris dam failure risk"] },
-          { "type": "glof", "level": "HIGH", "score": 0.72, "contributors": ["Upstream glacial features"] },
-          { "type": "earthquake", "level": "LOW", "score": 0.35, "contributors": ["Seismic Zone V"] }
+          {
+            "type": "landslide",
+            "level": "CRITICAL",
+            "score": 0.92,
+            "contributors": [
+              "Active tectonic subsidence",
+              "Overburden moraine creep",
+              "Steep slope gradient (34°)"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.72,
+            "contributors": [
+              "Alaknanda toe erosion",
+              "Drainage saturation anomaly"
+            ]
+          },
+          {
+            "type": "glof",
+            "level": "MODERATE",
+            "score": 0.58,
+            "contributors": [
+              "Upstream Dhauliganga glacial basins"
+            ]
+          },
+          {
+            "type": "earthquake",
+            "level": "HIGH",
+            "score": 0.75,
+            "contributors": [
+              "Seismic Zone V",
+              "Main Central Thrust (MCT) proximity"
+            ]
+          }
         ],
-        "recommendedAction": "Immediate evacuation recommended to Pipalkoti shelter",
+        "recommendedAction": "Immediate phased relocation to Pipalkoti Safe Enclave",
         "nearestRelocationSite": "site-pipalkoti"
       }
     },
@@ -93,288 +81,1129 @@
       "id": "hab-marwari",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.558, 30.542, 1750.0]
+        "coordinates": [
+          79.558,
+          30.542,
+          1750
+        ]
       },
       "properties": {
         "id": "hab-marwari",
-        "name": "Marwari",
-        "village": "Marwari Ward",
+        "name": "Marwari / Sunil",
         "district": "Chamoli",
         "state": "Uttarakhand",
+        "region": "Western Himalayas",
+        "block": "Joshimath",
         "latitude": 30.542,
         "longitude": 79.558,
-        "elevation": 1750.0,
+        "elevation": 1750,
         "population": 1850,
         "households": 410,
-        "riskScore": 0.72,
+        "riskScore": 0.79,
         "riskLevel": "HIGH",
-        "vulnerability": {
-          "kutchaHousePercentage": 42.0,
-          "elderlyCount": 240,
-          "childrenCount": 390,
-          "roadCutoffRisk": 0.75
-        },
         "vulnerabilityIndex": {
-          "overall": 0.72,
+          "overall": 0.76,
           "level": "HIGH",
-          "exposure": 0.76,
-          "sensitivity": 0.70,
-          "adaptiveCapacity": 0.34
+          "exposure": 0.8,
+          "sensitivity": 0.74,
+          "adaptiveCapacity": 0.32
         },
         "hazardExposure": [
-          { "type": "landslide", "level": "HIGH", "score": 0.80, "contributors": ["Slope toe erosion", "Poor drainage channel"] },
-          { "type": "flood", "level": "MODERATE", "score": 0.50, "contributors": ["Flash flood channel proximity"] }
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.84,
+            "contributors": [
+              "Alaknanda riverbed scouring",
+              "Percolation crack acceleration"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "MODERATE",
+            "score": 0.62,
+            "contributors": [
+              "Flash flood canyon proximity"
+            ]
+          },
+          {
+            "type": "earthquake",
+            "level": "HIGH",
+            "score": 0.75,
+            "contributors": [
+              "Seismic Zone V"
+            ]
+          }
         ],
-        "recommendedAction": "Initiate relocation planning for toe-slope houses",
+        "recommendedAction": "Stage-1 evacuation transit via NH-7 lifeline",
         "nearestRelocationSite": "site-pipalkoti"
       }
     },
     {
       "type": "Feature",
-      "id": "hab-sunil",
+      "id": "hab-reni",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.543, 30.538, 1680.0]
+        "coordinates": [
+          79.702,
+          30.49,
+          2150
+        ]
       },
       "properties": {
-        "id": "hab-sunil",
-        "name": "Sunil Village",
-        "village": "Sunil",
+        "id": "hab-reni",
+        "name": "Reni Village",
         "district": "Chamoli",
         "state": "Uttarakhand",
-        "latitude": 30.538,
-        "longitude": 79.543,
-        "elevation": 1680.0,
-        "population": 820,
-        "households": 180,
-        "riskScore": 0.65,
-        "riskLevel": "MODERATE",
-        "vulnerability": {
-          "kutchaHousePercentage": 38.0,
-          "elderlyCount": 110,
-          "childrenCount": 165,
-          "roadCutoffRisk": 0.60
-        },
-        "vulnerabilityIndex": {
-          "overall": 0.65,
-          "level": "MODERATE",
-          "exposure": 0.68,
-          "sensitivity": 0.64,
-          "adaptiveCapacity": 0.38
-        },
-        "hazardExposure": [
-          { "type": "landslide", "level": "MODERATE", "score": 0.60, "contributors": ["Deforested hillside", "Near seasonal nala"] }
-        ],
-        "recommendedAction": "Monitor slope cracks and prepare contingency transport",
-        "nearestRelocationSite": "site-pipalkoti"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "hab-auli",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [79.565, 30.528, 2519.0]
-      },
-      "properties": {
-        "id": "hab-auli",
-        "name": "Auli",
-        "village": "Auli Rural",
-        "district": "Chamoli",
-        "state": "Uttarakhand",
-        "latitude": 30.528,
-        "longitude": 79.565,
-        "elevation": 2519.0,
-        "population": 450,
+        "region": "Western Himalayas",
+        "block": "Joshimath",
+        "latitude": 30.49,
+        "longitude": 79.702,
+        "elevation": 2150,
+        "population": 420,
         "households": 95,
-        "riskScore": 0.42,
-        "riskLevel": "LOW",
-        "vulnerability": {
-          "kutchaHousePercentage": 15.0,
-          "elderlyCount": 42,
-          "childrenCount": 68,
-          "roadCutoffRisk": 0.40
-        },
+        "riskScore": 0.92,
+        "riskLevel": "CRITICAL",
         "vulnerabilityIndex": {
-          "overall": 0.42,
-          "level": "LOW",
-          "exposure": 0.40,
-          "sensitivity": 0.38,
-          "adaptiveCapacity": 0.55
+          "overall": 0.89,
+          "level": "CRITICAL",
+          "exposure": 0.94,
+          "sensitivity": 0.88,
+          "adaptiveCapacity": 0.2
         },
         "hazardExposure": [
-          { "type": "landslide", "level": "LOW", "score": 0.30, "contributors": ["Rocky terrain", "Gentler meadow gradient"] }
+          {
+            "type": "glof",
+            "level": "CRITICAL",
+            "score": 0.95,
+            "contributors": [
+              "Rishi Ganga catastrophic debris flood track",
+              "Glacial lake breach trajectory"
+            ]
+          },
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.88,
+            "contributors": [
+              "Unconsolidated scree slope",
+              "Thermal permafrost degradation"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.9,
+            "contributors": [
+              "Steep gorge hydraulic damming"
+            ]
+          }
         ],
-        "recommendedAction": "Standard monitoring and road clearance maintenance",
+        "recommendedAction": "Mandatory zero-hour evacuation to Chamoli Stadium Safe Haven",
         "nearestRelocationSite": "site-chamoli-town"
       }
     },
     {
       "type": "Feature",
-      "id": "hab-augustmuni",
+      "id": "hab-kedarnath-rambara",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.025, 30.392, 750.0]
+        "coordinates": [
+          79.062,
+          30.632,
+          1980
+        ]
       },
       "properties": {
-        "id": "hab-augustmuni",
-        "name": "Augustmuni",
-        "village": "Augustmuni Market",
+        "id": "hab-kedarnath-rambara",
+        "name": "Rambara / Gaurikund Corridor",
         "district": "Rudraprayag",
         "state": "Uttarakhand",
-        "latitude": 30.392,
-        "longitude": 79.025,
-        "elevation": 750.0,
-        "population": 3200,
-        "households": 680,
-        "riskScore": 0.68,
-        "riskLevel": "HIGH",
-        "vulnerability": {
-          "kutchaHousePercentage": 28.0,
-          "elderlyCount": 380,
-          "childrenCount": 590,
-          "roadCutoffRisk": 0.70
-        },
+        "region": "Western Himalayas",
+        "block": "Ukhimath",
+        "latitude": 30.632,
+        "longitude": 79.062,
+        "elevation": 1980,
+        "population": 1140,
+        "households": 230,
+        "riskScore": 0.85,
+        "riskLevel": "CRITICAL",
         "vulnerabilityIndex": {
-          "overall": 0.68,
-          "level": "HIGH",
-          "exposure": 0.72,
-          "sensitivity": 0.65,
-          "adaptiveCapacity": 0.42
+          "overall": 0.81,
+          "level": "CRITICAL",
+          "exposure": 0.87,
+          "sensitivity": 0.79,
+          "adaptiveCapacity": 0.25
         },
         "hazardExposure": [
-          { "type": "flood", "level": "HIGH", "score": 0.78, "contributors": ["Mandakini flood plain", "Historical 2013 flood inundation"] },
-          { "type": "landslide", "level": "MODERATE", "score": 0.55, "contributors": ["River bank erosion"] }
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.91,
+            "contributors": [
+              "Mandakini violent channel surge",
+              "Chorabari moraine runoff path"
+            ]
+          },
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.86,
+            "contributors": [
+              "Steep alluvial fan collapse",
+              "Heavy precipitation funnel"
+            ]
+          }
         ],
-        "recommendedAction": "Stage early warning sirens along Mandakini riverbank",
+        "recommendedAction": "Rapid descent to Tilwara Elevated Haven",
         "nearestRelocationSite": "site-tilwara"
       }
     },
     {
       "type": "Feature",
-      "id": "hab-kedarnath-base",
+      "id": "hab-kullu-old-manali",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.066, 30.735, 3583.0]
+        "coordinates": [
+          77.182,
+          32.251,
+          2050
+        ]
       },
       "properties": {
-        "id": "hab-kedarnath-base",
-        "name": "Kedarnath (Base Area)",
-        "village": "Kedarnath Settlement",
-        "district": "Rudraprayag",
-        "state": "Uttarakhand",
-        "latitude": 30.735,
-        "longitude": 79.066,
-        "elevation": 3583.0,
-        "population": 650,
-        "households": 120,
-        "riskScore": 0.71,
+        "id": "hab-kullu-old-manali",
+        "name": "Old Manali & Aleo",
+        "district": "Kullu",
+        "state": "Himachal Pradesh",
+        "region": "Northern Himalayas",
+        "block": "Manali",
+        "latitude": 32.251,
+        "longitude": 77.182,
+        "elevation": 2050,
+        "population": 3450,
+        "households": 780,
+        "riskScore": 0.81,
         "riskLevel": "HIGH",
-        "vulnerability": {
-          "kutchaHousePercentage": 52.0,
-          "elderlyCount": 45,
-          "childrenCount": 30,
-          "roadCutoffRisk": 0.98
-        },
         "vulnerabilityIndex": {
-          "overall": 0.71,
+          "overall": 0.78,
           "level": "HIGH",
-          "exposure": 0.88,
-          "sensitivity": 0.62,
-          "adaptiveCapacity": 0.22
+          "exposure": 0.83,
+          "sensitivity": 0.75,
+          "adaptiveCapacity": 0.36
         },
         "hazardExposure": [
-          { "type": "glof", "level": "HIGH", "score": 0.85, "contributors": ["Chorabari moraine dammed lake trajectory", "High altitude glacial moraines"] },
-          { "type": "flood", "level": "HIGH", "score": 0.75, "contributors": ["Mandakini headwaters channel"] }
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.87,
+            "contributors": [
+              "Beas River flash surge",
+              "Manalsu Nala cloudburst overflow"
+            ]
+          },
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.79,
+            "contributors": [
+              "Steep slope debris movement",
+              "High tourist influx vulnerability"
+            ]
+          }
         ],
-        "recommendedAction": "Seasonal pilgrimage safety restrictions and pre-emptive evacuation",
-        "nearestRelocationSite": "site-tilwara"
+        "recommendedAction": "Evacuate riverbank settlements to Dhalpur Disaster Enclave",
+        "nearestRelocationSite": "site-kullu-dhalpur"
       }
     },
     {
       "type": "Feature",
-      "id": "hab-guptkashi",
+      "id": "hab-mandi-pandoh",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.0719, 30.5292, 1319.0]
+        "coordinates": [
+          77.05,
+          31.67,
+          890
+        ]
       },
       "properties": {
-        "id": "hab-guptkashi",
-        "name": "Guptkashi",
-        "village": "Guptkashi",
-        "district": "Rudraprayag",
-        "state": "Uttarakhand",
-        "latitude": 30.5292,
-        "longitude": 79.0719,
-        "elevation": 1319.0,
-        "population": 894,
-        "households": 210,
-        "riskScore": 0.65,
-        "riskLevel": "MODERATE",
-        "vulnerability": {
-          "kutchaHousePercentage": 22.0,
-          "elderlyCount": 110,
-          "childrenCount": 160,
-          "roadCutoffRisk": 0.58
-        },
+        "id": "hab-mandi-pandoh",
+        "name": "Pandoh Slopes & Aut",
+        "district": "Mandi",
+        "state": "Himachal Pradesh",
+        "region": "Northern Himalayas",
+        "block": "Mandi Sadar",
+        "latitude": 31.67,
+        "longitude": 77.05,
+        "elevation": 890,
+        "population": 2900,
+        "households": 620,
+        "riskScore": 0.77,
+        "riskLevel": "HIGH",
         "vulnerabilityIndex": {
-          "overall": 0.62,
-          "level": "MODERATE",
-          "exposure": 0.68,
-          "sensitivity": 0.55,
-          "adaptiveCapacity": 0.45
+          "overall": 0.74,
+          "level": "HIGH",
+          "exposure": 0.78,
+          "sensitivity": 0.72,
+          "adaptiveCapacity": 0.35
         },
         "hazardExposure": [
-          { "type": "landslide", "level": "MODERATE", "score": 0.64, "contributors": ["Mandakini valley slope creep", "Monsoon runoff"] },
-          { "type": "flood", "level": "LOW", "score": 0.38, "contributors": ["Elevated above river terrace"] }
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.83,
+            "contributors": [
+              "Hillside cutting destabilization",
+              "Saturated mica-schist sliding"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.8,
+            "contributors": [
+              "Pandoh reservoir discharge overflow",
+              "Beas flood channel"
+            ]
+          }
         ],
-        "recommendedAction": "Slope reinforcement and buffer zoning along NH-107 corridor",
-        "nearestRelocationSite": "site-tilwara",
-        "bhuvan_vid": "0503000100199700",
-        "provenance": "ISRO Bhuvan Census 2011 Verified"
+        "recommendedAction": "Relocate low-lying households to Paddal Safe Complex",
+        "nearestRelocationSite": "site-mandi-paddal"
       }
     },
     {
       "type": "Feature",
-      "id": "hab-tharali",
+      "id": "hab-chooralmala",
       "geometry": {
         "type": "Point",
-        "coordinates": [79.5033, 30.0793, 1280.0]
+        "coordinates": [
+          76.177,
+          11.536,
+          920
+        ]
       },
       "properties": {
-        "id": "hab-tharali",
-        "name": "Tharali",
-        "village": "Tharali",
-        "district": "Chamoli",
-        "state": "Uttarakhand",
-        "latitude": 30.0793,
-        "longitude": 79.5033,
-        "elevation": 1280.0,
-        "population": 1789,
-        "households": 470,
-        "riskScore": 0.69,
-        "riskLevel": "MODERATE",
-        "vulnerability": {
-          "kutchaHousePercentage": 31.0,
-          "elderlyCount": 240,
-          "childrenCount": 310,
-          "roadCutoffRisk": 0.72
-        },
+        "id": "hab-chooralmala",
+        "name": "Chooralmala",
+        "district": "Wayanad",
+        "state": "Kerala",
+        "region": "Western Ghats",
+        "block": "Vythiri",
+        "latitude": 11.536,
+        "longitude": 76.177,
+        "elevation": 920,
+        "population": 3890,
+        "households": 860,
+        "riskScore": 0.94,
+        "riskLevel": "CRITICAL",
         "vulnerabilityIndex": {
-          "overall": 0.68,
-          "level": "MODERATE",
-          "exposure": 0.72,
-          "sensitivity": 0.65,
+          "overall": 0.91,
+          "level": "CRITICAL",
+          "exposure": 0.96,
+          "sensitivity": 0.89,
+          "adaptiveCapacity": 0.18
+        },
+        "hazardExposure": [
+          {
+            "type": "landslide",
+            "level": "CRITICAL",
+            "score": 0.98,
+            "contributors": [
+              "Vellarimala slope failure track",
+              "572mm 48h extreme monsoon downpour",
+              "Pebble & boulder slurry flow"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.92,
+            "contributors": [
+              "Iruvanipuzha river violent avulsion",
+              "Bridge structural washouts"
+            ]
+          }
+        ],
+        "recommendedAction": "Urgent zero-hour total evacuation to Meppadi Community Complex",
+        "nearestRelocationSite": "site-meppadi-campus"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-mundakkai",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.195,
+          11.548,
+          1040
+        ]
+      },
+      "properties": {
+        "id": "hab-mundakkai",
+        "name": "Mundakkai Tea Hamlet",
+        "district": "Wayanad",
+        "state": "Kerala",
+        "region": "Western Ghats",
+        "block": "Vythiri",
+        "latitude": 11.548,
+        "longitude": 76.195,
+        "elevation": 1040,
+        "population": 2150,
+        "households": 490,
+        "riskScore": 0.96,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.93,
+          "level": "CRITICAL",
+          "exposure": 0.97,
+          "sensitivity": 0.92,
+          "adaptiveCapacity": 0.15
+        },
+        "hazardExposure": [
+          {
+            "type": "landslide",
+            "level": "CRITICAL",
+            "score": 0.99,
+            "contributors": [
+              "Crown blowout landslide origin",
+              "Steep estate tea plantation collapse"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.88,
+            "contributors": [
+              "Debris flow channel blockage and dam break"
+            ]
+          }
+        ],
+        "recommendedAction": "Immediate air and lifeline evacuation to Kalpetta Municipal Stadium",
+        "nearestRelocationSite": "site-kalpetta-stadium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-munnar-rajamalai",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.018,
+          10.15,
+          1650
+        ]
+      },
+      "properties": {
+        "id": "hab-munnar-rajamalai",
+        "name": "Rajamalai / Pettimudi",
+        "district": "Idukki",
+        "state": "Kerala",
+        "region": "Western Ghats",
+        "block": "Devikulam",
+        "latitude": 10.15,
+        "longitude": 77.018,
+        "elevation": 1650,
+        "population": 1720,
+        "households": 380,
+        "riskScore": 0.84,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.82,
+          "level": "CRITICAL",
+          "exposure": 0.86,
+          "sensitivity": 0.8,
+          "adaptiveCapacity": 0.24
+        },
+        "hazardExposure": [
+          {
+            "type": "landslide",
+            "level": "CRITICAL",
+            "score": 0.9,
+            "contributors": [
+              "Steep granitic escarpment failure",
+              "Gravel wash and lineament slip"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "MODERATE",
+            "score": 0.65,
+            "contributors": [
+              "Periyar tributary torrents"
+            ]
+          }
+        ],
+        "recommendedAction": "Priority relocation to Adimali High School Refuge",
+        "nearestRelocationSite": "site-adimali-haven"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-kuttanad-champakulam",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.418,
+          9.408,
+          -1.5
+        ]
+      },
+      "properties": {
+        "id": "hab-kuttanad-champakulam",
+        "name": "Champakulam / Kuttanad",
+        "district": "Alappuzha",
+        "state": "Kerala",
+        "region": "Coastal Plains",
+        "block": "Champakulam",
+        "latitude": 9.408,
+        "longitude": 76.418,
+        "elevation": -1.5,
+        "population": 4800,
+        "households": 1120,
+        "riskScore": 0.78,
+        "riskLevel": "HIGH",
+        "vulnerabilityIndex": {
+          "overall": 0.77,
+          "level": "HIGH",
+          "exposure": 0.84,
+          "sensitivity": 0.75,
           "adaptiveCapacity": 0.38
         },
         "hazardExposure": [
-          { "type": "flood", "level": "HIGH", "score": 0.78, "contributors": ["Pindar River flash flood plain", "Debris dam risk"] },
-          { "type": "landslide", "level": "MODERATE", "score": 0.62, "contributors": ["Tharali gorge slope instability"] }
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.92,
+            "contributors": [
+              "Below sea-level geographic basin",
+              "Pamba & Achankovil monsoon discharge surge",
+              "Tidal barrier holding capacity breach"
+            ]
+          }
         ],
-        "recommendedAction": "Pindar riverbank embankment stabilization and elevated relocation staging",
-        "nearestRelocationSite": "site-gauchar",
-        "bhuvan_vid": "0502000500588200",
-        "provenance": "ISRO Bhuvan Census 2011 Verified"
+        "recommendedAction": "Staged boat convoy transit to Alappuzha Elevated Stilt Shelter",
+        "nearestRelocationSite": "site-alappuzha-elevated"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-amalapuram-island",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          81.835,
+          16.48,
+          3.2
+        ]
+      },
+      "properties": {
+        "id": "hab-amalapuram-island",
+        "name": "Razole Island Hamlets",
+        "district": "Dr. B.R. Ambedkar Konaseema",
+        "state": "Andhra Pradesh",
+        "region": "Eastern Coastal Plains",
+        "block": "Razole",
+        "latitude": 16.48,
+        "longitude": 81.835,
+        "elevation": 3.2,
+        "population": 5200,
+        "households": 1250,
+        "riskScore": 0.87,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.84,
+          "level": "CRITICAL",
+          "exposure": 0.9,
+          "sensitivity": 0.82,
+          "adaptiveCapacity": 0.26
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.94,
+            "contributors": [
+              "Godavari estuary surge (4.5m wave crest)",
+              "Low-lying delta bund breach risk"
+            ]
+          },
+          {
+            "type": "glof",
+            "level": "LOW",
+            "score": 0.1,
+            "contributors": []
+          }
+        ],
+        "recommendedAction": "Pre-emptive evacuation to Amalapuram Multi-Purpose Cyclone Shelter",
+        "nearestRelocationSite": "site-amalapuram-mpcs"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-bheemunipatnam",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.45,
+          17.89,
+          6
+        ]
+      },
+      "properties": {
+        "id": "hab-bheemunipatnam",
+        "name": "Bheemunipatnam Coast",
+        "district": "Visakhapatnam",
+        "state": "Andhra Pradesh",
+        "region": "Eastern Coastal Plains",
+        "block": "Bheemunipatnam",
+        "latitude": 17.89,
+        "longitude": 83.45,
+        "elevation": 6,
+        "population": 4300,
+        "households": 980,
+        "riskScore": 0.79,
+        "riskLevel": "HIGH",
+        "vulnerabilityIndex": {
+          "overall": 0.75,
+          "level": "HIGH",
+          "exposure": 0.81,
+          "sensitivity": 0.72,
+          "adaptiveCapacity": 0.38
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.85,
+            "contributors": [
+              "Very Severe Cyclonic Storm landfall zone",
+              "High-energy storm tide breach"
+            ]
+          }
+        ],
+        "recommendedAction": "Transit coastal population to Swarna Bharathi Indoor Stadium",
+        "nearestRelocationSite": "site-vizag-indoor"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-majuli-kamalabari",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          94.22,
+          26.96,
+          84
+        ]
+      },
+      "properties": {
+        "id": "hab-majuli-kamalabari",
+        "name": "Kamalabari / Salmora",
+        "district": "Majuli",
+        "state": "Assam",
+        "region": "Brahmaputra Basin",
+        "block": "Majuli",
+        "latitude": 26.96,
+        "longitude": 94.22,
+        "elevation": 84,
+        "population": 4600,
+        "households": 940,
+        "riskScore": 0.91,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.88,
+          "level": "CRITICAL",
+          "exposure": 0.95,
+          "sensitivity": 0.86,
+          "adaptiveCapacity": 0.22
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.96,
+            "contributors": [
+              "Brahmaputra discharge >50,000 cumecs",
+              "Severe river island bank cutting erosion",
+              "Submergence of earthen dykes"
+            ]
+          }
+        ],
+        "recommendedAction": "Immediate river ferry evacuation to Jorhat District Stadium Enclave",
+        "nearestRelocationSite": "site-jorhat-stadium"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-silchar-meherpur",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          92.8,
+          24.81,
+          26
+        ]
+      },
+      "properties": {
+        "id": "hab-silchar-meherpur",
+        "name": "Meherpur & Rangirkhari",
+        "district": "Cachar",
+        "state": "Assam",
+        "region": "Barak Valley",
+        "block": "Silchar",
+        "latitude": 24.81,
+        "longitude": 92.8,
+        "elevation": 26,
+        "population": 6200,
+        "households": 1400,
+        "riskScore": 0.86,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.83,
+          "level": "CRITICAL",
+          "exposure": 0.89,
+          "sensitivity": 0.81,
+          "adaptiveCapacity": 0.3
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.93,
+            "contributors": [
+              "Barak River Bethukandi dyke breach track",
+              "Catastrophic urban basin submergence (up to 3.5m deep)"
+            ]
+          }
+        ],
+        "recommendedAction": "Relocate families to Silchar Government Polytechnic Refuge",
+        "nearestRelocationSite": "site-silchar-polytech"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-chungthang",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.647,
+          27.603,
+          1790
+        ]
+      },
+      "properties": {
+        "id": "hab-chungthang",
+        "name": "Chungthang Town",
+        "district": "Mangan",
+        "state": "Sikkim",
+        "region": "Eastern Himalayas",
+        "block": "Chungthang",
+        "latitude": 27.603,
+        "longitude": 88.647,
+        "elevation": 1790,
+        "population": 2650,
+        "households": 560,
+        "riskScore": 0.95,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.92,
+          "level": "CRITICAL",
+          "exposure": 0.97,
+          "sensitivity": 0.9,
+          "adaptiveCapacity": 0.16
+        },
+        "hazardExposure": [
+          {
+            "type": "glof",
+            "level": "CRITICAL",
+            "score": 0.98,
+            "contributors": [
+              "South Lhonak Glacial Lake outburst flood route",
+              "Teesta-III Dam break downstream surge"
+            ]
+          },
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.89,
+            "contributors": [
+              "Gorge wall collapse",
+              "Sediment damming debris"
+            ]
+          }
+        ],
+        "recommendedAction": "Zero-hour high-altitude relocation to Mangan Sports Enclave",
+        "nearestRelocationSite": "site-mangan-sports"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-singtam",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.498,
+          27.234,
+          420
+        ]
+      },
+      "properties": {
+        "id": "hab-singtam",
+        "name": "Singtam Riverbank",
+        "district": "Pakyong",
+        "state": "Sikkim",
+        "region": "Eastern Himalayas",
+        "block": "Singtam",
+        "latitude": 27.234,
+        "longitude": 88.498,
+        "elevation": 420,
+        "population": 3200,
+        "households": 710,
+        "riskScore": 0.82,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.8,
+          "level": "CRITICAL",
+          "exposure": 0.85,
+          "sensitivity": 0.78,
+          "adaptiveCapacity": 0.32
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.9,
+            "contributors": [
+              "Teesta riverbed rise (6m silt deposit)",
+              "Flash flood inundation"
+            ]
+          },
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.8,
+            "contributors": [
+              "Toe erosion of highway embankment"
+            ]
+          }
+        ],
+        "recommendedAction": "Evacuate to Singtam Community Disaster Centre on high terrace",
+        "nearestRelocationSite": "site-singtam-safehaven"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-erasama-paradeep",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.62,
+          20.15,
+          4
+        ]
+      },
+      "properties": {
+        "id": "hab-erasama-paradeep",
+        "name": "Erasama Coastal Belt",
+        "district": "Jagatsinghpur",
+        "state": "Odisha",
+        "region": "Eastern Coastal Plains",
+        "block": "Erasama",
+        "latitude": 20.15,
+        "longitude": 86.62,
+        "elevation": 4,
+        "population": 5100,
+        "households": 1190,
+        "riskScore": 0.9,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.87,
+          "level": "CRITICAL",
+          "exposure": 0.93,
+          "sensitivity": 0.85,
+          "adaptiveCapacity": 0.28
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.96,
+            "contributors": [
+              "Super Cyclone storm surge (>6m tidal wave)",
+              "Saline marine inundation up to 15km inland"
+            ]
+          }
+        ],
+        "recommendedAction": "Pre-emptive evacuation to Erasama Central Disaster Refuge",
+        "nearestRelocationSite": "site-jagatsinghpur-shelter"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-puri-krushnaprasad",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.39,
+          19.64,
+          3.5
+        ]
+      },
+      "properties": {
+        "id": "hab-puri-krushnaprasad",
+        "name": "Krushnaprasad (Chilika)",
+        "district": "Puri",
+        "state": "Odisha",
+        "region": "Eastern Coastal Plains",
+        "block": "Krushnaprasad",
+        "latitude": 19.64,
+        "longitude": 85.39,
+        "elevation": 3.5,
+        "population": 4400,
+        "households": 960,
+        "riskScore": 0.85,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.82,
+          "level": "CRITICAL",
+          "exposure": 0.88,
+          "sensitivity": 0.8,
+          "adaptiveCapacity": 0.31
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.91,
+            "contributors": [
+              "Chilika lagoon barrier breach",
+              "Severe gale force storm tide"
+            ]
+          }
+        ],
+        "recommendedAction": "Transit via coastal highway to Puri OSDMA Cyclone Shelter",
+        "nearestRelocationSite": "site-puri-mpcs"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-anantnag-bijbehara",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.105,
+          33.795,
+          1590
+        ]
+      },
+      "properties": {
+        "id": "hab-anantnag-bijbehara",
+        "name": "Bijbehara & Sangam",
+        "district": "Anantnag",
+        "state": "Jammu & Kashmir",
+        "region": "Kashmir Valley",
+        "block": "Bijbehara",
+        "latitude": 33.795,
+        "longitude": 75.105,
+        "elevation": 1590,
+        "population": 4300,
+        "households": 820,
+        "riskScore": 0.83,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.8,
+          "level": "CRITICAL",
+          "exposure": 0.86,
+          "sensitivity": 0.78,
+          "adaptiveCapacity": 0.34
+        },
+        "hazardExposure": [
+          {
+            "type": "flood",
+            "level": "CRITICAL",
+            "score": 0.9,
+            "contributors": [
+              "Jhelum River gauge exceeding Danger Level by 4.8m",
+              "South Kashmir basin convergence overflow"
+            ]
+          },
+          {
+            "type": "earthquake",
+            "level": "HIGH",
+            "score": 0.78,
+            "contributors": [
+              "Seismic Zone IV/V"
+            ]
+          }
+        ],
+        "recommendedAction": "Evacuate to Anantnag Degree College Disaster Camp on high terrace",
+        "nearestRelocationSite": "site-anantnag-sports"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-sohra-cherrapunji",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91.73,
+          25.27,
+          1430
+        ]
+      },
+      "properties": {
+        "id": "hab-sohra-cherrapunji",
+        "name": "Sohra (Cherrapunji) Rim",
+        "district": "East Khasi Hills",
+        "state": "Meghalaya",
+        "region": "Northeastern Hills",
+        "block": "Sohra",
+        "latitude": 25.27,
+        "longitude": 91.73,
+        "elevation": 1430,
+        "population": 3200,
+        "households": 670,
+        "riskScore": 0.86,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.83,
+          "level": "CRITICAL",
+          "exposure": 0.89,
+          "sensitivity": 0.81,
+          "adaptiveCapacity": 0.27
+        },
+        "hazardExposure": [
+          {
+            "type": "landslide",
+            "level": "CRITICAL",
+            "score": 0.91,
+            "contributors": [
+              "World-record intensity rainfall (>11,000mm annual)",
+              "Limestone cliff collapse and canyon slides"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.82,
+            "contributors": [
+              "High-velocity gorge surface torrents"
+            ]
+          }
+        ],
+        "recommendedAction": "Move cliffside families to Sohra Sub-Divisional Complex",
+        "nearestRelocationSite": "site-sohra-shelter"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-noney-tupul",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          93.682,
+          24.816,
+          580
+        ]
+      },
+      "properties": {
+        "id": "hab-noney-tupul",
+        "name": "Tupul Valley",
+        "district": "Noney",
+        "state": "Manipur",
+        "region": "Northeastern Hills",
+        "block": "Noney",
+        "latitude": 24.816,
+        "longitude": 93.682,
+        "elevation": 580,
+        "population": 2100,
+        "households": 420,
+        "riskScore": 0.93,
+        "riskLevel": "CRITICAL",
+        "vulnerabilityIndex": {
+          "overall": 0.9,
+          "level": "CRITICAL",
+          "exposure": 0.95,
+          "sensitivity": 0.88,
+          "adaptiveCapacity": 0.18
+        },
+        "hazardExposure": [
+          {
+            "type": "landslide",
+            "level": "CRITICAL",
+            "score": 0.97,
+            "contributors": [
+              "High cutting slope failure",
+              "Ijei River damming creating inundation lake"
+            ]
+          },
+          {
+            "type": "flood",
+            "level": "HIGH",
+            "score": 0.87,
+            "contributors": [
+              "Breach risk of landslide debris dam"
+            ]
+          }
+        ],
+        "recommendedAction": "Urgent relocation along NH-37 to Imphal Khuman Lampak Enclave",
+        "nearestRelocationSite": "site-imphal-complex"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-kohima-south",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          94.105,
+          25.66,
+          1440
+        ]
+      },
+      "properties": {
+        "id": "hab-kohima-south",
+        "name": "Kohima South Ridge",
+        "district": "Kohima",
+        "state": "Nagaland",
+        "region": "Northeastern Hills",
+        "block": "Kohima",
+        "latitude": 25.66,
+        "longitude": 94.105,
+        "elevation": 1440,
+        "population": 3500,
+        "households": 710,
+        "riskScore": 0.8,
+        "riskLevel": "HIGH",
+        "vulnerabilityIndex": {
+          "overall": 0.77,
+          "level": "HIGH",
+          "exposure": 0.82,
+          "sensitivity": 0.76,
+          "adaptiveCapacity": 0.33
+        },
+        "hazardExposure": [
+          {
+            "type": "landslide",
+            "level": "HIGH",
+            "score": 0.85,
+            "contributors": [
+              "Shale formation progressive creeping slump",
+              "Infiltration of monsoon runoff"
+            ]
+          },
+          {
+            "type": "earthquake",
+            "level": "HIGH",
+            "score": 0.79,
+            "contributors": [
+              "Indo-Burma wedge Seismic Zone V"
+            ]
+          }
+        ],
+        "recommendedAction": "Relocate sinking zone households to Indira Gandhi Stadium Haven",
+        "nearestRelocationSite": "site-kohima-stadium"
       }
     }
   ]

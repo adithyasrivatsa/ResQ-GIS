@@ -7,7 +7,6 @@ import {
   Minus,
   Crosshair,
   Layers,
-  Ruler,
   X,
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
@@ -54,7 +53,6 @@ export default function Map2D() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [basemapMenuOpen, setBasemapMenuOpen] = useState(false);
-  const [measuringMode, setMeasuringMode] = useState(false);
 
   // Local layer visibility toggles matching the tactical LAYERS card
   const [layerVisibility, setLayerVisibility] = useState<Record<string, boolean>>({
@@ -248,21 +246,50 @@ export default function Map2D() {
     const distMap: Record<string, [number, number]> = {
       chamoli: [30.55, 79.55],
       rudraprayag: [30.45, 79.05],
+      pithoragarh: [29.58, 80.22],
+      uttarkashi: [30.73, 78.43],
       kinnaur: [31.65, 78.35],
       kullu: [31.95, 77.10],
-      mangan: [27.50, 88.52],
+      mandi: [31.71, 76.93],
       wayanad: [11.68, 76.13],
-      idukki: [9.85, 76.97],
+      idukki: [10.08, 77.05],
+      alappuzha: [9.42, 76.48],
+      konaseema: [16.48, 81.88],
+      'dr. b.r. ambedkar konaseema': [16.48, 81.88],
+      visakhapatnam: [17.68, 83.22],
+      majuli: [26.96, 94.21],
+      silchar: [24.83, 92.79],
+      cachar: [24.83, 92.79],
       'dima hasao': [25.40, 93.02],
+      mangan: [27.50, 88.52],
+      chungthang: [27.60, 88.65],
+      gangtok: [27.33, 88.61],
+      singtam: [27.23, 88.50],
+      jagatsinghpur: [19.98, 86.42],
+      puri: [19.81, 85.83],
       ganjam: [19.40, 84.85],
+      anantnag: [33.73, 75.15],
+      srinagar: [34.08, 74.80],
+      'east khasi hills': [25.28, 91.72],
+      sohra: [25.28, 91.72],
+      cherrapunji: [25.28, 91.72],
+      noney: [24.78, 93.63],
+      kohima: [25.67, 94.11],
     };
     const stateMap: Record<string, [number, number]> = {
       uttarakhand: [30.4, 79.3],
       'himachal pradesh': [31.8, 77.2],
-      sikkim: [27.5, 88.5],
       kerala: [10.5, 76.3],
+      'andhra pradesh': [16.8, 81.5],
       assam: [26.2, 92.8],
+      sikkim: [27.5, 88.5],
       odisha: [20.3, 85.0],
+      'jammu & kashmir': [33.9, 74.9],
+      'jammu and kashmir': [33.9, 74.9],
+      meghalaya: [25.5, 91.5],
+      'manipur & nagaland': [25.2, 93.8],
+      manipur: [24.8, 93.8],
+      nagaland: [25.7, 94.1],
     };
     if (selectedDistrict) {
       const coords = distMap[selectedDistrict.toLowerCase().trim()];
@@ -1087,19 +1114,6 @@ export default function Map2D() {
             </div>
           )}
         </div>
-
-        {/* Measure Tool */}
-        <button
-          onClick={() => setMeasuringMode((prev) => !prev)}
-          style={{
-            ...toolBtnStyle,
-            background: measuringMode ? '#ff2a85' : '#ffffff',
-            color: measuringMode ? '#ffffff' : '#000000',
-          }}
-          title="Measure Tool"
-        >
-          <Ruler size={16} strokeWidth={2.5} />
-        </button>
       </div>
 
       {/* 5. Top-Right Floating LAYERS Card */}

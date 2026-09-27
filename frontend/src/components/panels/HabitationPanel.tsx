@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Users, ArrowRight, ShieldAlert, HeartHandshake, Compass, Gauge, Search, Home, ArrowLeft } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { flyToSite, flyToHabitation } from '../../cesium/camera';
-import type { RiskLevel, HazardType } from '../../types';
+import type { RiskLevel } from '../../types';
 
 const RISK_CLASS: Record<RiskLevel, string> = {
   CRITICAL: 'risk--critical',
@@ -12,12 +12,14 @@ const RISK_CLASS: Record<RiskLevel, string> = {
   MINIMAL: 'risk--minimal',
 };
 
-const HAZARD_LABEL: Record<HazardType, string> = {
+const HAZARD_LABEL: Record<string, string> = {
   landslide: 'Landslide',
   flood: 'Flood',
   glof: 'GLOF',
   earthquake: 'Earthquake',
   avalanche: 'Avalanche',
+  cyclone: 'Cyclone & Surge',
+  subsidence: 'Land Subsidence',
 };
 
 export default function HabitationPanel() {
@@ -25,13 +27,15 @@ export default function HabitationPanel() {
   const hab = getSelectedHabitation();
   const [searchTerm, setSearchTerm] = useState('');
   const [riskFilter, setRiskFilter] = useState('ALL');
+  const [stateFilter, setStateFilter] = useState<string>('ALL');
 
   if (!hab) {
     const filtered = habitations.filter((h) => {
-      const matchDistrict = !selectedDistrict || h.district.toLowerCase() === selectedDistrict.toLowerCase();
-      const matchSearch = !searchTerm || h.name.toLowerCase().includes(searchTerm.toLowerCase()) || (h.block && h.block.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchState = stateFilter === 'ALL' || (h.state && h.state.toLowerCase() === stateFilter.toLowerCase());
+      const matchDistrict = !selectedDistrict || stateFilter !== 'ALL' || h.district.toLowerCase() === selectedDistrict.toLowerCase();
+      const matchSearch = !searchTerm || h.name.toLowerCase().includes(searchTerm.toLowerCase()) || (h.block && h.block.toLowerCase().includes(searchTerm.toLowerCase())) || (h.district && h.district.toLowerCase().includes(searchTerm.toLowerCase()));
       const matchRisk = riskFilter === 'ALL' || h.riskLevel === riskFilter;
-      return matchDistrict && matchSearch && matchRisk;
+      return matchState && matchDistrict && matchSearch && matchRisk;
     });
 
     return (
@@ -58,34 +62,40 @@ export default function HabitationPanel() {
                 Habitations Directory
               </div>
               <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-                {filtered.length} Settlements &bull; {selectedDistrict || 'Uttarakhand'}
+                {filtered.length} Settlements &bull; {stateFilter === 'ALL' ? 'Pan-India (10 States)' : stateFilter}
               </div>
             </div>
           </div>
 
-          {/* Search & Filter */}
-          <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            <div
+          {/* State & Risk Selectors */}
+          <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+            <select
+              value={stateFilter}
+              onChange={(e) => setStateFilter(e.target.value)}
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-color)',
                 borderRadius: 'var(--radius-sm)',
-                padding: '4px 8px',
+                padding: '4px 6px',
+                fontSize: 10,
+                fontWeight: 600,
+                color: 'var(--text-secondary)',
                 flex: 1,
               }}
             >
-              <Search size={14} color="var(--text-muted)" />
-              <input
-                type="text"
-                placeholder="Search village or block..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ border: 'none', outline: 'none', width: '100%', fontSize: 11, background: 'transparent', color: 'var(--text-primary)' }}
-              />
-            </div>
+              <option value="ALL">All 10 States</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Odisha">Odisha</option>
+              <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Manipur & Nagaland">Manipur & Nagaland</option>
+            </select>
+
             <select
               value={riskFilter}
               onChange={(e) => setRiskFilter(e.target.value)}
@@ -93,7 +103,7 @@ export default function HabitationPanel() {
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-color)',
                 borderRadius: 'var(--radius-sm)',
-                padding: '4px 8px',
+                padding: '4px 6px',
                 fontSize: 10,
                 fontWeight: 600,
                 color: 'var(--text-secondary)',
@@ -105,6 +115,29 @@ export default function HabitationPanel() {
               <option value="MODERATE">Moderate</option>
               <option value="LOW">Low</option>
             </select>
+          </div>
+
+          {/* Search Bar */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-sm)',
+              padding: '4px 8px',
+              marginTop: 6,
+            }}
+          >
+            <Search size={14} color="var(--text-muted)" />
+            <input
+              type="text"
+              placeholder="Search settlement, block, district..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ border: 'none', outline: 'none', width: '100%', fontSize: 11, background: 'transparent', color: 'var(--text-primary)' }}
+            />
           </div>
         </div>
 
@@ -121,7 +154,7 @@ export default function HabitationPanel() {
               <div>
                 <div className="panel__list-item-name">{h.name}</div>
                 <div className="panel__list-item-meta">
-                  {h.block || h.district} &bull; Pop: {h.population.toLocaleString()}
+                  {h.district}, {h.state || 'Uttarakhand'} &bull; Pop: {h.population.toLocaleString()}
                 </div>
               </div>
 

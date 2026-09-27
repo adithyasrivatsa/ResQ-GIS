@@ -54,6 +54,7 @@ export interface VulnerabilityIndex {
 export interface RelocationSite {
   id: string;
   name: string;
+  facilityType?: string;
   location: GeoPoint;
   district: string;
   state?: string;
@@ -69,6 +70,12 @@ export interface RelocationSite {
   hasRoadAccess: boolean;
   hasWaterAccess: boolean;
   nearInfrastructure: boolean;
+  elevationAboveFloodPlane?: number; // meters above danger level
+  structuralType?: string;
+  managingAgency?: string;
+  amenities?: string[];
+  operationalStatus?: 'READY' | 'ACTIVE_CAMP' | 'STANDBY';
+  lifelineCorridor?: string;
 }
 
 export interface SiteConstraint {
