@@ -44,11 +44,9 @@ export function initViewer(container: HTMLElement): Cesium.Viewer {
   // Asynchronously configure terrain provider (Ion, Copernicus DEM, or Ellipsoid)
   createTerrainProvider(cesiumConfig.defaultTerrain)
     .then((tp) => {
-      if (viewerInstance && !viewerInstance.isDestroyed()) {
-        if (tp instanceof Cesium.TerrainProvider) {
-          viewerInstance.terrainProvider = tp;
-        } else if (typeof (viewerInstance as any).scene?.setTerrain === 'function') {
-          (viewerInstance.scene as any).setTerrain(tp);
+      if (viewerInstance && !viewerInstance.isDestroyed() && tp) {
+        if (tp instanceof Cesium.Terrain) {
+          viewerInstance.scene.setTerrain(tp);
         } else {
           viewerInstance.terrainProvider = tp;
         }
@@ -73,6 +71,8 @@ export function initViewer(container: HTMLElement): Cesium.Viewer {
   scene.fog.enabled = true;
   scene.fog.density = 0.0002;
   scene.globe.depthTestAgainstTerrain = false;
+
+  (window as any).cesiumViewer = viewerInstance;
 
   return viewerInstance;
 }

@@ -84,11 +84,9 @@ export async function setViewerTerrain(viewer: Cesium.Viewer, terrainType: Terra
   try {
     const provider = await createTerrainProvider(terrainType);
     if (viewer && !viewer.isDestroyed()) {
-      if (provider instanceof Cesium.TerrainProvider) {
-        viewer.terrainProvider = provider;
-      } else if (typeof (viewer as any).scene?.setTerrain === 'function') {
-        (viewer.scene as any).setTerrain(provider);
-      } else {
+      if (provider instanceof Cesium.Terrain) {
+        viewer.scene.setTerrain(provider);
+      } else if (provider) {
         viewer.terrainProvider = provider;
       }
     }
