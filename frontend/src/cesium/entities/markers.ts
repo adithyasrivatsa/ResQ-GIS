@@ -63,7 +63,7 @@ export function renderHabitations(habitations: Habitation[], visible: boolean = 
       },
       label: {
         text: hab.name,
-        font: '12px monospace',
+        font: '500 12px Inter, -apple-system, sans-serif',
         fillColor: Cesium.Color.WHITE,
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 3,
@@ -114,7 +114,7 @@ export function renderRelocationSites(sites: RelocationSite[], visible: boolean 
       },
       label: {
         text: `⬢ ${site.name}`,
-        font: '11px monospace',
+        font: '600 11px Inter, -apple-system, sans-serif',
         fillColor: Cesium.Color.fromCssColorString('#93c5fd'),
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 3,
@@ -170,7 +170,7 @@ export function renderRelocationPathway(hab: Habitation, site: RelocationSite) {
     position: Cesium.Cartesian3.fromDegrees(midLng, midLat, 0),
     label: {
       text: `➔ CORRIDOR: ${hab.name} to ${site.name} (${site.distanceFromAffected} km)`,
-      font: 'bold 11px monospace',
+      font: '600 11px Inter, -apple-system, sans-serif',
       fillColor: Cesium.Color.fromCssColorString('#38bdf8'),
       outlineColor: Cesium.Color.BLACK,
       outlineWidth: 3,
@@ -263,7 +263,7 @@ export function renderHazardLayers(
       position: Cesium.Cartesian3.fromDegrees(centerLng, centerLat, 0),
       label: {
         text: badgeText,
-        font: 'bold 10px monospace',
+        font: '600 10px Inter, -apple-system, sans-serif',
         fillColor: Cesium.Color.WHITE,
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 3,
@@ -327,7 +327,7 @@ export function renderRiverStations(stations: RiverStation[], visible: boolean =
       },
       label: {
         text: `🌊 ${st.name} [${levelText} | ${statusBadge}]`,
-        font: 'bold 10px monospace',
+        font: '600 10px Inter, -apple-system, sans-serif',
         fillColor: Cesium.Color.fromCssColorString('#a5f3fc'),
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 3,
@@ -406,7 +406,7 @@ export function renderDisasterAlerts(alerts: DisasterAlert[], visible: boolean =
       },
       label: {
         text: `⚡ ALERT: ${alert.eventType.toUpperCase()}`,
-        font: 'bold 10px monospace',
+        font: '600 10px Inter, -apple-system, sans-serif',
         fillColor: Cesium.Color.fromCssColorString('#fecdd3'),
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 3,
@@ -483,7 +483,7 @@ export function renderRoads(roads: OSMRoadFeature[], visible: boolean = true) {
         position: Cesium.Cartesian3.fromDegrees(midPoint[0], midPoint[1], 0),
         label: {
           text: `🛣️ ${road.name} [${road.passabilityStatus.toUpperCase()}]`,
-          font: 'bold 9px monospace',
+          font: '600 9px Inter, -apple-system, sans-serif',
           fillColor: Cesium.Color.WHITE,
           outlineColor: Cesium.Color.BLACK,
           outlineWidth: 2,
@@ -547,7 +547,7 @@ export function renderEmergencyResources(resources: EmergencyResource[], visible
       },
       label: {
         text: `${icon} ${res.name} (Cap: ${res.capacity})`,
-        font: 'bold 10px monospace',
+        font: '600 10px Inter, -apple-system, sans-serif',
         fillColor: Cesium.Color.WHITE,
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 3,

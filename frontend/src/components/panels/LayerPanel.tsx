@@ -14,31 +14,45 @@ export default function LayerPanel() {
 
   return (
     <div className="panel">
-      <div className="panel__section" style={{ background: '#f0fdf4', paddingBottom: 10 }}>
+      {/* Header */}
+      <div className="panel__section" style={{ background: '#f8fafc', padding: '14px 16px', borderBottom: '1px solid #e2e8f0' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Layers size={18} color="#166534" />
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              background: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#0f172a',
+            }}
+          >
+            <Layers size={16} />
+          </div>
           <div>
-            <div style={{ fontFamily: 'Silkscreen', fontSize: 13, fontWeight: 700, color: '#166534' }}>
-              GIS LAYER STACK
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+              GIS Layer Stack
             </div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 9, color: '#64748b' }}>
-              TOGGLE ACTIVE GEOGRAPHIC OVERLAYS
+            <div style={{ fontSize: 11, color: '#64748b' }}>
+              Toggle Active Geographic Overlays
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ padding: '10px 14px' }}>
+      <div style={{ padding: '12px 16px' }}>
         {categories.map((cat) => (
-          <div key={cat} style={{ marginBottom: 14 }}>
+          <div key={cat} style={{ marginBottom: 16 }}>
             <div
               style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 9,
-                fontWeight: 700,
-                color: '#475569',
-                marginBottom: 6,
-                letterSpacing: 0.5,
+                fontSize: 10,
+                fontWeight: 600,
+                color: '#64748b',
+                marginBottom: 8,
+                letterSpacing: '0.4px',
               }}
             >
               {CATEGORY_LABELS[cat] || (cat ? cat.toUpperCase() : 'OVERLAYS')}
@@ -55,55 +69,37 @@ export default function LayerPanel() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      background: layer.visible ? 'var(--retro-purple-soft)' : '#ffffff',
-                      border: '2px solid #000000',
-                      boxShadow: layer.visible ? '3px 3px 0px #000000' : '2px 2px 0px #000000',
-                      borderRadius: 6,
-                      padding: '8px 10px',
+                      background: layer.visible ? '#f0f9ff' : '#ffffff',
+                      border: `1px solid ${layer.visible ? '#bae6fd' : '#e2e8f0'}`,
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                      borderRadius: 8,
+                      padding: '8px 12px',
                       cursor: 'pointer',
                       textAlign: 'left',
+                      transition: 'all 0.15s ease',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      {layer.visible ? (
-                        <div
-                          style={{
-                            width: 20,
-                            height: 20,
-                            background: 'var(--retro-purple)',
-                            color: '#fff',
-                            borderRadius: 4,
-                            border: '1px solid #000',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <Eye size={12} />
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            width: 20,
-                            height: 20,
-                            background: '#e2e8f0',
-                            color: '#64748b',
-                            borderRadius: 4,
-                            border: '1px solid #000',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <EyeOff size={12} />
-                        </div>
-                      )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div
+                        style={{
+                          width: 24,
+                          height: 24,
+                          background: layer.visible ? '#0284c7' : '#f1f5f9',
+                          color: layer.visible ? '#ffffff' : '#94a3b8',
+                          borderRadius: 6,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        {layer.visible ? <Eye size={13} /> : <EyeOff size={13} />}
+                      </div>
                       <span
                         style={{
-                          fontFamily: 'Space Mono',
-                          fontSize: 10,
-                          fontWeight: 700,
-                          color: layer.visible ? '#000' : '#64748b',
+                          fontSize: 12,
+                          fontWeight: layer.visible ? 600 : 500,
+                          color: layer.visible ? '#0f172a' : '#64748b',
                         }}
                       >
                         {layer.name}
@@ -112,16 +108,16 @@ export default function LayerPanel() {
 
                     <span
                       style={{
-                        fontFamily: 'Silkscreen',
-                        fontSize: 8,
-                        background: layer.visible ? 'var(--retro-green)' : '#cbd5e1',
-                        color: layer.visible ? '#000' : '#475569',
-                        padding: '1px 5px',
-                        border: '1px solid #000',
-                        borderRadius: 3,
+                        fontSize: 10,
+                        fontWeight: 600,
+                        background: layer.visible ? '#e0f2fe' : '#f1f5f9',
+                        color: layer.visible ? '#0369a1' : '#64748b',
+                        padding: '2px 8px',
+                        borderRadius: 12,
+                        transition: 'all 0.15s ease',
                       }}
                     >
-                      {layer.visible ? 'ON' : 'OFF'}
+                      {layer.visible ? 'Active' : 'Hidden'}
                     </span>
                   </button>
                 ))}

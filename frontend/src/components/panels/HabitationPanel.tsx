@@ -26,7 +26,6 @@ export default function HabitationPanel() {
   if (!hab) return null;
 
   const nearestSite = relocationSites.find((s) => s.id === hab.nearestRelocationSite);
-  const activeCells = Math.round(hab.riskScore * 10);
 
   // Dynamic telemetry values (if live assessment available, else fallback)
   const slopeDeg = activeHazardAssessment?.slope_degrees ?? (hab.location.elevation && hab.location.elevation > 2000 ? 32.5 : 24.2);
@@ -36,35 +35,38 @@ export default function HabitationPanel() {
   const mlConf = activeHazardAssessment?.ml_prediction?.confidence ? `${(activeHazardAssessment.ml_prediction.confidence * 100).toFixed(0)}%` : '92%';
   const provenance = activeHazardAssessment?.provenance || 'LIVE';
 
+  const riskPct = Math.round(hab.riskScore * 100);
+  const barColor =
+    hab.riskScore >= 0.8 ? '#ef4444' : hab.riskScore >= 0.6 ? '#f59e0b' : '#10b981';
+
   return (
     <div className="panel">
       {/* Village Avatar & Meta Section */}
-      <div className="panel__section" style={{ background: '#fdfbf7', paddingBottom: 10 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+      <div className="panel__section" style={{ background: '#f8fafc', padding: '14px 16px', borderBottom: '1px solid #e2e8f0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div
               style={{
-                width: 44,
-                height: 44,
-                background: hab.riskScore >= 0.7 ? 'var(--retro-pink-light)' : 'var(--retro-orange-light)',
-                border: '2px solid #000',
-                boxShadow: '3px 3px 0px #000',
+                width: 42,
+                height: 42,
+                background: hab.riskScore >= 0.7 ? '#fef2f2' : '#fffbeb',
+                border: `1px solid ${hab.riskScore >= 0.7 ? '#fecaca' : '#fde68a'}`,
                 borderRadius: 10,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 22,
+                fontSize: 20,
               }}
             >
               🏔️
             </div>
 
             <div>
-              <div style={{ fontFamily: 'Silkscreen', fontSize: 14, fontWeight: 700, color: '#000' }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>
                 {hab.name}
               </div>
-              <div style={{ fontFamily: 'Space Mono', fontSize: 10, color: '#64748b' }}>
-                {hab.district}, {hab.state} · Elev: {hab.location.elevation || 1800}m
+              <div style={{ fontSize: 11, color: '#64748b' }}>
+                {hab.district}, {hab.state} &bull; Elev: {hab.location.elevation || 1800}m
               </div>
             </div>
           </div>
@@ -72,150 +74,150 @@ export default function HabitationPanel() {
           {/* Truthful Data Provenance Tag */}
           <span
             style={{
-              fontFamily: 'Space Mono',
-              fontSize: 9,
-              padding: '2px 6px',
-              borderRadius: 4,
-              border: '1px solid #16a34a',
-              background: '#dcfce7',
-              color: '#166534',
-              fontWeight: 700,
+              fontSize: 10,
+              padding: '2px 8px',
+              borderRadius: 12,
+              border: '1px solid #bbf7d0',
+              background: '#f0fdf4',
+              color: '#15803d',
+              fontWeight: 600,
             }}
           >
             ● {provenance}
           </span>
         </div>
 
-        {/* Retro 10-Cell Risk Equalizer */}
-        <div style={{ marginTop: 8 }}>
-          <div className="panel__row panel__row--between">
-            <span style={{ fontFamily: 'Silkscreen', fontSize: 10, color: '#000' }}>DYNAMIC HAZARD SCORE</span>
+        {/* Clean Risk Score Meter */}
+        <div style={{ marginTop: 6 }}>
+          <div className="panel__row panel__row--between" style={{ marginBottom: 4 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#475569' }}>DYNAMIC HAZARD SCORE</span>
             <span className={`risk-badge risk-badge--sm ${RISK_CLASS[hab.riskLevel]}`}>
               SCORE {hab.riskScore.toFixed(2)}
             </span>
           </div>
 
-          <div className="retro-eq-grid">
-            {Array.from({ length: 10 }).map((_, i) => {
-              const isLit = i < activeCells;
-              return (
-                <div
-                  key={i}
-                  className={`retro-eq-cell ${
-                    isLit
-                      ? i >= 7
-                        ? 'retro-eq-cell--lit-pink'
-                        : i >= 4
-                        ? 'retro-eq-cell--lit-orange'
-                        : 'retro-eq-cell--lit-purple'
-                      : ''
-                  }`}
-                />
-              );
-            })}
+          <div
+            style={{
+              width: '100%',
+              height: 6,
+              background: '#e2e8f0',
+              borderRadius: 9999,
+              overflow: 'hidden',
+              marginTop: 4,
+            }}
+          >
+            <div
+              style={{
+                width: `${riskPct}%`,
+                height: '100%',
+                background: barColor,
+                borderRadius: 9999,
+                transition: 'width 0.3s ease',
+              }}
+            />
           </div>
         </div>
       </div>
 
       {/* Measurable Telemetry & ML Susceptibility Breakdown */}
-      <div className="panel__section" style={{ background: '#f8fafc' }}>
-        <div className="panel__section-title">
+      <div className="panel__section" style={{ padding: '12px 16px' }}>
+        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
           <Gauge size={14} color="#0284c7" />
-          <span>MEASURABLE HAZARD DRIVERS</span>
+          <span>Measurable Hazard Drivers</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6, marginTop: 4 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6 }}>
           {/* Slope */}
           <div
             style={{
-              padding: '6px 8px',
+              padding: '8px 10px',
               background: '#ffffff',
-              border: '1.5px solid #000',
-              borderRadius: 6,
-              boxShadow: '2px 2px 0px #000',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
             }}
           >
-            <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#64748b' }}>COPERNICUS SLOPE</div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 13, fontWeight: 700, color: slopeDeg >= 30 ? '#dc2626' : '#0f172a' }}>
+            <div style={{ fontSize: 10, fontWeight: 500, color: '#64748b' }}>COPERNICUS SLOPE</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: slopeDeg >= 30 ? '#dc2626' : '#0f172a', marginTop: 2 }}>
               {slopeDeg.toFixed(1)}°
             </div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#94a3b8' }}>GLO-30 Finite Diff</div>
+            <div style={{ fontSize: 9, color: '#94a3b8' }}>GLO-30 Finite Diff</div>
           </div>
 
           {/* 24h Rainfall */}
           <div
             style={{
-              padding: '6px 8px',
+              padding: '8px 10px',
               background: '#ffffff',
-              border: '1.5px solid #000',
-              borderRadius: 6,
-              boxShadow: '2px 2px 0px #000',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
             }}
           >
-            <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#64748b' }}>24H PRECIPITATION</div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 13, fontWeight: 700, color: rain24h >= 30 ? '#dc2626' : '#0284c7' }}>
+            <div style={{ fontSize: 10, fontWeight: 500, color: '#64748b' }}>24H PRECIPITATION</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: rain24h >= 30 ? '#dc2626' : '#0284c7', marginTop: 2 }}>
               {rain24h.toFixed(1)} mm
             </div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#94a3b8' }}>Open-Meteo Live</div>
+            <div style={{ fontSize: 9, color: '#94a3b8' }}>Open-Meteo Live</div>
           </div>
 
           {/* River Proximity */}
           <div
             style={{
-              padding: '6px 8px',
+              padding: '8px 10px',
               background: '#ffffff',
-              border: '1.5px solid #000',
-              borderRadius: 6,
-              boxShadow: '2px 2px 0px #000',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
             }}
           >
-            <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#64748b' }}>RIVER CORRIDOR</div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 13, fontWeight: 700, color: riverDist < 0.5 ? '#dc2626' : '#0f172a' }}>
+            <div style={{ fontSize: 10, fontWeight: 500, color: '#64748b' }}>RIVER CORRIDOR</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: riverDist < 0.5 ? '#dc2626' : '#0f172a', marginTop: 2 }}>
               {riverDist.toFixed(2)} km
             </div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#94a3b8' }}>CWC Gauging Stream</div>
+            <div style={{ fontSize: 9, color: '#94a3b8' }}>CWC Gauging Stream</div>
           </div>
 
           {/* ML Susceptibility */}
           <div
             style={{
-              padding: '6px 8px',
+              padding: '8px 10px',
               background: '#ffffff',
-              border: '1.5px solid #000',
-              borderRadius: 6,
-              boxShadow: '2px 2px 0px #000',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
             }}
           >
-            <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#7c3aed' }}>ML SUSCEPTIBILITY</div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 13, fontWeight: 700, color: '#7c3aed' }}>
+            <div style={{ fontSize: 10, fontWeight: 500, color: '#0284c7' }}>ML SUSCEPTIBILITY</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#0284c7', marginTop: 2 }}>
               {mlScore.toFixed(2)}
             </div>
-            <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#94a3b8' }}>RandomForest ({mlConf})</div>
+            <div style={{ fontSize: 9, color: '#94a3b8' }}>RandomForest ({mlConf})</div>
           </div>
         </div>
       </div>
 
       {/* Population & Household Card */}
-      <div className="panel__section">
+      <div className="panel__section" style={{ padding: '12px 16px' }}>
         <div className="panel__row panel__row--between">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Users size={15} color="var(--retro-purple)" />
+            <Users size={14} color="#0f172a" />
             <span className="panel__label">TOTAL POPULATION:</span>
           </div>
           <span className="panel__value">{hab.population.toLocaleString()}</span>
         </div>
 
         <div className="panel__row panel__row--between" style={{ marginTop: 4 }}>
-          <span className="panel__label" style={{ paddingLeft: 21 }}>HOUSEHOLDS:</span>
+          <span className="panel__label" style={{ paddingLeft: 20 }}>HOUSEHOLDS:</span>
           <span className="panel__value">{hab.households.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Per-Hazard Breakdown */}
-      <div className="panel__section">
-        <div className="panel__section-title">
-          <ShieldAlert size={14} color="var(--retro-orange)" />
-          <span>HAZARD EXPOSURE MATRIX</span>
+      <div className="panel__section" style={{ padding: '12px 16px' }}>
+        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+          <ShieldAlert size={14} color="#ea580c" />
+          <span>Hazard Exposure Matrix</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -226,19 +228,18 @@ export default function HabitationPanel() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '4px 8px',
+                padding: '6px 10px',
                 background: '#ffffff',
-                border: '2px solid #000',
-                boxShadow: '2px 2px 0px #000',
-                borderRadius: 6,
+                border: '1px solid #e2e8f0',
+                borderRadius: 8,
               }}
             >
               <div>
-                <span style={{ fontFamily: 'Silkscreen', fontSize: 10, fontWeight: 700 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>
                   {HAZARD_LABEL[hazard.type]}
                 </span>
                 {hazard.contributors.length > 0 && (
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 9, color: '#64748b' }}>
+                  <div style={{ fontSize: 10, color: '#64748b', marginTop: 1 }}>
                     {hazard.contributors[0]}
                   </div>
                 )}
@@ -252,13 +253,13 @@ export default function HabitationPanel() {
       </div>
 
       {/* Vulnerability Index Bars */}
-      <div className="panel__section">
-        <div className="panel__section-title">
-          <HeartHandshake size={14} color="var(--retro-purple)" />
-          <span>HVI (VULNERABILITY INDEX)</span>
+      <div className="panel__section" style={{ padding: '12px 16px' }}>
+        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+          <HeartHandshake size={14} color="#0284c7" />
+          <span>HVI (Vulnerability Index)</span>
         </div>
 
-        <div style={{ background: '#fdfbf7', padding: '10px 12px', border: '2px solid #000', borderRadius: 8, boxShadow: '2px 2px 0px #000' }}>
+        <div style={{ background: '#f8fafc', padding: '10px 12px', border: '1px solid #e2e8f0', borderRadius: 8 }}>
           <div className="vuln-bar">
             <span className="vuln-bar__label">Exposure</span>
             <div className="vuln-bar__track">
@@ -286,22 +287,22 @@ export default function HabitationPanel() {
       </div>
 
       {/* Recommended Action inside Speech Bubble */}
-      <div className="panel__section">
-        <div className="panel__section-title">
-          <span>💬 DIRECTIVE FOR INCIDENT COMMANDER</span>
+      <div className="panel__section" style={{ padding: '12px 16px' }}>
+        <div className="panel__title" style={{ marginBottom: 6 }}>
+          Directive for Incident Commander
         </div>
 
         <div className="speech-bubble">
-          "{hab.recommendedAction}"
+          &ldquo;{hab.recommendedAction}&rdquo;
         </div>
       </div>
 
       {/* Nearest Safe Haven Corridor Card */}
       {nearestSite && (
-        <div className="panel__section" style={{ background: '#f0fdf4' }}>
-          <div className="panel__section-title" style={{ color: '#15803d' }}>
+        <div className="panel__section" style={{ background: '#f8fafc', padding: '12px 16px' }}>
+          <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#15803d' }}>
             <Compass size={14} color="#15803d" />
-            <span>DESIGNATED RELOCATION HAVEN</span>
+            <span>Designated Relocation Haven</span>
           </div>
 
           <div
@@ -310,30 +311,43 @@ export default function HabitationPanel() {
               alignItems: 'center',
               justifyContent: 'space-between',
               background: '#ffffff',
-              border: '2px solid #000',
-              boxShadow: '3px 3px 0px #000',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               borderRadius: 8,
               padding: '10px 12px',
             }}
           >
             <div>
-              <div style={{ fontFamily: 'Silkscreen', fontSize: 12, fontWeight: 700, color: '#166534' }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#15803d' }}>
                 {nearestSite.name}
               </div>
-              <div style={{ fontFamily: 'Space Mono', fontSize: 10, color: '#4b5563', marginTop: 2 }}>
-                Dist: {nearestSite.distanceFromAffected} km · Cap: {nearestSite.capacity.toLocaleString()} beds
+              <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>
+                Dist: {nearestSite.distanceFromAffected} km &bull; Cap: {nearestSite.capacity.toLocaleString()} beds
               </div>
             </div>
 
             <button
-              className="retro-btn retro-btn--purple"
               onClick={() => {
                 selectSite(nearestSite.id);
                 flyToSite(nearestSite.location.lng, nearestSite.location.lat);
               }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                background: '#0f172a',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: 6,
+                padding: '6px 12px',
+                fontSize: 11,
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
               title="Fly to site"
             >
-              <span>INSPECT</span>
+              <span>Inspect</span>
               <ArrowRight size={12} />
             </button>
           </div>

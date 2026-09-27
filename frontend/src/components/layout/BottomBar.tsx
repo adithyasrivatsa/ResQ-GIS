@@ -1,4 +1,4 @@
-import { Radio, Disc, Droplets, CloudRain } from 'lucide-react';
+import { Activity, Droplets, CloudRain, ShieldAlert } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 
 function timeAgo(isoStr: string): string {
@@ -29,20 +29,20 @@ export default function BottomBar() {
     postgis: { status: 'DEMO', details: 'PostGIS Spatial Engine with GeoJSON Fallback', last_updated: '' },
   };
 
-  const getDotClass = (status: string) => {
+  const getDotColor = (status: string) => {
     switch (status.toUpperCase()) {
       case 'LIVE':
-        return 'dot--green';
+        return '#10b981'; // emerald
       case 'CACHED':
-        return 'dot--blue';
+        return '#0284c7'; // sky
       case 'STATIC':
-        return 'dot--purple';
+        return '#64748b'; // slate
       case 'STALE':
       case 'DOWN':
-        return 'dot--red';
+        return '#ef4444'; // red
       case 'DEMO':
       default:
-        return 'dot--yellow';
+        return '#f59e0b'; // amber
     }
   };
 
@@ -65,89 +65,94 @@ export default function BottomBar() {
 
   return (
     <footer className="bottom-bar">
-      {/* Retro Audio Deck & Equalizer */}
-      <div className="bottom-bar__section" style={{ minWidth: 240 }}>
+      {/* Live System Indicator */}
+      <div className="bottom-bar__section" style={{ minWidth: 200, flexShrink: 0 }}>
         <div
           style={{
-            width: 36,
-            height: 36,
-            background: 'var(--retro-purple)',
-            border: '2px solid #000',
-            boxShadow: '2px 2px 0px #000',
+            width: 28,
+            height: 28,
+            background: '#f0fdf4',
+            border: '1px solid #bbf7d0',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
+            color: '#16a34a',
+            flexShrink: 0,
           }}
-          className="spin"
         >
-          <Disc size={20} />
+          <Activity size={15} />
         </div>
 
         <div>
-          <div className="bottom-bar__section-title">
-            <Radio size={12} color="#ea580c" />
-            <span>TELEMETRY MIXER</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: '#16a34a',
+                boxShadow: '0 0 0 2px rgba(22, 163, 74, 0.2)',
+              }}
+            />
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>Live Telemetry</span>
           </div>
-
-          {/* Equalizer Bar Visualization */}
-          <div style={{ display: 'flex', gap: 3, marginTop: 4, height: 14, alignItems: 'flex-end' }}>
-            {[12, 8, 14, 6, 10, 14, 8, 12].map((h, i) => (
-              <div
-                key={i}
-                style={{
-                  width: 5,
-                  height: h,
-                  background: i % 2 === 0 ? 'var(--retro-purple)' : 'var(--retro-orange)',
-                  border: '1px solid #000',
-                  borderRadius: 1,
-                }}
-              />
-            ))}
-          </div>
+          <div style={{ fontSize: 10, color: '#64748b' }}>Active Spatial Network</div>
         </div>
       </div>
 
-      {/* Live Broadcast Feed Marquee */}
+      {/* Live Dispatch Marquee / Ticker */}
       <div
         style={{
           flex: 1,
           display: 'flex',
           alignItems: 'center',
           gap: 10,
-          background: '#ffffff',
-          border: '2px solid #000000',
-          boxShadow: '3px 3px 0px #000000',
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
           borderRadius: 8,
           padding: '6px 12px',
           overflow: 'hidden',
+          minWidth: 0,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-          <span style={{ fontSize: 10, color: 'var(--retro-pink)' }}>♥</span>
           <span
             style={{
-              fontFamily: 'Silkscreen',
-              fontSize: 9,
-              fontWeight: 700,
-              background: 'var(--retro-orange)',
-              padding: '2px 6px',
-              border: '1px solid #000',
+              fontSize: 10,
+              fontWeight: 600,
+              background: topAlert ? '#fef2f2' : '#f0f9ff',
+              color: topAlert ? '#b91c1c' : '#0369a1',
+              border: `1px solid ${topAlert ? '#fecaca' : '#bae6fd'}`,
+              padding: '2px 7px',
               borderRadius: 4,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
             }}
           >
-            DISPATCH
+            {topAlert ? <ShieldAlert size={11} /> : null}
+            {topAlert ? 'DISPATCH' : 'NORMAL'}
           </span>
         </div>
 
-        <div style={{ fontFamily: 'Space Mono', fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div
+          style={{
+            fontSize: 11,
+            color: '#334155',
+            fontWeight: 500,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            flex: 1,
+          }}
+        >
           {topAlert ? (
             <span>
-              [{topAlert.source}] {topAlert.eventType} — {topAlert.area}: {topAlert.description} ({timeAgo(topAlert.issuedAt)} ago)
+              <strong style={{ color: '#0f172a', fontWeight: 600 }}>[{topAlert.source}]</strong> {topAlert.eventType} &mdash; {topAlert.area}: {topAlert.description} ({timeAgo(topAlert.issuedAt)} ago)
             </span>
           ) : (
-            <span>SECTOR STABLE // {atRiskCount} habitations under active radar surveillance</span>
+            <span>Sector Stable &bull; {atRiskCount} habitations under active radar surveillance</span>
           )}
         </div>
 
@@ -158,16 +163,16 @@ export default function BottomBar() {
               display: 'flex',
               alignItems: 'center',
               gap: 5,
-              background: warningStation.status === 'warning' ? '#fef3c7' : '#e0f2fe',
-              border: '1.5px solid #000',
-              borderRadius: 4,
-              padding: '2px 6px',
+              background: warningStation.status === 'warning' ? '#fffbeb' : '#f0f9ff',
+              border: `1px solid ${warningStation.status === 'warning' ? '#fde68a' : '#bae6fd'}`,
+              borderRadius: 6,
+              padding: '2px 8px',
               flexShrink: 0,
-              fontFamily: 'Space Mono',
-              fontSize: 10,
-              fontWeight: 700,
+              fontSize: 11,
+              fontWeight: 500,
+              color: warningStation.status === 'warning' ? '#b45309' : '#0369a1',
             }}
-            title={`${warningStation.name}: ${warningStation.waterLevel}m (Warn: ${warningStation.warningLevel}m)`}
+            title={`${warningStation.name}: ${warningStation.waterLevel}m (Warning Level: ${warningStation.warningLevel}m)`}
           >
             <Droplets size={12} color="#0284c7" />
             <span>
@@ -183,18 +188,19 @@ export default function BottomBar() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              background: '#f8fafc',
-              border: '1.5px solid #000',
-              borderRadius: 4,
-              padding: '2px 6px',
+              gap: 5,
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: 6,
+              padding: '2px 8px',
               flexShrink: 0,
-              fontFamily: 'Space Mono',
-              fontSize: 10,
+              fontSize: 11,
+              color: '#334155',
+              fontWeight: 500,
             }}
           >
             <CloudRain size={12} color="#0284c7" />
-            <span>{weatherReport.current.temperature}°C Rain {weatherReport.current.rainfall24h}mm</span>
+            <span>{weatherReport.current.temperature}°C &bull; Rain {weatherReport.current.rainfall24h}mm</span>
           </div>
         )}
       </div>
@@ -202,19 +208,20 @@ export default function BottomBar() {
       {/* Provenance Status Badges (LIVE / CACHED / STATIC / DEMO) */}
       <div
         className="system-status"
-        title="Data Source Provenance Hierarchy: ● LIVE (Real-time external API) | ● CACHED (Redis L2 cache) | ● STATIC (High-fidelity verified dataset) | ● DEMO (Evaluation scenario)"
+        title="Data Source Provenance Hierarchy: ● LIVE (Real-time external API) | ● CACHED (Redis L2 cache) | ● STATIC (Verified GIS dataset) | ● DEMO (Evaluation scenario)"
       >
         {PROVIDER_BADGES.map((prov) => {
           const item = sources[prov.key] || { status: 'STATIC', details: prov.label };
           const statusStr = (item.status || 'STATIC').toUpperCase();
+          const dotColor = getDotColor(statusStr);
           return (
             <div
               key={prov.key}
               className="system-status__item"
               title={`${prov.label}: ${item.details || ''} [Provenance: ${statusStr}]`}
             >
-              <span className={getDotClass(statusStr)} />
-              <span>{prov.label}: {statusStr}</span>
+              <span style={{ backgroundColor: dotColor, width: 6, height: 6, borderRadius: '50%' }} />
+              <span>{prov.label}</span>
             </div>
           );
         })}

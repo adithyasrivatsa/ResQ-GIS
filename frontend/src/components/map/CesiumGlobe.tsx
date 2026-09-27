@@ -117,211 +117,225 @@ export default function CesiumGlobe() {
   };
 
   return (
-    <div className="retro-window" style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
-      <div className="retro-titlebar retro-titlebar--orange" style={{ borderBottom: '3px solid #000' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative', background: '#ffffff', borderRadius: 14, overflow: 'hidden' }}>
+      {/* Apple-style Navigation Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '8px 14px',
+          background: '#ffffff',
+          borderBottom: '1px solid #e2e8f0',
+          zIndex: 10,
+        }}
+      >
+        {/* Left: Window identity & Engine badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span>🛰️ RADAR_TERRAIN_3D.EXE</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', letterSpacing: '-0.2px' }}>
+            3D Elevation Globe
+          </span>
           <span
             style={{
-              fontFamily: 'Space Mono',
-              fontSize: 9,
-              fontWeight: 800,
-              background: '#000000',
-              color: '#22c55e',
-              padding: '1px 6px',
-              borderRadius: 3,
+              fontSize: 10,
+              fontWeight: 500,
+              background: '#f1f5f9',
+              color: '#475569',
+              padding: '2px 8px',
+              borderRadius: 6,
+              border: '1px solid #e2e8f0',
             }}
           >
-            CESIUMJS 3D OPERATIONAL ENGINE
+            Cesium 3D Engine
           </span>
         </div>
 
-        {/* Quick Basemap & Camera Controls in Window Titlebar */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        {/* Center / Right: Apple Segmented Mode Switcher, Imagery & Controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {/* Spatial Mode Switcher Tabs */}
-          <div style={{ display: 'flex', background: '#000000', border: '2px solid #000', borderRadius: 5, padding: 2, gap: 2 }}>
+          <div
+            style={{
+              display: 'flex',
+              background: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: 2,
+              gap: 2,
+            }}
+          >
             <button
               onClick={() => setMapMode('2d')}
               style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 9,
-                fontWeight: 700,
-                padding: '2px 8px',
+                fontSize: 11,
+                fontWeight: mapMode === '2d' ? 600 : 500,
+                padding: '4px 12px',
                 border: 'none',
-                background: mapMode === '2d' ? '#38bdf8' : 'transparent',
-                color: mapMode === '2d' ? '#000000' : '#ffffff',
-                borderRadius: 3,
+                background: mapMode === '2d' ? '#ffffff' : 'transparent',
+                color: mapMode === '2d' ? '#0f172a' : '#64748b',
+                boxShadow: mapMode === '2d' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                borderRadius: 6,
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
-              title="Switch to High-Performance 2D Vector Slippy Map"
+              title="Switch to 2D Vector Slippy Map"
             >
-              🗺️ 2D MAP
+              🗺️ 2D Map
             </button>
             <button
               onClick={() => setMapMode('3d')}
               style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 9,
-                fontWeight: 700,
-                padding: '2px 8px',
+                fontSize: 11,
+                fontWeight: mapMode === '3d' ? 600 : 500,
+                padding: '4px 12px',
                 border: 'none',
-                background: mapMode === '3d' ? '#a78bfa' : 'transparent',
-                color: mapMode === '3d' ? '#000000' : '#ffffff',
-                borderRadius: 3,
+                background: mapMode === '3d' ? '#ffffff' : 'transparent',
+                color: mapMode === '3d' ? '#0f172a' : '#64748b',
+                boxShadow: mapMode === '3d' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                borderRadius: 6,
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
-              title="Switch to 3D CesiumJS Elevation Terrain Globe"
+              title="Switch to 3D Cesium Elevation Globe"
             >
-              🌐 3D GLOBE
+              🌐 3D Globe
             </button>
           </div>
 
-          <div style={{ display: 'flex', background: '#ffffff', border: '1.5px solid #000', borderRadius: 4, padding: 1, gap: 2 }}>
-            <button
-              onClick={() => handleImagerySwitch('sentinel2')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeImagery === 'sentinel2' ? '#ea580c' : 'transparent',
-                color: activeImagery === 'sentinel2' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="Sentinel-2 Satellite Imagery"
-            >
-              SAT
-            </button>
-            <button
-              onClick={() => handleImagerySwitch('osm')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeImagery === 'osm' ? '#ea580c' : 'transparent',
-                color: activeImagery === 'osm' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="OpenStreetMap Cartography"
-            >
-              OSM
-            </button>
-            <button
-              onClick={() => handleImagerySwitch('carto-dark')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeImagery === 'carto-dark' ? '#ea580c' : 'transparent',
-                color: activeImagery === 'carto-dark' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="CartoDB Dark Matter GIS"
-            >
-              DARK
-            </button>
-            <button
-              onClick={() => handleImagerySwitch('topo')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeImagery === 'topo' ? '#ea580c' : 'transparent',
-                color: activeImagery === 'topo' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="Topographic Relief & Elevation Contours"
-            >
-              TOPO
-            </button>
+          {/* Quick Imagery Switcher */}
+          <div
+            style={{
+              display: 'flex',
+              background: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: 2,
+              gap: 2,
+            }}
+          >
+            {[
+              { id: 'sentinel2', label: 'Sat' },
+              { id: 'osm', label: 'OSM' },
+              { id: 'carto-dark', label: 'Dark' },
+              { id: 'topo', label: 'Topo' },
+            ].map((img) => (
+              <button
+                key={img.id}
+                onClick={() => handleImagerySwitch(img.id as ImageryType)}
+                style={{
+                  fontSize: 10,
+                  fontWeight: activeImagery === img.id ? 600 : 500,
+                  padding: '3px 8px',
+                  border: 'none',
+                  background: activeImagery === img.id ? '#ffffff' : 'transparent',
+                  color: activeImagery === img.id ? '#0f172a' : '#64748b',
+                  boxShadow: activeImagery === img.id ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                  transition: 'all 0.15s ease',
+                }}
+                title={`Switch to ${img.label} base imagery`}
+              >
+                {img.label}
+              </button>
+            ))}
           </div>
 
+          {/* Terrain Toggle Pill */}
           <button
             onClick={handleTerrainToggle}
             style={{
-              fontFamily: 'Silkscreen',
-              fontSize: 8,
-              padding: '2px 6px',
-              border: '1.5px solid #000',
-              background: terrainActive ? '#22c55e' : '#e2e8f0',
-              color: '#000',
-              borderRadius: 4,
+              fontSize: 10,
+              fontWeight: 600,
+              padding: '4px 9px',
+              border: '1px solid',
+              borderColor: terrainActive ? '#bbf7d0' : '#e2e8f0',
+              background: terrainActive ? '#f0fdf4' : '#ffffff',
+              color: terrainActive ? '#15803d' : '#64748b',
+              borderRadius: 8,
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              transition: 'all 0.15s ease',
             }}
             title="Toggle 3D Elevation Terrain Mesh"
           >
-            {terrainActive ? '⛰️ 3D DEM ON' : '🌐 2D FLAT'}
+            <span>⛰️</span>
+            <span>{terrainActive ? '3D DEM On' : 'Flat 2D'}</span>
           </button>
 
-          <div className="retro-win-controls" style={{ marginLeft: 4 }}>
-            <button
-              className="retro-win-btn"
-              title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
-              onClick={() => flyToUttarakhand()}
-              style={{ background: '#fef08a' }}
-            >
-              ⌖
-            </button>
-            <button className="retro-win-btn">_</button>
-            <button className="retro-win-btn">□</button>
-            <button className="retro-win-btn retro-win-btn--close">✕</button>
-          </div>
+          {/* Recenter Button */}
+          <button
+            onClick={() => flyToUttarakhand()}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 28,
+              height: 28,
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              cursor: 'pointer',
+              fontSize: 14,
+              color: '#334155',
+              transition: 'all 0.15s ease',
+            }}
+            title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
+          >
+            ⌖
+          </button>
         </div>
       </div>
 
       <div ref={containerRef} className="cesium-container" style={{ flex: 1, position: 'relative' }} />
-      <div className="map-scanlines" />
 
       {/* Floating HUD Legend for GIS Layers */}
       <div
         style={{
           position: 'absolute',
-          bottom: 12,
-          left: 12,
-          background: 'rgba(9, 9, 11, 0.90)',
-          border: '2px solid #000000',
-          boxShadow: '3px 3px 0px #000000',
-          borderRadius: 6,
-          padding: '6px 10px',
-          color: '#ffffff',
-          fontFamily: 'Space Mono',
-          fontSize: 9,
+          bottom: 14,
+          left: 14,
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+          borderRadius: 8,
+          padding: '6px 12px',
+          color: '#0f172a',
+          fontSize: 11,
+          fontWeight: 500,
           display: 'flex',
-          gap: 12,
+          gap: 14,
           alignItems: 'center',
           zIndex: 50,
           pointerEvents: 'none',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#dc2626' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#ef4444' }} />
           <span>At-Risk Village</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#3b82f6' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#2563eb' }} />
           <span>Safe Haven</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 12, height: 3, background: '#06b6d4', borderRadius: 1 }} />
-          <span>OSM Road Corridor</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 12, height: 3, background: '#0284c7', borderRadius: 1 }} />
+          <span>Road Corridor</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: 2, background: '#10b981' }} />
           <span>IDRN Infrastructure</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#06b6d4' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#0284c7' }} />
           <span>CWC Gauge</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 10, height: 6, background: 'rgba(234, 88, 12, 0.7)', border: '1px solid #c2410c' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 10, height: 6, background: 'rgba(234, 88, 12, 0.3)', border: '1px solid #ea580c', borderRadius: 1 }} />
           <span>Hazard Polygon</span>
         </div>
       </div>

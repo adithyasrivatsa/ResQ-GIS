@@ -2,13 +2,12 @@ import { useState, useMemo } from 'react';
 import {
   Search,
   Radio,
-  Wifi,
   WifiOff,
   X,
   MapPin,
   Building,
   RefreshCw,
-  Sparkles,
+  AlertCircle,
   ChevronDown,
   Navigation,
   Globe,
@@ -125,22 +124,23 @@ export default function TopBar() {
 
   return (
     <header className="top-bar">
+      {/* Brand Identity */}
       <div className="top-bar__brand">
         <div className="top-bar__logo">
-          <Radio size={18} strokeWidth={2.5} />
+          <Radio size={16} strokeWidth={2.2} />
         </div>
         <div className="top-bar__title">
-          <h1>RESQ-GIS.EXE</h1>
-          <span className="top-bar__subtitle">PROACTIVE RELOCATION ENGINE ★ V2.6</span>
+          <h1>ResQ-GIS</h1>
+          <span className="top-bar__subtitle">Disaster Relocation Intelligence</span>
         </div>
       </div>
 
-      {/* Retro Search with Autocomplete */}
+      {/* Apple-Style Minimal Search Input */}
       <div className="top-bar__search" style={{ position: 'relative' }}>
-        <Search size={14} color="#000" />
+        <Search size={14} color="#64748b" />
         <input
           type="text"
-          placeholder="SEARCH VILLAGE, SAFE SITE, HAZARD..."
+          placeholder="Search villages, safe havens, or hazards..."
           className="top-bar__search-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -152,7 +152,7 @@ export default function TopBar() {
             style={{
               background: 'none',
               border: 'none',
-              color: '#000',
+              color: '#94a3b8',
               cursor: 'pointer',
               display: 'flex',
               padding: 2,
@@ -163,7 +163,7 @@ export default function TopBar() {
           </button>
         )}
 
-        {/* Retro Autocomplete Dropdown */}
+        {/* Clean Autocomplete Dropdown */}
         {isFocused && searchQuery.trim() && hasResults && (
           <div
             style={{
@@ -171,45 +171,62 @@ export default function TopBar() {
               top: '100%',
               left: 0,
               right: 0,
-              marginTop: 6,
+              marginTop: 8,
               background: '#ffffff',
-              border: '3px solid #000000',
-              boxShadow: '4px 4px 0px #000000',
-              borderRadius: '8px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)',
+              borderRadius: '12px',
               zIndex: 1000,
-              maxHeight: 280,
+              maxHeight: 300,
               overflowY: 'auto',
+              padding: '6px',
             }}
           >
             {matchedHabs.map((h) => (
               <div
                 key={h.id}
                 style={{
-                  padding: '8px 12px',
+                  padding: '8px 10px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   cursor: 'pointer',
-                  borderBottom: '2px solid #e2e8f0',
+                  borderRadius: '8px',
                   background: '#ffffff',
+                  transition: 'background 0.15s',
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#f8fafc')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
                 onMouseDown={() => {
                   selectHabitation(h.id);
                   flyToHabitation(h.location.lng, h.location.lat);
                   setSearchQuery('');
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <MapPin size={14} color="#ea580c" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '6px',
+                      background: '#fee2e2',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ef4444',
+                    }}
+                  >
+                    <MapPin size={14} />
+                  </div>
                   <div>
-                    <div style={{ fontFamily: 'Silkscreen', fontSize: 11, color: '#000' }}>{h.name}</div>
-                    <div style={{ fontFamily: 'Space Mono', fontSize: 10, color: '#64748b' }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>{h.name}</div>
+                    <div style={{ fontSize: 11, color: '#64748b' }}>
                       {h.district} · Pop: {h.population.toLocaleString()}
                     </div>
                   </div>
                 </div>
                 <span className={`risk-badge risk-badge--sm ${h.riskScore >= 0.7 ? 'risk--critical' : 'risk--high'}`}>
-                  RISK {h.riskScore.toFixed(2)}
+                  Risk {h.riskScore.toFixed(2)}
                 </span>
               </div>
             ))}
@@ -218,62 +235,81 @@ export default function TopBar() {
               <div
                 key={s.id}
                 style={{
-                  padding: '8px 12px',
+                  padding: '8px 10px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   cursor: 'pointer',
-                  borderBottom: '2px solid #e2e8f0',
-                  background: '#f0fdf4',
+                  borderRadius: '8px',
+                  background: '#ffffff',
+                  transition: 'background 0.15s',
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#f8fafc')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
                 onMouseDown={() => {
                   selectSite(s.id);
                   flyToSite(s.location.lng, s.location.lat);
                   setSearchQuery('');
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Building size={14} color="#2563eb" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '6px',
+                      background: '#eff6ff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#2563eb',
+                    }}
+                  >
+                    <Building size={14} />
+                  </div>
                   <div>
-                    <div style={{ fontFamily: 'Silkscreen', fontSize: 11, color: '#1e40af' }}>{s.name}</div>
-                    <div style={{ fontFamily: 'Space Mono', fontSize: 10, color: '#475569' }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>{s.name}</div>
+                    <div style={{ fontSize: 11, color: '#64748b' }}>
                       Safe Haven · Cap: {s.capacity.toLocaleString()}
                     </div>
                   </div>
                 </div>
-                <span className="risk-badge risk-badge--sm risk--low">SAFE SITE</span>
+                <span className="risk-badge risk-badge--sm risk--low">Safe Site</span>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Retro Status Badges & Controls */}
+      {/* Meta Controls & Scope */}
       <div className="top-bar__meta">
-        {/* Interactive Administrative Hierarchy Scope Selector (Region -> State -> District -> Block) */}
+        {/* Administrative Hierarchy Scope Selector */}
         <div style={{ position: 'relative' }}>
           <button
             className="top-bar__pill"
             style={{
-              background: isScopeOpen ? 'var(--retro-purple)' : '#ffffff',
-              color: isScopeOpen ? '#ffffff' : '#000000',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
+              background: isScopeOpen ? '#f1f5f9' : '#ffffff',
+              color: '#0f172a',
             }}
             onClick={() => setIsScopeOpen(!isScopeOpen)}
-            title="Select Administrative Operational Scope (LGD + Census)"
+            title="Select Administrative Operational Scope"
           >
-            <MapPin size={12} color={isScopeOpen ? '#ffffff' : '#ea580c'} />
-            <span style={{ fontWeight: 800 }}>
-              {selectedDistrict ? `${selectedState.toUpperCase()} / ${selectedDistrict.toUpperCase()}` : selectedState.toUpperCase()}
-              {selectedBlock ? ` / ${selectedBlock.toUpperCase()}` : ''}
+            <MapPin size={13} color="#0284c7" />
+            <span>
+              {selectedDistrict ? `${selectedState} / ${selectedDistrict}` : selectedState}
+              {selectedBlock ? ` / ${selectedBlock}` : ''}
             </span>
-            <ChevronDown size={11} style={{ transform: isScopeOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
+            <ChevronDown
+              size={12}
+              style={{
+                transform: isScopeOpen ? 'rotate(180deg)' : 'none',
+                transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                color: '#94a3b8',
+              }}
+            />
           </button>
 
-          {/* Retro Scope Popover Window */}
+          {/* Clean Scope Popover */}
           {isScopeOpen && (
             <div
               style={{
@@ -283,140 +319,183 @@ export default function TopBar() {
                 marginTop: 8,
                 width: 380,
                 background: '#ffffff',
-                border: '3px solid #000000',
-                boxShadow: '4px 4px 0px #000000',
-                borderRadius: 8,
-                padding: 12,
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)',
+                borderRadius: 14,
+                padding: 16,
                 zIndex: 1000,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: 6, marginBottom: 10 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Globe size={14} color="var(--retro-purple)" />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  borderBottom: '1px solid #f1f5f9',
+                  paddingBottom: 10,
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div
+                    style={{
+                      width: 26,
+                      height: 26,
+                      borderRadius: 6,
+                      background: '#f0f9ff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#0284c7',
+                    }}
+                  >
+                    <Globe size={14} />
+                  </div>
                   <div>
-                    <div style={{ fontFamily: 'Silkscreen', fontSize: 10, fontWeight: 700 }}>
-                      ADMINISTRATIVE JURISDICTION
+                    <div style={{ fontSize: 12, fontWeight: 700, color: '#0f172a' }}>
+                      Administrative Jurisdiction
                     </div>
-                    <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#64748b' }}>
-                      LGD DIRECTORY + CENSUS OF INDIA
+                    <div style={{ fontSize: 10, color: '#64748b' }}>
+                      Official LGD Directory & Census
                     </div>
                   </div>
                 </div>
                 <button
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 4,
+                    color: '#94a3b8',
+                    borderRadius: 4,
+                  }}
                   onClick={() => setIsScopeOpen(false)}
                 >
                   <X size={14} />
                 </button>
               </div>
 
-              {/* State & Expansion Region Switcher */}
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#475569', marginBottom: 4 }}>
-                  STATE / PROVINCE:
+              {/* State Switcher */}
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.4 }}>
+                  State / Province
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                  {AVAILABLE_STATES.map((st) => (
-                    <button
-                      key={st.name}
-                      onClick={() => handleStateChange(st.name, st.region)}
-                      style={{
-                        fontFamily: 'Space Mono',
-                        fontSize: 9,
-                        fontWeight: 700,
-                        padding: '3px 8px',
-                        border: '1.5px solid #000',
-                        borderRadius: 4,
-                        background: selectedState.toLowerCase() === st.name.toLowerCase() ? 'var(--retro-orange)' : '#f1f5f9',
-                        color: selectedState.toLowerCase() === st.name.toLowerCase() ? '#ffffff' : '#000000',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {st.name}
-                    </button>
-                  ))}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                  {AVAILABLE_STATES.map((st) => {
+                    const isSel = selectedState.toLowerCase() === st.name.toLowerCase();
+                    return (
+                      <button
+                        key={st.name}
+                        onClick={() => handleStateChange(st.name, st.region)}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 500,
+                          padding: '4px 10px',
+                          border: `1px solid ${isSel ? '#0f172a' : '#e2e8f0'}`,
+                          borderRadius: 6,
+                          background: isSel ? '#0f172a' : '#ffffff',
+                          color: isSel ? '#ffffff' : '#334155',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        {st.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* District Switcher */}
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#475569', marginBottom: 4 }}>
-                  DISTRICT:
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.4 }}>
+                  District
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                  {currentDistricts.map((dist) => (
-                    <button
-                      key={dist}
-                      onClick={() => handleDistrictChange(dist)}
-                      style={{
-                        fontFamily: 'Space Mono',
-                        fontSize: 9,
-                        fontWeight: 700,
-                        padding: '3px 8px',
-                        border: '1.5px solid #000',
-                        borderRadius: 4,
-                        background: selectedDistrict.toLowerCase() === dist.toLowerCase() ? 'var(--retro-purple)' : '#f8fafc',
-                        color: selectedDistrict.toLowerCase() === dist.toLowerCase() ? '#ffffff' : '#000000',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {dist}
-                    </button>
-                  ))}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                  {currentDistricts.map((dist) => {
+                    const isSel = selectedDistrict.toLowerCase() === dist.toLowerCase();
+                    return (
+                      <button
+                        key={dist}
+                        onClick={() => handleDistrictChange(dist)}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 500,
+                          padding: '4px 10px',
+                          border: `1px solid ${isSel ? '#0284c7' : '#e2e8f0'}`,
+                          borderRadius: 6,
+                          background: isSel ? '#0284c7' : '#ffffff',
+                          color: isSel ? '#ffffff' : '#334155',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        {dist}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Block Switcher */}
               {currentBlocks.length > 0 && (
-                <div style={{ marginBottom: 12 }}>
-                  <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#475569', marginBottom: 4 }}>
-                    TEHSIL / BLOCK:
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: '#64748b', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.4 }}>
+                    Tehsil / Block
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     <button
                       onClick={() => setSelectedBlock(null)}
                       style={{
-                        fontFamily: 'Space Mono',
-                        fontSize: 9,
-                        fontWeight: 700,
-                        padding: '2px 6px',
-                        border: '1px solid #000',
-                        borderRadius: 4,
-                        background: selectedBlock === null ? '#10b981' : '#f1f5f9',
-                        color: selectedBlock === null ? '#ffffff' : '#000000',
+                        fontSize: 11,
+                        fontWeight: 500,
+                        padding: '3px 8px',
+                        border: `1px solid ${selectedBlock === null ? '#10b981' : '#e2e8f0'}`,
+                        borderRadius: 6,
+                        background: selectedBlock === null ? '#10b981' : '#ffffff',
+                        color: selectedBlock === null ? '#ffffff' : '#334155',
                         cursor: 'pointer',
                       }}
                     >
-                      ALL BLOCKS
+                      All Blocks
                     </button>
-                    {currentBlocks.map((blk) => (
-                      <button
-                        key={blk}
-                        onClick={() => setSelectedBlock(blk)}
-                        style={{
-                          fontFamily: 'Space Mono',
-                          fontSize: 9,
-                          fontWeight: 700,
-                          padding: '2px 6px',
-                          border: '1px solid #000',
-                          borderRadius: 4,
-                          background: selectedBlock?.toLowerCase() === blk.toLowerCase() ? '#10b981' : '#f8fafc',
-                          color: selectedBlock?.toLowerCase() === blk.toLowerCase() ? '#ffffff' : '#000000',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {blk}
-                      </button>
-                    ))}
+                    {currentBlocks.map((blk) => {
+                      const isSel = selectedBlock?.toLowerCase() === blk.toLowerCase();
+                      return (
+                        <button
+                          key={blk}
+                          onClick={() => setSelectedBlock(blk)}
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 500,
+                            padding: '3px 8px',
+                            border: `1px solid ${isSel ? '#10b981' : '#e2e8f0'}`,
+                            borderRadius: 6,
+                            background: isSel ? '#10b981' : '#ffffff',
+                            color: isSel ? '#ffffff' : '#334155',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {blk}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {/* Action Bar */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px dashed #cbd5e1', paddingTop: 8 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  borderTop: '1px solid #f1f5f9',
+                  paddingTop: 10,
+                }}
+              >
                 <button
                   className="retro-btn"
-                  style={{ fontSize: 9, padding: '3px 8px' }}
+                  style={{ fontSize: 11, padding: '4px 10px' }}
                   onClick={() => {
                     handleStateChange('Uttarakhand', 'Western Himalayas');
                     handleDistrictChange('Chamoli');
@@ -425,57 +504,67 @@ export default function TopBar() {
                     setIsScopeOpen(false);
                   }}
                 >
-                  DEFAULT (CHAMOLI)
+                  Reset (Chamoli)
                 </button>
 
                 <button
                   className="retro-btn retro-btn--orange"
-                  style={{ fontSize: 9, padding: '3px 10px' }}
+                  style={{ fontSize: 11, padding: '4px 12px' }}
                   onClick={() => {
                     if (selectedDistrict) flyToDistrict(selectedDistrict);
                     else flyToState(selectedState);
                     setIsScopeOpen(false);
                   }}
                 >
-                  <Navigation size={10} />
-                  <span>CENTER RADAR</span>
+                  <Navigation size={11} />
+                  <span>Center View</span>
                 </button>
               </div>
             </div>
           )}
         </div>
 
-        <div className="top-bar__pill top-bar__pill--warning">
-          <Sparkles size={12} />
-          <span>{activeAlerts} ACTIVE WARNINGS</span>
+        {/* Warnings Counter */}
+        <div
+          className="top-bar__pill"
+          style={{
+            background: activeAlerts > 0 ? '#fef2f2' : '#f8fafc',
+            borderColor: activeAlerts > 0 ? '#fecaca' : '#e2e8f0',
+            color: activeAlerts > 0 ? '#b91c1c' : '#64748b',
+          }}
+        >
+          <AlertCircle size={13} color={activeAlerts > 0 ? '#ef4444' : '#64748b'} />
+          <span>{activeAlerts} {activeAlerts === 1 ? 'Alert' : 'Alerts'}</span>
         </div>
 
-        {/* Backend Connectivity Status Button */}
+        {/* Backend Live Connectivity Status */}
         <button
-          className="top-bar__pill top-bar__pill--status"
+          className="top-bar__pill"
           style={{
-            background: backendConnected ? (isDemoMode ? '#d97706' : '#10b981') : '#7952f5',
-            color: '#fff',
+            background: backendConnected ? (isDemoMode ? '#fffbeb' : '#f0fdf4') : '#f8fafc',
+            borderColor: backendConnected ? (isDemoMode ? '#fde68a' : '#bbf7d0') : '#e2e8f0',
+            color: backendConnected ? (isDemoMode ? '#b45309' : '#15803d') : '#64748b',
           }}
           onClick={() => loadData()}
-          title="Click to sync live feeds"
+          title="Click to refresh feeds"
         >
           {isSyncing ? (
-            <RefreshCw size={12} className="spin" />
+            <RefreshCw size={12} className="spin" color="#64748b" />
           ) : backendConnected ? (
-            <Wifi size={12} />
+            <span
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: isDemoMode ? '#f59e0b' : '#10b981',
+                boxShadow: isDemoMode ? '0 0 6px rgba(245,158,11,0.5)' : '0 0 6px rgba(16,185,129,0.5)',
+              }}
+            />
           ) : (
-            <WifiOff size={12} />
+            <WifiOff size={12} color="#94a3b8" />
           )}
-          <span>{backendConnected ? (isDemoMode ? 'LIVE API (DEMO MODE)' : 'LIVE OPERATIONAL') : 'DEMO MODE'}</span>
+          <span>{backendConnected ? (isDemoMode ? 'Evaluation Mode' : 'Live Feeds Active') : 'Offline Mode'}</span>
         </button>
-
-        {/* Retro Window Control Buttons */}
-        <div className="retro-win-controls" style={{ marginLeft: 6 }}>
-          <button className="retro-win-btn" title="Minimize">_</button>
-          <button className="retro-win-btn" title="Maximize">□</button>
-          <button className="retro-win-btn retro-win-btn--close" title="Close">✕</button>
-        </div>
       </div>
     </header>
   );

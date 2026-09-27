@@ -260,10 +260,10 @@ export default function Map2D() {
             },
           });
           alertLayer.bindPopup(`
-            <div style="font-family:'Space Mono',monospace;font-size:11px;padding:4px;">
-              <div style="font-family:'Silkscreen';font-weight:700;color:${color}">⚠️ ${alert.eventType}</div>
+            <div style="font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;font-size:11px;padding:4px;">
+              <div style="font-weight:700;color:${color}">⚠️ ${alert.eventType}</div>
               <div style="font-size:10px;color:#475569;margin-top:2px;">${alert.area} (${alert.source})</div>
-              <div style="margin-top:4px;font-size:10px;">${alert.description}</div>
+              <div style="margin-top:4px;font-size:10px;line-height:1.4;">${alert.description}</div>
             </div>
           `);
           group.addLayer(alertLayer);
@@ -284,25 +284,24 @@ export default function Map2D() {
           className: 'retro-marker-station',
           html: `
             <div style="
-              width: ${isSelected ? '26px' : '20px'};
-              height: ${isSelected ? '26px' : '20px'};
+              width: ${isSelected ? '24px' : '18px'};
+              height: ${isSelected ? '24px' : '18px'};
               background: ${statusColor};
-              border: 2px solid #000;
-              box-shadow: ${isSelected ? '0 0 10px #06b6d4, 2px 2px 0px #000' : '2px 2px 0px #000'};
+              border: 1.5px solid #ffffff;
+              box-shadow: ${isSelected ? '0 0 0 2px #0284c7, 0 2px 4px rgba(0,0,0,0.15)' : '0 1px 3px rgba(0,0,0,0.2)'};
               border-radius: 50%;
               display: flex;
               align-items: center;
               justify-content: center;
               color: #fff;
-              font-family: 'Silkscreen';
               font-size: 8px;
               cursor: pointer;
             ">
               💧
             </div>
           `,
-          iconSize: [isSelected ? 26 : 20, isSelected ? 26 : 20],
-          iconAnchor: [isSelected ? 13 : 10, isSelected ? 13 : 10],
+          iconSize: [isSelected ? 24 : 18, isSelected ? 24 : 18],
+          iconAnchor: [isSelected ? 12 : 9, isSelected ? 12 : 9],
         });
 
         const marker = L.marker([river.location.lat, river.location.lng], { icon });
@@ -357,27 +356,26 @@ export default function Map2D() {
           className: 'retro-marker-site',
           html: `
             <div style="
-              min-width: ${isSelected ? '32px' : '26px'};
-              height: ${isSelected ? '32px' : '26px'};
+              min-width: ${isSelected ? '28px' : '24px'};
+              height: ${isSelected ? '28px' : '24px'};
               background: #2563eb;
-              border: 2.5px solid #000000;
-              box-shadow: ${isSelected ? '0 0 12px #38bdf8, 3px 3px 0px #000000' : '2px 2px 0px #000000'};
+              border: 1.5px solid #ffffff;
+              box-shadow: ${isSelected ? '0 0 0 2px #2563eb, 0 4px 6px rgba(0,0,0,0.15)' : '0 2px 4px rgba(0,0,0,0.12)'};
               border-radius: 6px;
               display: flex;
               align-items: center;
               justify-content: center;
               color: #ffffff;
-              font-family: 'Silkscreen';
               font-size: ${isSelected ? '12px' : '10px'};
               cursor: pointer;
-              transform: ${isSelected ? 'scale(1.15)' : 'none'};
-              transition: transform 0.15s;
+              transform: ${isSelected ? 'scale(1.1)' : 'none'};
+              transition: all 0.15s ease;
             ">
               🏰
             </div>
           `,
-          iconSize: [isSelected ? 32 : 26, isSelected ? 32 : 26],
-          iconAnchor: [isSelected ? 16 : 13, isSelected ? 16 : 13],
+          iconSize: [isSelected ? 28 : 24, isSelected ? 28 : 24],
+          iconAnchor: [isSelected ? 14 : 12, isSelected ? 14 : 12],
         });
 
         const marker = L.marker([site.location.lat, site.location.lng], { icon, zIndexOffset: 200 });
@@ -407,28 +405,28 @@ export default function Map2D() {
           className: 'retro-marker-hab',
           html: `
             <div style="
-              width: ${isSelected ? '30px' : '22px'};
-              height: ${isSelected ? '30px' : '22px'};
+              width: ${isSelected ? '28px' : '20px'};
+              height: ${isSelected ? '28px' : '20px'};
               background: ${riskColor};
-              border: 2px solid #000000;
-              box-shadow: ${isSelected ? '0 0 12px #ff2a85, 3px 3px 0px #000000' : '2px 2px 0px #000000'};
+              border: 1.5px solid #ffffff;
+              box-shadow: ${isSelected ? `0 0 0 2px ${riskColor}, 0 4px 8px rgba(0,0,0,0.2)` : '0 2px 4px rgba(0,0,0,0.15)'};
               border-radius: 50%;
               display: flex;
               align-items: center;
               justify-content: center;
               color: #ffffff;
-              font-family: 'Space Mono';
-              font-weight: 800;
+              font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+              font-weight: 700;
               font-size: ${isSelected ? '10px' : '8px'};
               cursor: pointer;
-              transform: ${isSelected ? 'scale(1.2)' : 'none'};
-              transition: transform 0.15s;
+              transform: ${isSelected ? 'scale(1.15)' : 'none'};
+              transition: all 0.15s ease;
             ">
               ${(hab.riskScore * 100).toFixed(0)}
             </div>
           `,
-          iconSize: [isSelected ? 30 : 22, isSelected ? 30 : 22],
-          iconAnchor: [isSelected ? 15 : 11, isSelected ? 15 : 11],
+          iconSize: [isSelected ? 28 : 20, isSelected ? 28 : 20],
+          iconAnchor: [isSelected ? 14 : 10, isSelected ? 14 : 10],
         });
 
         const marker = L.marker([hab.location.lat, hab.location.lng], { icon, zIndexOffset: isSelected ? 500 : 300 });
@@ -503,200 +501,198 @@ export default function Map2D() {
       mapRef.current.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM, { duration: 1.2 });
     }
   };
-
   return (
-    <div className="retro-window" style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
-      {/* Titlebar with prominent 2D Map / 3D Globe Tabs */}
-      <div className="retro-titlebar retro-titlebar--orange" style={{ borderBottom: '3px solid #000' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative', background: '#ffffff', borderRadius: 14, overflow: 'hidden' }}>
+      {/* Apple-style Navigation Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '8px 14px',
+          background: '#ffffff',
+          borderBottom: '1px solid #e2e8f0',
+          zIndex: 10,
+        }}
+      >
+        {/* Left: Window identity & Engine badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span>🗺️ RADAR_TACTICAL_2D.EXE</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', letterSpacing: '-0.2px' }}>
+            2D Tactical Map
+          </span>
           <span
             style={{
-              fontFamily: 'Space Mono',
-              fontSize: 9,
-              fontWeight: 800,
-              background: '#000000',
-              color: '#38bdf8',
-              padding: '1px 6px',
-              borderRadius: 3,
+              fontSize: 10,
+              fontWeight: 500,
+              background: '#f1f5f9',
+              color: '#475569',
+              padding: '2px 8px',
+              borderRadius: 6,
+              border: '1px solid #e2e8f0',
             }}
           >
-            LEAFLET 2D VECTOR ENGINE
+            Leaflet Vector
           </span>
         </div>
 
-        {/* View Mode Switcher Tabs + Basemap & Camera Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        {/* Center / Right: Apple Segmented Mode Switcher & Controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {/* Spatial Mode Switcher Tabs */}
-          <div style={{ display: 'flex', background: '#000000', border: '2px solid #000', borderRadius: 5, padding: 2, gap: 2 }}>
+          <div
+            style={{
+              display: 'flex',
+              background: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: 2,
+              gap: 2,
+            }}
+          >
             <button
               onClick={() => setMapMode('2d')}
               style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 9,
-                fontWeight: 700,
-                padding: '2px 8px',
+                fontSize: 11,
+                fontWeight: mapMode === '2d' ? 600 : 500,
+                padding: '4px 12px',
                 border: 'none',
-                background: mapMode === '2d' ? '#38bdf8' : 'transparent',
-                color: mapMode === '2d' ? '#000000' : '#ffffff',
-                borderRadius: 3,
+                background: mapMode === '2d' ? '#ffffff' : 'transparent',
+                color: mapMode === '2d' ? '#0f172a' : '#64748b',
+                boxShadow: mapMode === '2d' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                borderRadius: 6,
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
-              title="Switch to High-Performance 2D Vector Slippy Map"
+              title="Switch to 2D Vector Slippy Map"
             >
-              🗺️ 2D MAP
+              🗺️ 2D Map
             </button>
             <button
               onClick={() => setMapMode('3d')}
               style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 9,
-                fontWeight: 700,
-                padding: '2px 8px',
+                fontSize: 11,
+                fontWeight: mapMode === '3d' ? 600 : 500,
+                padding: '4px 12px',
                 border: 'none',
-                background: mapMode === '3d' ? '#a78bfa' : 'transparent',
-                color: mapMode === '3d' ? '#000000' : '#ffffff',
-                borderRadius: 3,
+                background: mapMode === '3d' ? '#ffffff' : 'transparent',
+                color: mapMode === '3d' ? '#0f172a' : '#64748b',
+                boxShadow: mapMode === '3d' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                borderRadius: 6,
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
-              title="Switch to 3D CesiumJS Elevation Terrain Globe"
+              title="Switch to 3D Cesium Elevation Globe"
             >
-              🌐 3D GLOBE
+              🌐 3D Globe
             </button>
           </div>
 
           {/* Quick Basemap Switcher */}
-          <div style={{ display: 'flex', background: '#ffffff', border: '1.5px solid #000', borderRadius: 4, padding: 1, gap: 2 }}>
-            <button
-              onClick={() => switchBasemap('satellite')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeBasemap === 'satellite' ? '#ea580c' : 'transparent',
-                color: activeBasemap === 'satellite' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="High-Resolution Satellite Imagery"
-            >
-              SAT
-            </button>
-            <button
-              onClick={() => switchBasemap('osm')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeBasemap === 'osm' ? '#ea580c' : 'transparent',
-                color: activeBasemap === 'osm' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="OpenStreetMap Standard Vector Base"
-            >
-              OSM
-            </button>
-            <button
-              onClick={() => switchBasemap('dark')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeBasemap === 'dark' ? '#ea580c' : 'transparent',
-                color: activeBasemap === 'dark' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="CartoDB Dark Matter GIS"
-            >
-              DARK
-            </button>
-            <button
-              onClick={() => switchBasemap('topo')}
-              style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                padding: '1px 5px',
-                border: 'none',
-                background: activeBasemap === 'topo' ? '#ea580c' : 'transparent',
-                color: activeBasemap === 'topo' ? '#fff' : '#000',
-                borderRadius: 2,
-                cursor: 'pointer',
-              }}
-              title="Topographic Relief & Elevation Contours"
-            >
-              TOPO
-            </button>
+          <div
+            style={{
+              display: 'flex',
+              background: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: 2,
+              gap: 2,
+            }}
+          >
+            {(['satellite', 'osm', 'dark', 'topo'] as BasemapType[]).map((type) => (
+              <button
+                key={type}
+                onClick={() => switchBasemap(type)}
+                style={{
+                  fontSize: 10,
+                  fontWeight: activeBasemap === type ? 600 : 500,
+                  padding: '3px 8px',
+                  border: 'none',
+                  background: activeBasemap === type ? '#ffffff' : 'transparent',
+                  color: activeBasemap === type ? '#0f172a' : '#64748b',
+                  boxShadow: activeBasemap === type ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                  transition: 'all 0.15s ease',
+                }}
+                title={`Switch to ${type} basemap`}
+              >
+                {type === 'satellite' ? 'Sat' : type}
+              </button>
+            ))}
           </div>
 
-          {/* Recenter & Window Buttons */}
-          <div className="retro-win-controls" style={{ marginLeft: 4 }}>
-            <button
-              className="retro-win-btn"
-              title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
-              onClick={recenterMap}
-              style={{ background: '#fef08a' }}
-            >
-              ⌖
-            </button>
-            <button className="retro-win-btn">_</button>
-            <button className="retro-win-btn">□</button>
-            <button className="retro-win-btn retro-win-btn--close">✕</button>
-          </div>
+          {/* Recenter Button */}
+          <button
+            onClick={recenterMap}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 28,
+              height: 28,
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              cursor: 'pointer',
+              fontSize: 14,
+              color: '#334155',
+              transition: 'all 0.15s ease',
+            }}
+            title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
+          >
+            ⌖
+          </button>
         </div>
       </div>
 
       {/* Leaflet Map Div */}
       <div ref={containerRef} style={{ flex: 1, width: '100%', height: '100%', position: 'relative', zIndex: 1 }} />
-      <div className="map-scanlines" />
 
       {/* Floating HUD Legend for GIS Layers */}
       <div
         style={{
           position: 'absolute',
-          bottom: 12,
-          left: 12,
-          background: 'rgba(9, 9, 11, 0.90)',
-          border: '2px solid #000000',
-          boxShadow: '3px 3px 0px #000000',
-          borderRadius: 6,
-          padding: '6px 10px',
-          color: '#ffffff',
-          fontFamily: 'Space Mono',
-          fontSize: 9,
+          bottom: 14,
+          left: 14,
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+          borderRadius: 8,
+          padding: '6px 12px',
+          color: '#0f172a',
+          fontSize: 11,
+          fontWeight: 500,
           display: 'flex',
-          gap: 12,
+          gap: 14,
           alignItems: 'center',
           zIndex: 500,
           pointerEvents: 'none',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#dc2626' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#ef4444' }} />
           <span>At-Risk Village</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#2563eb' }} />
           <span>Safe Haven</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 12, height: 3, background: '#06b6d4', borderRadius: 1 }} />
-          <span>OSM Road Corridor</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 12, height: 3, background: '#0284c7', borderRadius: 1 }} />
+          <span>Road Corridor</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: 2, background: '#10b981' }} />
           <span>IDRN Infrastructure</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#0284c7' }} />
           <span>CWC Gauge</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ display: 'inline-block', width: 10, height: 6, background: 'rgba(234, 88, 12, 0.7)', border: '1px solid #c2410c' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ display: 'inline-block', width: 10, height: 6, background: 'rgba(234, 88, 12, 0.3)', border: '1px solid #ea580c', borderRadius: 1 }} />
           <span>Hazard Polygon</span>
         </div>
       </div>

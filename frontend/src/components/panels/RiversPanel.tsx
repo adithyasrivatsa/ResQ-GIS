@@ -18,28 +18,42 @@ export default function RiversPanel() {
   return (
     <div className="panel">
       {/* Title Section */}
-      <div className="panel__section" style={{ background: '#ecfeff', paddingBottom: 10 }}>
+      <div className="panel__section" style={{ background: '#f8fafc', padding: '14px 16px', borderBottom: '1px solid #e2e8f0' }}>
         <div className="panel__row panel__row--between">
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Droplets size={18} color="#0891b2" />
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                background: '#f0f9ff',
+                border: '1px solid #bae6fd',
+                borderRadius: 8,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#0284c7',
+              }}
+            >
+              <Droplets size={16} />
+            </div>
             <div>
-              <div style={{ fontFamily: 'Silkscreen', fontSize: 13, fontWeight: 700, color: '#0e7490' }}>
-                HYDROLOGICAL GAUGES
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+                Hydrological Gauges
               </div>
-              <div style={{ fontFamily: 'Space Mono', fontSize: 9, color: '#155e75' }}>
-                CWC ALAKNANDA & MANDAKINI TELEMETRY
+              <div style={{ fontSize: 11, color: '#64748b' }}>
+                CWC Alaknanda & Mandakini Telemetry
               </div>
             </div>
           </div>
           <span
             style={{
-              fontFamily: 'Silkscreen',
-              fontSize: 9,
-              background: cwcProvenance === 'LIVE' ? '#22c55e' : '#f59e0b',
-              color: '#000',
-              padding: '2px 7px',
-              border: '1.5px solid #000',
-              borderRadius: 4,
+              fontSize: 10,
+              fontWeight: 600,
+              background: cwcProvenance === 'LIVE' ? '#f0fdf4' : '#fffbeb',
+              color: cwcProvenance === 'LIVE' ? '#15803d' : '#b45309',
+              padding: '2px 8px',
+              border: `1px solid ${cwcProvenance === 'LIVE' ? '#bbf7d0' : '#fde68a'}`,
+              borderRadius: 12,
             }}
           >
             ● {cwcProvenance}
@@ -54,8 +68,9 @@ export default function RiversPanel() {
           const isDanger = station.status === 'danger' || (station.waterLevel && station.dangerLevel && station.waterLevel >= station.dangerLevel);
           const isWarning = station.status === 'warning' || (station.waterLevel && station.warningLevel && station.waterLevel >= station.warningLevel);
 
-          const cardBg = isDanger ? '#fef2f2' : isWarning ? '#fffbeb' : '#ffffff';
-          const badgeBg = isDanger ? '#ef4444' : isWarning ? '#f59e0b' : '#10b981';
+          const badgeBg = isDanger ? '#fef2f2' : isWarning ? '#fffbeb' : '#f0fdf4';
+          const badgeColor = isDanger ? '#b91c1c' : isWarning ? '#b45309' : '#15803d';
+          const badgeBorder = isDanger ? '#fecaca' : isWarning ? '#fde68a' : '#bbf7d0';
           const badgeText = isDanger ? 'DANGER' : isWarning ? 'WARNING' : 'NORMAL';
 
           return (
@@ -66,36 +81,37 @@ export default function RiversPanel() {
                 flyToSite(station.longitude, station.latitude);
               }}
               style={{
-                background: isSelected ? '#e0f2fe' : cardBg,
-                border: isSelected ? '3px solid #0284c7' : '2px solid #000000',
-                boxShadow: isSelected ? '4px 4px 0px #0284c7' : '3px 3px 0px #000000',
-                borderRadius: 8,
-                padding: '10px 12px',
+                background: isSelected ? '#f0f9ff' : '#ffffff',
+                border: `1px solid ${isSelected ? '#0284c7' : '#e2e8f0'}`,
+                boxShadow: isSelected ? '0 0 0 1px #0284c7, 0 2px 4px rgba(0,0,0,0.04)' : '0 1px 3px rgba(0,0,0,0.04)',
+                borderRadius: 10,
+                padding: '12px',
                 cursor: 'pointer',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 6,
+                gap: 8,
+                transition: 'all 0.15s ease',
               }}
             >
-              <div className="panel__row panel__row--between">
+              <div className="panel__row panel__row--between" style={{ marginBottom: 0 }}>
                 <div>
-                  <div style={{ fontFamily: 'Silkscreen', fontSize: 11, fontWeight: 700, color: '#000' }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>
                     {station.name}
                   </div>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 9, color: '#64748b' }}>
-                    {station.river} · {station.district}
+                  <div style={{ fontSize: 11, color: '#64748b' }}>
+                    {station.river} &bull; {station.district}
                   </div>
                 </div>
 
                 <span
                   style={{
-                    fontFamily: 'Silkscreen',
-                    fontSize: 8,
+                    fontSize: 9,
+                    fontWeight: 600,
                     background: badgeBg,
-                    color: isDanger ? '#fff' : '#000',
-                    padding: '2px 6px',
-                    border: '1px solid #000',
-                    borderRadius: 3,
+                    color: badgeColor,
+                    border: `1px solid ${badgeBorder}`,
+                    padding: '2px 7px',
+                    borderRadius: 6,
                   }}
                 >
                   {badgeText}
@@ -103,24 +119,24 @@ export default function RiversPanel() {
               </div>
 
               {/* Water Level Readings */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6, marginTop: 4 }}>
-                <div style={{ background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: 4, padding: '4px 6px', textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#64748b' }}>CURRENT</div>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 11, fontWeight: 800, color: '#0369a1' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6, marginTop: 2 }}>
+                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '6px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 9, fontWeight: 500, color: '#64748b' }}>CURRENT</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#0284c7', marginTop: 2 }}>
                     {station.waterLevel ? `${station.waterLevel.toFixed(1)}m` : 'N/A'}
                   </div>
                 </div>
 
-                <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 4, padding: '4px 6px', textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#92400e' }}>WARNING</div>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 11, fontWeight: 700, color: '#b45309' }}>
+                <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 6, padding: '6px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 9, fontWeight: 500, color: '#92400e' }}>WARNING</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#b45309', marginTop: 2 }}>
                     {station.warningLevel ? `${station.warningLevel.toFixed(1)}m` : 'N/A'}
                   </div>
                 </div>
 
-                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 4, padding: '4px 6px', textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 8, color: '#991b1b' }}>DANGER</div>
-                  <div style={{ fontFamily: 'Space Mono', fontSize: 11, fontWeight: 700, color: '#dc2626' }}>
+                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, padding: '6px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 9, fontWeight: 500, color: '#991b1b' }}>DANGER</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#dc2626', marginTop: 2 }}>
                     {station.dangerLevel ? `${station.dangerLevel.toFixed(1)}m` : 'N/A'}
                   </div>
                 </div>
@@ -128,7 +144,7 @@ export default function RiversPanel() {
 
               {/* Discharge & Level Bar */}
               {station.flowDischargeCumecs && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'Space Mono', fontSize: 9, color: '#475569' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#64748b' }}>
                   <span>Discharge: {station.flowDischargeCumecs} cumecs</span>
                   <span>Elevation: {station.elevation}m</span>
                 </div>
@@ -140,30 +156,30 @@ export default function RiversPanel() {
         {/* IMD Meteorological Observation Deck */}
         <div
           style={{
-            marginTop: 10,
+            marginTop: 8,
             background: '#ffffff',
-            border: '2px solid #000000',
-            boxShadow: '3px 3px 0px #000000',
-            borderRadius: 8,
-            padding: '10px 12px',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+            borderRadius: 10,
+            padding: '12px',
           }}
         >
-          <div className="panel__row panel__row--between" style={{ marginBottom: 8 }}>
+          <div className="panel__row panel__row--between" style={{ marginBottom: 10 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <CloudRain size={16} color="#0284c7" />
-              <span style={{ fontFamily: 'Silkscreen', fontSize: 11, fontWeight: 700, color: '#000' }}>
-                IMD MET TELEMETRY
+              <span style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>
+                IMD Met Telemetry
               </span>
             </div>
             <span
               style={{
-                fontFamily: 'Silkscreen',
-                fontSize: 8,
-                background: imdProvenance === 'LIVE' ? '#22c55e' : '#f59e0b',
-                color: '#000',
-                padding: '2px 6px',
-                border: '1px solid #000',
-                borderRadius: 3,
+                fontSize: 9,
+                fontWeight: 600,
+                background: imdProvenance === 'LIVE' ? '#f0fdf4' : '#fffbeb',
+                color: imdProvenance === 'LIVE' ? '#15803d' : '#b45309',
+                padding: '2px 7px',
+                border: `1px solid ${imdProvenance === 'LIVE' ? '#bbf7d0' : '#fde68a'}`,
+                borderRadius: 6,
               }}
             >
               ● {weatherReport?.provenance || imdProvenance}
@@ -171,28 +187,28 @@ export default function RiversPanel() {
           </div>
 
           {weatherReport && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6, marginBottom: 8 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: 6, borderRadius: 4, border: '1px solid #e2e8f0' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6, marginBottom: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: '6px 8px', borderRadius: 6, border: '1px solid #e2e8f0' }}>
                 <Thermometer size={14} color="#ea580c" />
-                <span style={{ fontFamily: 'Space Mono', fontSize: 10, fontWeight: 700 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>
                   {weatherReport.current.temperature}°C ({weatherReport.current.condition})
                 </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: 6, borderRadius: 4, border: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: '6px 8px', borderRadius: 6, border: '1px solid #e2e8f0' }}>
                 <Droplets size={14} color="#0284c7" />
-                <span style={{ fontFamily: 'Space Mono', fontSize: 10, fontWeight: 700 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>
                   Rain: {weatherReport.current.rainfall24h} mm/24h
                 </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: 6, borderRadius: 4, border: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: '6px 8px', borderRadius: 6, border: '1px solid #e2e8f0' }}>
                 <Wind size={14} color="#64748b" />
-                <span style={{ fontFamily: 'Space Mono', fontSize: 10 }}>
+                <span style={{ fontSize: 11, color: '#475569' }}>
                   Wind: {weatherReport.current.windSpeed} km/h
                 </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: 6, borderRadius: 4, border: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#f8fafc', padding: '6px 8px', borderRadius: 6, border: '1px solid #e2e8f0' }}>
                 <Gauge size={14} color="#64748b" />
-                <span style={{ fontFamily: 'Space Mono', fontSize: 10 }}>
+                <span style={{ fontSize: 11, color: '#475569' }}>
                   Humidity: {weatherReport.current.humidity}%
                 </span>
               </div>
@@ -200,7 +216,7 @@ export default function RiversPanel() {
           )}
 
           {/* 5-Day Forecast Strips */}
-          <div style={{ fontFamily: 'Silkscreen', fontSize: 9, color: '#475569', marginBottom: 4 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, color: '#64748b', marginBottom: 6, letterSpacing: '0.2px' }}>
             5-DAY METEOROLOGICAL FORECAST
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -212,17 +228,16 @@ export default function RiversPanel() {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   background: '#f8fafc',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: 4,
-                  padding: '4px 8px',
-                  fontFamily: 'Space Mono',
-                  fontSize: 10,
+                  border: '1px solid #e2e8f0',
+                  borderRadius: 6,
+                  padding: '5px 10px',
+                  fontSize: 11,
                 }}
               >
-                <span style={{ fontWeight: 700 }}>{f.dayLabel || f.date}</span>
+                <span style={{ fontWeight: 600, color: '#0f172a' }}>{f.dayLabel || f.date}</span>
                 <span style={{ color: '#0284c7' }}>{f.condition}</span>
-                <span>{f.maxTemp}° / {f.minTemp}°</span>
-                <span style={{ color: f.rainfall > 10 ? '#dc2626' : '#64748b' }}>
+                <span style={{ color: '#64748b' }}>{f.maxTemp}° / {f.minTemp}°</span>
+                <span style={{ fontWeight: 500, color: f.rainfall > 10 ? '#dc2626' : '#64748b' }}>
                   {f.rainfall}mm
                 </span>
               </div>

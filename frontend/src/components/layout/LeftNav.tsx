@@ -8,6 +8,7 @@ import {
   FileText,
   Layers,
   Droplets,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import type { NavSection } from '../../types';
@@ -16,18 +17,17 @@ interface NavItemDef {
   id: NavSection;
   label: string;
   icon: typeof Map;
-  bg: string;
 }
 
 const NAV_ITEMS: NavItemDef[] = [
-  { id: 'map', label: '2D MAP', icon: Map, bg: '#38bdf8' },
-  { id: 'globe', label: '3D GLOBE', icon: Globe, bg: '#818cf8' },
-  { id: 'analysis', label: 'TOPSIS', icon: BarChart3, bg: '#ff9f1c' },
-  { id: 'habitations', label: 'SECTOR', icon: Home, bg: '#fde047' },
-  { id: 'relocation', label: 'HAVENS', icon: ArrowRightLeft, bg: '#a78bfa' },
-  { id: 'rivers', label: 'RIVERS', icon: Droplets, bg: '#06b6d4' },
-  { id: 'alerts', label: 'ALERTS', icon: AlertTriangle, bg: '#ff2a85' },
-  { id: 'reports', label: 'REPORT', icon: FileText, bg: '#cbd5e1' },
+  { id: 'map', label: '2D Map', icon: Map },
+  { id: 'globe', label: '3D Globe', icon: Globe },
+  { id: 'analysis', label: 'Priority', icon: BarChart3 },
+  { id: 'habitations', label: 'Villages', icon: Home },
+  { id: 'relocation', label: 'Havens', icon: ArrowRightLeft },
+  { id: 'rivers', label: 'Rivers', icon: Droplets },
+  { id: 'alerts', label: 'Alerts', icon: AlertTriangle },
+  { id: 'reports', label: 'Reports', icon: FileText },
 ];
 
 export default function LeftNav() {
@@ -43,17 +43,13 @@ export default function LeftNav() {
             <button
               key={item.id}
               className={`left-nav__item ${isActive ? 'left-nav__item--active' : ''}`}
-              style={{
-                backgroundColor: isActive ? 'var(--retro-purple)' : item.bg,
-                color: isActive ? '#ffffff' : '#000000',
-              }}
               onClick={() => setActiveNav(item.id)}
               title={item.label}
             >
               <div className="left-nav__icon-box">
-                <Icon size={20} strokeWidth={2.5} />
+                <Icon size={19} strokeWidth={isActive ? 2.3 : 1.9} />
               </div>
-              <span className="left-nav__label" style={{ color: isActive ? '#fff' : '#000' }}>
+              <span className="left-nav__label">
                 {item.label}
               </span>
             </button>
@@ -61,21 +57,38 @@ export default function LeftNav() {
         })}
       </div>
 
-      {/* Retro Layers Button & Avatar Badge */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, width: '100%' }}>
+      {/* Layer Stack Button & Live Guard Badge */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
         <button
           className={`left-nav__item ${activeNav === 'map' || activeNav === 'globe' ? 'left-nav__item--active' : ''}`}
-          style={{ backgroundColor: '#4ade80' }}
           onClick={() => setActiveNav(activeNav === 'globe' ? 'globe' : 'map')}
-          title="GIS LAYER STACK"
+          title="GIS Layer Overlays"
         >
-          <Layers size={18} strokeWidth={2.5} color="#000" />
-          <span className="left-nav__label" style={{ color: '#000' }}>LAYERS</span>
+          <Layers size={18} strokeWidth={2} />
+          <span className="left-nav__label">Layers</span>
         </button>
 
-        {/* Retro Dispatcher Avatar */}
-        <div className="left-nav__avatar" title="Dispatcher // AI Agent Active">
-          🤖
+        {/* System Active Status Badge */}
+        <div
+          className="left-nav__avatar"
+          title="ResQ Intelligence Engine Active"
+          style={{
+            position: 'relative',
+          }}
+        >
+          <ShieldCheck size={18} color="#0f172a" />
+          <span
+            style={{
+              position: 'absolute',
+              top: 6,
+              right: 6,
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#10b981',
+              boxShadow: '0 0 4px #10b981',
+            }}
+          />
         </div>
       </div>
     </nav>
