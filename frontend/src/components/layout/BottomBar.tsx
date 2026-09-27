@@ -69,35 +69,35 @@ export default function BottomBar() {
       <div className="bottom-bar__section" style={{ minWidth: 200, flexShrink: 0 }}>
         <div
           style={{
-            width: 28,
-            height: 28,
-            background: '#f0fdf4',
-            border: '1px solid #bbf7d0',
-            borderRadius: '50%',
+            width: 32,
+            height: 32,
+            background: 'var(--nb-mint)',
+            border: '2px solid #000000',
+            boxShadow: '2px 2px 0px #000000',
+            borderRadius: 8,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#16a34a',
+            color: '#000000',
             flexShrink: 0,
           }}
         >
-          <Activity size={15} />
+          <Activity size={17} strokeWidth={2.5} />
         </div>
 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <span
               style={{
-                width: 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 borderRadius: '50%',
-                background: '#16a34a',
-                boxShadow: '0 0 0 2px rgba(22, 163, 74, 0.2)',
+                background: '#000000',
               }}
             />
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>Live Telemetry</span>
+            <span style={{ fontSize: 12, fontWeight: 800, color: '#000000', textTransform: 'uppercase' }}>Live Telemetry</span>
           </div>
-          <div style={{ fontSize: 10, color: '#64748b' }}>Active Spatial Network</div>
+          <div style={{ fontSize: 10, fontWeight: 600, color: '#525252' }}>Active Spatial Network</div>
         </div>
       </div>
 
@@ -108,8 +108,9 @@ export default function BottomBar() {
           display: 'flex',
           alignItems: 'center',
           gap: 10,
-          background: '#f8fafc',
-          border: '1px solid #e2e8f0',
+          background: '#ffffff',
+          border: '2px solid #000000',
+          boxShadow: '2px 2px 0px #000000',
           borderRadius: 8,
           padding: '6px 12px',
           overflow: 'hidden',
@@ -120,18 +121,20 @@ export default function BottomBar() {
           <span
             style={{
               fontSize: 10,
-              fontWeight: 600,
-              background: topAlert ? '#fef2f2' : '#f0f9ff',
-              color: topAlert ? '#b91c1c' : '#0369a1',
-              border: `1px solid ${topAlert ? '#fecaca' : '#bae6fd'}`,
-              padding: '2px 7px',
+              fontWeight: 900,
+              background: topAlert ? 'var(--nb-pink)' : 'var(--nb-mint)',
+              color: topAlert ? '#ffffff' : '#000000',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              padding: '2px 8px',
               borderRadius: 4,
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              textTransform: 'uppercase',
             }}
           >
-            {topAlert ? <ShieldAlert size={11} /> : null}
+            {topAlert ? <ShieldAlert size={12} strokeWidth={2.5} /> : null}
             {topAlert ? 'DISPATCH' : 'NORMAL'}
           </span>
         </div>
@@ -139,8 +142,8 @@ export default function BottomBar() {
         <div
           style={{
             fontSize: 11,
-            color: '#334155',
-            fontWeight: 500,
+            color: '#000000',
+            fontWeight: 600,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -149,7 +152,7 @@ export default function BottomBar() {
         >
           {topAlert ? (
             <span>
-              <strong style={{ color: '#0f172a', fontWeight: 600 }}>[{topAlert.source}]</strong> {topAlert.eventType} &mdash; {topAlert.area}: {topAlert.description} ({timeAgo(topAlert.issuedAt)} ago)
+              <strong style={{ color: '#000000', fontWeight: 800 }}>[{topAlert.source}]</strong> {topAlert.eventType} &mdash; {topAlert.area}: {topAlert.description} ({timeAgo(topAlert.issuedAt)} ago)
             </span>
           ) : (
             <span>Sector Stable &bull; {atRiskCount} habitations under active radar surveillance</span>
@@ -163,18 +166,19 @@ export default function BottomBar() {
               display: 'flex',
               alignItems: 'center',
               gap: 5,
-              background: warningStation.status === 'warning' ? '#fffbeb' : '#f0f9ff',
-              border: `1px solid ${warningStation.status === 'warning' ? '#fde68a' : '#bae6fd'}`,
+              background: 'var(--nb-yellow)',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
               borderRadius: 6,
               padding: '2px 8px',
               flexShrink: 0,
               fontSize: 11,
-              fontWeight: 500,
-              color: warningStation.status === 'warning' ? '#b45309' : '#0369a1',
+              fontWeight: 700,
+              color: '#000000',
             }}
             title={`${warningStation.name}: ${warningStation.waterLevel}m (Warning Level: ${warningStation.warningLevel}m)`}
           >
-            <Droplets size={12} color="#0284c7" />
+            <Droplets size={12} strokeWidth={2.5} color="#000000" />
             <span>
               {warningStation.name.split(' ')[0]}: {warningStation.waterLevel?.toFixed(1)}m{' '}
               {warningStation.status === 'warning' ? '⚠️' : '✓'}
@@ -189,17 +193,18 @@ export default function BottomBar() {
               display: 'flex',
               alignItems: 'center',
               gap: 5,
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
+              background: 'var(--nb-cyan-light)',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
               borderRadius: 6,
               padding: '2px 8px',
               flexShrink: 0,
               fontSize: 11,
-              color: '#334155',
-              fontWeight: 500,
+              color: '#000000',
+              fontWeight: 700,
             }}
           >
-            <CloudRain size={12} color="#0284c7" />
+            <CloudRain size={12} strokeWidth={2.5} color="#000000" />
             <span>{weatherReport.current.temperature}°C &bull; Rain {weatherReport.current.rainfall24h}mm</span>
           </div>
         )}

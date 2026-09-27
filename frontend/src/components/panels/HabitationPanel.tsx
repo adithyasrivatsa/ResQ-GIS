@@ -42,30 +42,31 @@ export default function HabitationPanel() {
   return (
     <div className="panel">
       {/* Village Avatar & Meta Section */}
-      <div className="panel__section" style={{ background: '#f8fafc', padding: '14px 16px', borderBottom: '1px solid #e2e8f0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div
               style={{
-                width: 42,
-                height: 42,
-                background: hab.riskScore >= 0.7 ? '#fef2f2' : '#fffbeb',
-                border: `1px solid ${hab.riskScore >= 0.7 ? '#fecaca' : '#fde68a'}`,
-                borderRadius: 10,
+                width: 44,
+                height: 44,
+                background: 'var(--nb-yellow)',
+                border: '2px solid #000000',
+                boxShadow: '2.5px 2.5px 0px #000000',
+                borderRadius: 8,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
+                fontSize: 22,
               }}
             >
               🏔️
             </div>
 
             <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>
+              <div style={{ fontSize: 15, fontWeight: 900, color: '#000000', textTransform: 'uppercase', letterSpacing: '-0.3px' }}>
                 {hab.name}
               </div>
-              <div style={{ fontSize: 11, color: '#64748b' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
                 {hab.district}, {hab.state} &bull; Elev: {hab.location.elevation || 1800}m
               </div>
             </div>
@@ -75,12 +76,14 @@ export default function HabitationPanel() {
           <span
             style={{
               fontSize: 10,
-              padding: '2px 8px',
-              borderRadius: 12,
-              border: '1px solid #bbf7d0',
-              background: '#f0fdf4',
-              color: '#15803d',
-              fontWeight: 600,
+              padding: '3px 8px',
+              borderRadius: 6,
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              background: 'var(--nb-mint)',
+              color: '#000000',
+              fontWeight: 800,
+              textTransform: 'uppercase',
             }}
           >
             ● {provenance}
@@ -88,9 +91,9 @@ export default function HabitationPanel() {
         </div>
 
         {/* Clean Risk Score Meter */}
-        <div style={{ marginTop: 6 }}>
+        <div style={{ marginTop: 8 }}>
           <div className="panel__row panel__row--between" style={{ marginBottom: 4 }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#475569' }}>DYNAMIC HAZARD SCORE</span>
+            <span style={{ fontSize: 11, fontWeight: 800, color: '#000000', textTransform: 'uppercase' }}>DYNAMIC HAZARD SCORE</span>
             <span className={`risk-badge risk-badge--sm ${RISK_CLASS[hab.riskLevel]}`}>
               SCORE {hab.riskScore.toFixed(2)}
             </span>
@@ -99,9 +102,11 @@ export default function HabitationPanel() {
           <div
             style={{
               width: '100%',
-              height: 6,
-              background: '#e2e8f0',
+              height: 10,
+              background: '#ffffff',
+              border: '2px solid #000000',
               borderRadius: 9999,
+              boxShadow: '1.5px 1.5px 0px #000000',
               overflow: 'hidden',
               marginTop: 4,
             }}
@@ -111,7 +116,7 @@ export default function HabitationPanel() {
                 width: `${riskPct}%`,
                 height: '100%',
                 background: barColor,
-                borderRadius: 9999,
+                borderRight: '2px solid #000000',
                 transition: 'width 0.3s ease',
               }}
             />
@@ -120,107 +125,107 @@ export default function HabitationPanel() {
       </div>
 
       {/* Measurable Telemetry & ML Susceptibility Breakdown */}
-      <div className="panel__section" style={{ padding: '12px 16px' }}>
-        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-          <Gauge size={14} color="#0284c7" />
+      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
+        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+          <Gauge size={15} color="#000000" />
           <span>Measurable Hazard Drivers</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
           {/* Slope */}
           <div
             style={{
-              padding: '8px 10px',
+              padding: '10px',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
+              border: '2px solid #000000',
               borderRadius: 8,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+              boxShadow: '2px 2px 0px #000000',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 500, color: '#64748b' }}>COPERNICUS SLOPE</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: slopeDeg >= 30 ? '#dc2626' : '#0f172a', marginTop: 2 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>COPERNICUS SLOPE</div>
+            <div style={{ fontSize: 16, fontWeight: 900, color: slopeDeg >= 30 ? 'var(--nb-pink)' : '#000000', marginTop: 2 }}>
               {slopeDeg.toFixed(1)}°
             </div>
-            <div style={{ fontSize: 9, color: '#94a3b8' }}>GLO-30 Finite Diff</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>GLO-30 Finite Diff</div>
           </div>
 
           {/* 24h Rainfall */}
           <div
             style={{
-              padding: '8px 10px',
+              padding: '10px',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
+              border: '2px solid #000000',
               borderRadius: 8,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+              boxShadow: '2px 2px 0px #000000',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 500, color: '#64748b' }}>24H PRECIPITATION</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: rain24h >= 30 ? '#dc2626' : '#0284c7', marginTop: 2 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>24H PRECIPITATION</div>
+            <div style={{ fontSize: 16, fontWeight: 900, color: rain24h >= 30 ? 'var(--nb-pink)' : '#0284c7', marginTop: 2 }}>
               {rain24h.toFixed(1)} mm
             </div>
-            <div style={{ fontSize: 9, color: '#94a3b8' }}>Open-Meteo Live</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>Open-Meteo Live</div>
           </div>
 
           {/* River Proximity */}
           <div
             style={{
-              padding: '8px 10px',
+              padding: '10px',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
+              border: '2px solid #000000',
               borderRadius: 8,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+              boxShadow: '2px 2px 0px #000000',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 500, color: '#64748b' }}>RIVER CORRIDOR</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: riverDist < 0.5 ? '#dc2626' : '#0f172a', marginTop: 2 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>RIVER CORRIDOR</div>
+            <div style={{ fontSize: 16, fontWeight: 900, color: riverDist < 0.5 ? 'var(--nb-pink)' : '#000000', marginTop: 2 }}>
               {riverDist.toFixed(2)} km
             </div>
-            <div style={{ fontSize: 9, color: '#94a3b8' }}>CWC Gauging Stream</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>CWC Gauging Stream</div>
           </div>
 
           {/* ML Susceptibility */}
           <div
             style={{
-              padding: '8px 10px',
+              padding: '10px',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
+              border: '2px solid #000000',
               borderRadius: 8,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+              boxShadow: '2px 2px 0px #000000',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 500, color: '#0284c7' }}>ML SUSCEPTIBILITY</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: '#0284c7', marginTop: 2 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>ML SUSCEPTIBILITY</div>
+            <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--nb-purple)', marginTop: 2 }}>
               {mlScore.toFixed(2)}
             </div>
-            <div style={{ fontSize: 9, color: '#94a3b8' }}>RandomForest ({mlConf})</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>RandomForest ({mlConf})</div>
           </div>
         </div>
       </div>
 
       {/* Population & Household Card */}
-      <div className="panel__section" style={{ padding: '12px 16px' }}>
+      <div className="panel__section" style={{ padding: '12px 16px', borderBottom: '2px solid #000000' }}>
         <div className="panel__row panel__row--between">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Users size={14} color="#0f172a" />
+            <Users size={15} color="#000000" />
             <span className="panel__label">TOTAL POPULATION:</span>
           </div>
-          <span className="panel__value">{hab.population.toLocaleString()}</span>
+          <span className="panel__value" style={{ fontSize: 14 }}>{hab.population.toLocaleString()}</span>
         </div>
 
-        <div className="panel__row panel__row--between" style={{ marginTop: 4 }}>
-          <span className="panel__label" style={{ paddingLeft: 20 }}>HOUSEHOLDS:</span>
-          <span className="panel__value">{hab.households.toLocaleString()}</span>
+        <div className="panel__row panel__row--between" style={{ marginTop: 6 }}>
+          <span className="panel__label" style={{ paddingLeft: 21 }}>HOUSEHOLDS:</span>
+          <span className="panel__value" style={{ fontSize: 14 }}>{hab.households.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Per-Hazard Breakdown */}
-      <div className="panel__section" style={{ padding: '12px 16px' }}>
-        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-          <ShieldAlert size={14} color="#ea580c" />
+      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
+        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+          <ShieldAlert size={15} color="var(--nb-orange)" />
           <span>Hazard Exposure Matrix</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {hab.hazardExposure.map((hazard) => (
             <div
               key={hazard.type}
@@ -228,18 +233,19 @@ export default function HabitationPanel() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '6px 10px',
+                padding: '8px 12px',
                 background: '#ffffff',
-                border: '1px solid #e2e8f0',
+                border: '2px solid #000000',
                 borderRadius: 8,
+                boxShadow: '2px 2px 0px #000000',
               }}
             >
               <div>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: '#000000' }}>
                   {HAZARD_LABEL[hazard.type]}
                 </span>
                 {hazard.contributors.length > 0 && (
-                  <div style={{ fontSize: 10, color: '#64748b', marginTop: 1 }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: '#525252', marginTop: 1 }}>
                     {hazard.contributors[0]}
                   </div>
                 )}
@@ -253,13 +259,13 @@ export default function HabitationPanel() {
       </div>
 
       {/* Vulnerability Index Bars */}
-      <div className="panel__section" style={{ padding: '12px 16px' }}>
+      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
         <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <HeartHandshake size={14} color="#0284c7" />
+          <HeartHandshake size={15} color="var(--nb-pink)" />
           <span>HVI (Vulnerability Index)</span>
         </div>
 
-        <div style={{ background: '#f8fafc', padding: '10px 12px', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+        <div style={{ background: '#ffffff', padding: '12px 14px', border: '2px solid #000000', borderRadius: 8, boxShadow: '2px 2px 0px #000000' }}>
           <div className="vuln-bar">
             <span className="vuln-bar__label">Exposure</span>
             <div className="vuln-bar__track">
@@ -287,8 +293,8 @@ export default function HabitationPanel() {
       </div>
 
       {/* Recommended Action inside Speech Bubble */}
-      <div className="panel__section" style={{ padding: '12px 16px' }}>
-        <div className="panel__title" style={{ marginBottom: 6 }}>
+      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: nearestSite ? '2px solid #000000' : 'none' }}>
+        <div className="panel__title" style={{ marginBottom: 8 }}>
           Directive for Incident Commander
         </div>
 
@@ -299,9 +305,9 @@ export default function HabitationPanel() {
 
       {/* Nearest Safe Haven Corridor Card */}
       {nearestSite && (
-        <div className="panel__section" style={{ background: '#f8fafc', padding: '12px 16px' }}>
-          <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#15803d' }}>
-            <Compass size={14} color="#15803d" />
+        <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px' }}>
+          <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#000000' }}>
+            <Compass size={15} color="#000000" />
             <span>Designated Relocation Haven</span>
           </div>
 
@@ -311,17 +317,17 @@ export default function HabitationPanel() {
               alignItems: 'center',
               justifyContent: 'space-between',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              border: '2px solid #000000',
+              boxShadow: '3px 3px 0px #000000',
               borderRadius: 8,
-              padding: '10px 12px',
+              padding: '12px 14px',
             }}
           >
             <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#15803d' }}>
+              <div style={{ fontSize: 13, fontWeight: 900, color: '#000000' }}>
                 {nearestSite.name}
               </div>
-              <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252', marginTop: 2 }}>
                 Dist: {nearestSite.distanceFromAffected} km &bull; Cap: {nearestSite.capacity.toLocaleString()} beds
               </div>
             </div>
@@ -335,20 +341,23 @@ export default function HabitationPanel() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 5,
-                background: '#0f172a',
-                color: '#ffffff',
-                border: 'none',
+                background: 'var(--nb-yellow)',
+                color: '#000000',
+                border: '2px solid #000000',
+                boxShadow: '2px 2px 0px #000000',
                 borderRadius: 6,
                 padding: '6px 12px',
                 fontSize: 11,
-                fontWeight: 600,
+                fontWeight: 800,
                 cursor: 'pointer',
-                transition: 'all 0.15s ease',
+                transition: 'all 0.1s ease',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-mint)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
               title="Fly to site"
             >
               <span>Inspect</span>
-              <ArrowRight size={12} />
+              <ArrowRight size={12} strokeWidth={2.5} />
             </button>
           </div>
         </div>

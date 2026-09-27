@@ -39,29 +39,30 @@ export default function AnalysisPanel() {
   return (
     <div className="panel">
       {/* Header Banner */}
-      <div className="panel__section" style={{ background: '#f8fafc', padding: '14px 16px', borderBottom: '1px solid #e2e8f0' }}>
+      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
         <div className="panel__row panel__row--between" style={{ marginBottom: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
-                width: 32,
-                height: 32,
-                background: '#f1f5f9',
-                border: '1px solid #e2e8f0',
+                width: 36,
+                height: 36,
+                background: 'var(--nb-yellow)',
+                border: '2px solid #000000',
+                boxShadow: '2px 2px 0px #000000',
                 borderRadius: 8,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#0f172a',
+                color: '#000000',
               }}
             >
-              <Trophy size={16} />
+              <Trophy size={18} strokeWidth={2.5} />
             </div>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+              <div style={{ fontSize: 14, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
                 TOPSIS Leaderboard
               </div>
-              <div style={{ fontSize: 11, color: '#64748b' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
                 Multi-Criteria Evacuation Staging
               </div>
             </div>
@@ -72,19 +73,21 @@ export default function AnalysisPanel() {
               display: 'flex',
               alignItems: 'center',
               gap: 5,
-              background: weightsOpen ? '#0f172a' : '#ffffff',
-              color: weightsOpen ? '#ffffff' : '#334155',
-              border: '1px solid #e2e8f0',
-              padding: '5px 10px',
+              background: weightsOpen ? 'var(--nb-mint)' : '#ffffff',
+              color: '#000000',
+              border: '2px solid #000000',
+              boxShadow: '2px 2px 0px #000000',
+              padding: '6px 12px',
               borderRadius: 8,
               fontSize: 11,
-              fontWeight: 600,
+              fontWeight: 800,
+              textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'all 0.15s ease',
+              transition: 'all 0.1s ease',
             }}
             onClick={() => setWeightsOpen(!weightsOpen)}
           >
-            <Sliders size={12} />
+            <Sliders size={13} strokeWidth={2.5} />
             <span>{weightsOpen ? 'Close' : 'Weights'}</span>
           </button>
         </div>
@@ -92,24 +95,25 @@ export default function AnalysisPanel() {
 
       {/* Dynamic Weight Sliders Drawer */}
       {weightsOpen && (
-        <div className="panel__section" style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '12px 16px' }}>
+        <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', borderBottom: '2px solid #000000', padding: '14px 16px' }}>
           <div className="panel__row panel__row--between" style={{ marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#475569' }}>DECISION CRITERIA WEIGHTS</span>
+            <span style={{ fontSize: 11, fontWeight: 800, color: '#000000', textTransform: 'uppercase' }}>DECISION CRITERIA WEIGHTS</span>
             <button
               onClick={handleResetWeights}
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0284c7',
+                color: '#000000',
                 fontSize: 11,
-                fontWeight: 600,
+                fontWeight: 800,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 4,
+                textDecoration: 'underline',
               }}
             >
-              <RotateCcw size={11} />
+              <RotateCcw size={11} strokeWidth={2.5} />
               <span>Reset</span>
             </button>
           </div>
@@ -123,14 +127,16 @@ export default function AnalysisPanel() {
             ].map((slider) => (
               <div key={slider.key}>
                 <div className="panel__row panel__row--between" style={{ fontSize: 11, marginBottom: 2 }}>
-                  <span style={{ color: '#334155', fontWeight: 500 }}>{slider.label}:</span>
+                  <span style={{ color: '#000000', fontWeight: 800 }}>{slider.label}:</span>
                   <span
                     style={{
-                      background: '#f1f5f9',
-                      color: '#0f172a',
+                      background: 'var(--nb-yellow)',
+                      color: '#000000',
+                      border: '1.5px solid #000000',
+                      boxShadow: '1px 1px 0px #000000',
                       padding: '2px 6px',
                       borderRadius: 4,
-                      fontWeight: 600,
+                      fontWeight: 800,
                       fontSize: 10,
                     }}
                   >
@@ -144,7 +150,7 @@ export default function AnalysisPanel() {
                   step="0.05"
                   value={slider.val}
                   onChange={(e) => handleWeightChange(slider.key as any, parseFloat(e.target.value))}
-                  style={{ width: '100%', height: 4, marginTop: 2, accentColor: '#0f172a' }}
+                  style={{ width: '100%', height: 6, marginTop: 4, accentColor: '#000000' }}
                 />
               </div>
             ))}
@@ -160,36 +166,25 @@ export default function AnalysisPanel() {
 
           const rankBadgeBg =
             item.rank === 1
-              ? '#fef2f2'
+              ? 'var(--nb-pink)'
               : item.rank === 2
-              ? '#fffbeb'
-              : '#f1f5f9';
-          const rankBadgeColor =
-            item.rank === 1
-              ? '#b91c1c'
-              : item.rank === 2
-              ? '#b45309'
-              : '#475569';
-          const rankBadgeBorder =
-            item.rank === 1
-              ? '#fecaca'
-              : item.rank === 2
-              ? '#fde68a'
-              : '#e2e8f0';
+              ? 'var(--nb-orange)'
+              : 'var(--nb-yellow)';
+          const rankBadgeColor = item.rank === 1 ? '#ffffff' : '#000000';
 
           return (
             <div
               key={item.habitationId}
               style={{
                 background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                borderRadius: 10,
+                border: '2px solid #000000',
+                boxShadow: '3px 3px 0px #000000',
+                borderRadius: 8,
                 padding: '12px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 8,
-                transition: 'all 0.15s ease',
+                transition: 'all 0.1s ease',
               }}
             >
               {/* Card Header */}
@@ -198,48 +193,49 @@ export default function AnalysisPanel() {
                   <span
                     style={{
                       fontSize: 11,
-                      fontWeight: 700,
+                      fontWeight: 900,
                       padding: '3px 8px',
                       background: rankBadgeBg,
                       color: rankBadgeColor,
-                      border: `1px solid ${rankBadgeBorder}`,
+                      border: '1.5px solid #000000',
+                      boxShadow: '1.5px 1.5px 0px #000000',
                       borderRadius: 6,
                     }}
                   >
                     #{item.rank}
                   </span>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: '#000000' }}>
                       {item.name}
                     </div>
-                    <div style={{ fontSize: 11, color: '#64748b' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
                       {item.district} &bull; Pop: {item.population.toLocaleString()}
                     </div>
                   </div>
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 9, fontWeight: 500, color: '#64748b' }}>TOPSIS SCORE</div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#0284c7' }}>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: '#525252', textTransform: 'uppercase' }}>TOPSIS SCORE</div>
+                  <div style={{ fontSize: 15, fontWeight: 900, color: '#000000', fontFamily: 'var(--font-mono)' }}>
                     {item.score.toFixed(3)}
                   </div>
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div style={{ width: '100%', height: 4, background: '#f1f5f9', borderRadius: 9999, overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: 8, background: '#ffffff', border: '1.5px solid #000000', borderRadius: 9999, overflow: 'hidden' }}>
                 <div
                   style={{
                     width: `${Math.min(item.score * 100, 100)}%`,
                     height: '100%',
-                    background: item.score >= 0.7 ? '#ef4444' : item.score >= 0.4 ? '#f59e0b' : '#0284c7',
-                    borderRadius: 9999,
+                    background: item.score >= 0.7 ? 'var(--nb-pink)' : item.score >= 0.4 ? 'var(--nb-orange)' : 'var(--nb-mint)',
+                    borderRight: '1.5px solid #000000',
                   }}
                 />
               </div>
 
               {/* Factor reasoning */}
-              <div style={{ fontSize: 11, color: '#475569', lineHeight: 1.4 }}>
+              <div style={{ fontSize: 11, color: '#000000', fontWeight: 600, lineHeight: 1.4 }}>
                 <strong>Factors:</strong> {item.reason}
               </div>
 
@@ -250,15 +246,15 @@ export default function AnalysisPanel() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    background: '#f8fafc',
-                    border: '1px solid #e2e8f0',
+                    background: 'var(--nb-canvas-subtle)',
+                    border: '1.5px solid #000000',
                     borderRadius: 6,
-                    padding: '6px 10px',
+                    padding: '8px 10px',
                     marginTop: 2,
                   }}
                 >
-                  <div style={{ fontSize: 11, color: '#64748b' }}>
-                    Haven: <strong style={{ color: '#0f172a' }}>{site.name}</strong> ({site.distanceFromAffected} km)
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
+                    Haven: <strong style={{ color: '#000000' }}>{site.name}</strong> ({site.distanceFromAffected} km)
                   </div>
                   <button
                     onClick={() => {
@@ -269,18 +265,22 @@ export default function AnalysisPanel() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: 4,
-                      background: '#ffffff',
-                      border: '1px solid #cbd5e1',
+                      background: 'var(--nb-yellow)',
+                      border: '1.5px solid #000000',
+                      boxShadow: '1.5px 1.5px 0px #000000',
                       borderRadius: 6,
-                      padding: '3px 8px',
+                      padding: '4px 10px',
                       fontSize: 10,
-                      fontWeight: 600,
-                      color: '#0f172a',
+                      fontWeight: 800,
+                      color: '#000000',
                       cursor: 'pointer',
+                      transition: 'all 0.1s ease',
                     }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-mint)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
                   >
                     <span>View</span>
-                    <ArrowRight size={10} />
+                    <ArrowRight size={11} strokeWidth={2.5} />
                   </button>
                 </div>
               )}

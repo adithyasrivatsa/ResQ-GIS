@@ -11,14 +11,6 @@ const RISK_CLASS: Record<RiskLevel, string> = {
   MINIMAL: 'risk--minimal',
 };
 
-const PROV_STYLE: Record<string, { bg: string; color: string; border: string }> = {
-  LIVE: { bg: '#f0fdf4', color: '#15803d', border: '#bbf7d0' },
-  CACHED: { bg: '#f0f9ff', color: '#0369a1', border: '#bae6fd' },
-  STATIC: { bg: '#f8fafc', color: '#475569', border: '#e2e8f0' },
-  DEMO: { bg: '#fffbeb', color: '#b45309', border: '#fde68a' },
-  DOWN: { bg: '#fef2f2', color: '#b91c1c', border: '#fecaca' },
-};
-
 export default function RiskOverviewPanel() {
   const { habitations, selectHabitation, providersDetailedStatus, mlStatus } = useAppStore();
   const atRisk = habitations.filter((h) => h.riskScore >= 0.6);
@@ -37,23 +29,25 @@ export default function RiskOverviewPanel() {
   return (
     <div className="panel">
       {/* Live Provider Ingestion & Truthful Provenance Banner */}
-      <div className="panel__section" style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '12px 16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Activity size={14} color="#10b981" />
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>
-              Ingestion Telemetry Status
+      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', borderBottom: '2.5px solid #000000', padding: '14px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Activity size={16} color="#000000" strokeWidth={2.5} />
+            <span style={{ fontSize: 12, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
+              Ingestion Telemetry
             </span>
           </div>
           <span
             style={{
               fontSize: 10,
-              padding: '2px 8px',
-              borderRadius: 12,
-              border: '1px solid #bbf7d0',
-              background: '#f0fdf4',
-              color: '#15803d',
-              fontWeight: 600,
+              padding: '3px 8px',
+              borderRadius: 6,
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              background: 'var(--nb-mint)',
+              color: '#000000',
+              fontWeight: 800,
+              textTransform: 'uppercase',
             }}
           >
             ● {providersDetailedStatus?.overall_status || 'OPERATIONAL'}
@@ -61,9 +55,8 @@ export default function RiskOverviewPanel() {
         </div>
 
         {/* Provider Provenance Badges Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 5 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6 }}>
           {Object.entries(providers).map(([key, prov]: [string, any]) => {
-            const st = PROV_STYLE[prov.status] || PROV_STYLE.STATIC;
             return (
               <div
                 key={key}
@@ -71,24 +64,25 @@ export default function RiskOverviewPanel() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '4px 8px',
+                  padding: '5px 8px',
                   background: '#ffffff',
-                  border: '1px solid #e2e8f0',
+                  border: '1.5px solid #000000',
+                  boxShadow: '1.5px 1.5px 0px #000000',
                   borderRadius: 6,
                   fontSize: 10,
                 }}
               >
-                <span style={{ color: '#334155', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '65%' }}>
+                <span style={{ color: '#000000', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '65%' }}>
                   {key.replace('_', ' ').toUpperCase()}
                 </span>
                 <span
                   style={{
-                    padding: '1px 5px',
+                    padding: '1px 6px',
                     borderRadius: 4,
-                    background: st.bg,
-                    color: st.color,
-                    border: `1px solid ${st.border}`,
-                    fontWeight: 600,
+                    background: prov.status === 'LIVE' ? 'var(--nb-mint)' : prov.status === 'DOWN' ? 'var(--nb-pink)' : 'var(--nb-yellow)',
+                    color: prov.status === 'DOWN' ? '#ffffff' : '#000000',
+                    border: '1px solid #000000',
+                    fontWeight: 800,
                     fontSize: 9,
                   }}
                 >
@@ -101,52 +95,52 @@ export default function RiskOverviewPanel() {
       </div>
 
       {/* Machine Learning Model Indicator */}
-      <div className="panel__section" style={{ background: '#ffffff', borderBottom: '1px solid #e2e8f0', padding: '10px 16px' }}>
+      <div className="panel__section" style={{ background: '#ffffff', borderBottom: '2px solid #000000', padding: '12px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Cpu size={14} color="#0284c7" />
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#0f172a' }}>
+            <Cpu size={15} color="#000000" strokeWidth={2.5} />
+            <span style={{ fontSize: 12, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
               ML Landslide Engine
             </span>
           </div>
-          <span style={{ fontSize: 10, fontWeight: 600, color: '#0284c7' }}>
+          <span style={{ fontSize: 11, fontWeight: 800, color: '#000000', background: 'var(--nb-yellow)', padding: '2px 7px', border: '1.5px solid #000', borderRadius: 4, boxShadow: '1.5px 1.5px 0 #000' }}>
             ROC-AUC {mlStatus?.metrics?.roc_auc ? mlStatus.metrics.roc_auc.toFixed(3) : '0.899'}
           </span>
         </div>
-        <div style={{ fontSize: 11, color: '#64748b' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#525252', marginTop: 4 }}>
           RandomForestClassifier &bull; 5-Feature Gradient Driver
         </div>
       </div>
 
       {/* Summary stats in Minimalist Cards */}
-      <div className="panel__section" style={{ background: '#f8fafc', padding: '12px 16px' }}>
+      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
         <div className="overview-stats">
           <div className="overview-stat">
-            <AlertTriangle size={15} color="#ef4444" />
-            <div className="overview-stat__value" style={{ color: '#ef4444' }}>
+            <AlertTriangle size={16} color="var(--nb-pink)" strokeWidth={2.5} />
+            <div className="overview-stat__value" style={{ color: 'var(--nb-pink)' }}>
               {atRisk.length}
             </div>
             <div className="overview-stat__label">HIGH-RISK</div>
           </div>
 
           <div className="overview-stat">
-            <Users size={15} color="#0284c7" />
+            <Users size={16} color="#000000" strokeWidth={2.5} />
             <div className="overview-stat__value">{totalPop.toLocaleString()}</div>
             <div className="overview-stat__label">EXPOSED POP</div>
           </div>
 
           <div className="overview-stat">
-            <MapPin size={15} color="#0f172a" />
+            <MapPin size={16} color="#000000" strokeWidth={2.5} />
             <div className="overview-stat__value">{habitations.length}</div>
             <div className="overview-stat__label">MONITORED</div>
           </div>
         </div>
       </div>
 
-      {/* Habitation List with Minimalist Risk Meter */}
-      <div className="panel__section" style={{ padding: '12px 16px' }}>
-        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <Flame size={14} color="#ea580c" />
+      {/* Habitation List with Neobrutalist Risk Meter */}
+      <div className="panel__section" style={{ padding: '14px 16px' }}>
+        <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+          <Flame size={16} color="var(--nb-orange)" strokeWidth={2.5} />
           <span>Village Risk Index</span>
         </div>
 
@@ -154,7 +148,7 @@ export default function RiskOverviewPanel() {
           {sorted.map((hab) => {
             const riskPct = Math.round(hab.riskScore * 100);
             const barColor =
-              hab.riskScore >= 0.8 ? '#ef4444' : hab.riskScore >= 0.6 ? '#f59e0b' : '#10b981';
+              hab.riskScore >= 0.8 ? 'var(--nb-pink)' : hab.riskScore >= 0.6 ? 'var(--nb-orange)' : 'var(--nb-mint)';
 
             return (
               <button
@@ -171,15 +165,16 @@ export default function RiskOverviewPanel() {
                     {hab.district} &bull; Pop: {hab.population.toLocaleString()}
                   </div>
 
-                  {/* Clean Apple Progress Bar */}
+                  {/* Neobrutalist Progress Bar */}
                   <div
                     style={{
                       width: '100%',
-                      height: 4,
-                      background: '#f1f5f9',
+                      height: 8,
+                      background: '#ffffff',
+                      border: '1.5px solid #000000',
                       borderRadius: 9999,
                       overflow: 'hidden',
-                      marginTop: 4,
+                      marginTop: 6,
                     }}
                   >
                     <div
@@ -187,7 +182,7 @@ export default function RiskOverviewPanel() {
                         width: `${riskPct}%`,
                         height: '100%',
                         background: barColor,
-                        borderRadius: 9999,
+                        borderRight: '1.5px solid #000000',
                         transition: 'width 0.3s ease',
                       }}
                     />
@@ -198,7 +193,7 @@ export default function RiskOverviewPanel() {
                   <span className={`risk-badge risk-badge--sm ${RISK_CLASS[hab.riskLevel]}`}>
                     {hab.riskScore.toFixed(2)}
                   </span>
-                  <div style={{ fontSize: 9, color: '#64748b', marginTop: 3 }}>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: '#525252', marginTop: 4, textTransform: 'uppercase' }}>
                     {hab.riskLevel}
                   </div>
                 </div>

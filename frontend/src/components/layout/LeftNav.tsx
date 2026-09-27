@@ -1,55 +1,123 @@
 import {
-  Map,
-  Globe,
-  BarChart3,
+  LayoutDashboard,
+  Radio,
+  Layers,
   Home,
-  ArrowRightLeft,
+  Navigation,
+  Building,
   AlertTriangle,
   FileText,
-  Layers,
-  Droplets,
-  ShieldCheck,
+  Database,
+  Settings,
+  Printer,
+  Download,
+  Share2,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import type { NavSection } from '../../types';
 
 interface NavItemDef {
-  id: NavSection;
+  id: string;
   label: string;
-  icon: typeof Map;
+  icon: typeof LayoutDashboard;
+  targetPanel?: NavSection;
 }
 
 const NAV_ITEMS: NavItemDef[] = [
-  { id: 'map', label: '2D Map', icon: Map },
-  { id: 'globe', label: '3D Globe', icon: Globe },
-  { id: 'analysis', label: 'Priority', icon: BarChart3 },
-  { id: 'habitations', label: 'Villages', icon: Home },
-  { id: 'relocation', label: 'Havens', icon: ArrowRightLeft },
-  { id: 'rivers', label: 'Rivers', icon: Droplets },
-  { id: 'alerts', label: 'Alerts', icon: AlertTriangle },
-  { id: 'reports', label: 'Reports', icon: FileText },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, targetPanel: 'analysis' },
+  { id: 'map', label: 'Live Situation', icon: Radio, targetPanel: 'map' },
+  { id: 'hazard_layers', label: 'Hazard Layers', icon: Layers, targetPanel: 'map' },
+  { id: 'habitations', label: 'Habitations', icon: Home, targetPanel: 'habitations' },
+  { id: 'relocation', label: 'Relocation Planning', icon: Navigation, targetPanel: 'relocation' },
+  { id: 'infrastructure', label: 'Infrastructure', icon: Building, targetPanel: 'rivers' },
+  { id: 'alerts', label: 'Alerts & Advisories', icon: AlertTriangle, targetPanel: 'alerts' },
+  { id: 'reports', label: 'Reports', icon: FileText, targetPanel: 'reports' },
+  { id: 'datasources', label: 'Data Sources', icon: Database, targetPanel: 'rivers' },
+  { id: 'settings', label: 'Settings', icon: Settings, targetPanel: 'analysis' },
 ];
 
 export default function LeftNav() {
   const { activeNav, setActiveNav } = useAppStore();
 
+  const handleNavClick = (item: NavItemDef) => {
+    if (item.targetPanel) {
+      setActiveNav(item.targetPanel);
+    }
+  };
+
   return (
-    <nav className="left-nav">
-      <div className="left-nav__items">
+    <aside
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        width: 190,
+        background: '#fde047',
+        border: '2.5px solid #000000',
+        boxShadow: '3px 3px 0px #000000',
+        borderRadius: 12,
+        padding: '10px 8px',
+        flexShrink: 0,
+        gap: 12,
+      }}
+    >
+      {/* Navigation Menu Stack */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = activeNav === item.id;
+          const isActive =
+            (item.id === 'dashboard' && activeNav === 'analysis') ||
+            (item.id === 'map' && activeNav === 'map') ||
+            (item.id === 'habitations' && activeNav === 'habitations') ||
+            (item.id === 'relocation' && activeNav === 'relocation') ||
+            (item.id === 'alerts' && activeNav === 'alerts') ||
+            (item.id === 'reports' && activeNav === 'reports');
+
           return (
             <button
               key={item.id}
-              className={`left-nav__item ${isActive ? 'left-nav__item--active' : ''}`}
-              onClick={() => setActiveNav(item.id)}
-              title={item.label}
+              onClick={() => handleNavClick(item)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                width: '100%',
+                padding: '7px 10px',
+                background: isActive ? '#38bdf8' : 'transparent',
+                border: isActive ? '2px solid #000000' : '2px solid transparent',
+                boxShadow: isActive ? '2px 2px 0px #000000' : 'none',
+                borderRadius: 8,
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.1s ease',
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.background = '#ffffff';
+                  e.currentTarget.style.borderColor = '#000000';
+                  e.currentTarget.style.boxShadow = '1.5px 1.5px 0px #000000';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.boxShadow = 'none';
+                }
+              }}
             >
-              <div className="left-nav__icon-box">
-                <Icon size={19} strokeWidth={isActive ? 2.3 : 1.9} />
-              </div>
-              <span className="left-nav__label">
+              <Icon size={16} strokeWidth={2.5} color="#000000" />
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 12,
+                  fontWeight: isActive ? 900 : 800,
+                  color: '#000000',
+                  letterSpacing: '-0.2px',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {item.label}
               </span>
             </button>
@@ -57,40 +125,144 @@ export default function LeftNav() {
         })}
       </div>
 
-      {/* Layer Stack Button & Live Guard Badge */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
-        <button
-          className={`left-nav__item ${activeNav === 'map' || activeNav === 'globe' ? 'left-nav__item--active' : ''}`}
-          onClick={() => setActiveNav(activeNav === 'globe' ? 'globe' : 'map')}
-          title="GIS Layer Overlays"
-        >
-          <Layers size={18} strokeWidth={2} />
-          <span className="left-nav__label">Layers</span>
-        </button>
-
-        {/* System Active Status Badge */}
+      {/* Quick Actions Container */}
+      <div
+        style={{
+          background: '#ffffff',
+          border: '2px solid #000000',
+          boxShadow: '2.5px 2.5px 0px #000000',
+          borderRadius: 8,
+          overflow: 'hidden',
+        }}
+      >
         <div
-          className="left-nav__avatar"
-          title="ResQ Intelligence Engine Active"
           style={{
-            position: 'relative',
+            background: '#f472b6',
+            color: '#000000',
+            fontFamily: 'var(--font-sans)',
+            fontSize: 11,
+            fontWeight: 900,
+            textTransform: 'uppercase',
+            padding: '6px 10px',
+            borderBottom: '2px solid #000000',
           }}
         >
-          <ShieldCheck size={18} color="#0f172a" />
-          <span
+          Quick Actions
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5, padding: 8 }}>
+          <button
+            onClick={() => setActiveNav('reports')}
             style={{
-              position: 'absolute',
-              top: 6,
-              right: 6,
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: '#10b981',
-              boxShadow: '0 0 4px #10b981',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              width: '100%',
+              padding: '6px 8px',
+              background: '#ffffff',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              borderRadius: 6,
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 800,
+              color: '#000000',
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.1s ease',
             }}
-          />
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#fde047')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
+          >
+            <FileSpreadsheet size={13} strokeWidth={2.5} />
+            <span>Generate Report</span>
+          </button>
+
+          <button
+            onClick={() => window.print()}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              width: '100%',
+              padding: '6px 8px',
+              background: '#ffffff',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              borderRadius: 6,
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 800,
+              color: '#000000',
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.1s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#fde047')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
+          >
+            <Download size={13} strokeWidth={2.5} />
+            <span>Export Map</span>
+          </button>
+
+          <button
+            onClick={() => window.print()}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              width: '100%',
+              padding: '6px 8px',
+              background: '#ffffff',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              borderRadius: 6,
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 800,
+              color: '#000000',
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.1s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#fde047')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
+          >
+            <Printer size={13} strokeWidth={2.5} />
+            <span>Print Briefing</span>
+          </button>
+
+          <button
+            onClick={() => {
+              navigator.clipboard?.writeText(window.location.href);
+              alert('Operational View link copied to clipboard!');
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              width: '100%',
+              padding: '6px 8px',
+              background: '#ffffff',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              borderRadius: 6,
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 800,
+              color: '#000000',
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.1s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#fde047')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
+          >
+            <Share2 size={13} strokeWidth={2.5} />
+            <span>Share View</span>
+          </button>
         </div>
       </div>
-    </nav>
+    </aside>
   );
 }

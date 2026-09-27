@@ -102,6 +102,7 @@ export interface DisasterAlert {
   id: string;
   source: 'IMD' | 'NDMA' | 'SACHET' | 'CWC' | 'GSI' | 'USDMA' | 'SDMA' | 'SYSTEM' | string;
   eventType: string;
+  headline?: string;
   severity: Severity;
   area: string;
   description: string;
@@ -272,6 +273,8 @@ export interface OSMRoadFeature {
   lanes: number;
   isEvacuationRoute: boolean;
   passabilityStatus: string;
+  status?: string;
+  blockageReason?: string;
   distanceKm?: number;
   geometry?: any;
   provenance?: 'LIVE' | 'DEMO' | 'CACHED' | 'STATIC';

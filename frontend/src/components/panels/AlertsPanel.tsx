@@ -16,29 +16,30 @@ export default function AlertsPanel() {
   return (
     <div className="panel">
       {/* Header */}
-      <div className="panel__section" style={{ background: '#f8fafc', padding: '14px 16px', borderBottom: '1px solid #e2e8f0' }}>
+      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
         <div className="panel__row panel__row--between" style={{ marginBottom: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
-                width: 32,
-                height: 32,
-                background: '#fef2f2',
-                border: '1px solid #fecaca',
+                width: 36,
+                height: 36,
+                background: 'var(--nb-pink)',
+                border: '2px solid #000000',
+                boxShadow: '2px 2px 0px #000000',
                 borderRadius: 8,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ef4444',
+                color: '#ffffff',
               }}
             >
-              <Siren size={16} />
+              <Siren size={18} strokeWidth={2.5} />
             </div>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+              <div style={{ fontSize: 14, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
                 Emergency Bulletins
               </div>
-              <div style={{ fontSize: 11, color: '#64748b' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
                 Multi-Agency CAP Alerts Feed
               </div>
             </div>
@@ -46,12 +47,14 @@ export default function AlertsPanel() {
           <span
             style={{
               fontSize: 10,
-              fontWeight: 600,
-              background: '#fef2f2',
-              color: '#b91c1c',
-              padding: '2px 8px',
-              border: '1px solid #fecaca',
-              borderRadius: 12,
+              fontWeight: 800,
+              background: 'var(--nb-pink)',
+              color: '#ffffff',
+              padding: '3px 8px',
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              borderRadius: 6,
+              textTransform: 'uppercase',
             }}
           >
             {alerts.length} ALERTS
@@ -63,58 +66,56 @@ export default function AlertsPanel() {
         {alerts.map((alert) => {
           const isCritical = alert.severity === 'red';
           const isOrange = alert.severity === 'orange';
-          const accentColor = isCritical ? '#ef4444' : isOrange ? '#f59e0b' : '#0284c7';
-          const badgeBg = isCritical ? '#fef2f2' : isOrange ? '#fffbeb' : '#f0f9ff';
-          const badgeText = isCritical ? '#b91c1c' : isOrange ? '#b45309' : '#0369a1';
-          const badgeBorder = isCritical ? '#fecaca' : isOrange ? '#fde68a' : '#bae6fd';
+          const accentColor = isCritical ? 'var(--nb-pink)' : isOrange ? 'var(--nb-orange)' : 'var(--nb-cyan)';
 
           return (
             <div
               key={alert.id}
               style={{
                 background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderLeft: `4px solid ${accentColor}`,
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                border: '2px solid #000000',
+                boxShadow: '3px 3px 0px #000000',
                 borderRadius: 8,
-                padding: '10px 12px',
+                padding: '12px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 6,
-                transition: 'all 0.15s ease',
+                gap: 8,
+                transition: 'all 0.1s ease',
               }}
             >
               <div className="panel__row panel__row--between" style={{ marginBottom: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span
                     style={{
-                      fontSize: 9,
-                      fontWeight: 600,
-                      background: badgeBg,
-                      color: badgeText,
-                      padding: '2px 6px',
-                      border: `1px solid ${badgeBorder}`,
+                      fontSize: 10,
+                      fontWeight: 800,
+                      background: accentColor,
+                      color: isCritical ? '#ffffff' : '#000000',
+                      padding: '2px 7px',
+                      border: '1.5px solid #000000',
+                      boxShadow: '1px 1px 0px #000000',
                       borderRadius: 4,
+                      textTransform: 'uppercase',
                     }}
                   >
                     {alert.source}
                   </span>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>
+                  <span style={{ fontSize: 13, fontWeight: 900, color: '#000000' }}>
                     {alert.eventType}
                   </span>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: '#64748b' }}>
-                  <Clock size={11} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700, color: '#525252' }}>
+                  <Clock size={12} strokeWidth={2.5} />
                   <span>{timeAgo(alert.issuedAt)}</span>
                 </div>
               </div>
 
-              <div style={{ fontSize: 11, fontWeight: 500, color: '#334155' }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: '#000000' }}>
                 📍 Area: {alert.area}
               </div>
 
-              <div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>
+              <div style={{ fontSize: 11, color: '#000000', fontWeight: 600, lineHeight: 1.45 }}>
                 {alert.description}
               </div>
             </div>

@@ -118,47 +118,50 @@ export default function CesiumGlobe() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative', background: '#ffffff', borderRadius: 14, overflow: 'hidden' }}>
-      {/* Apple-style Navigation Header */}
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative', background: '#ffffff', borderRadius: 16, overflow: 'hidden' }}>
+      {/* Neobrutalist Navigation Header */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '8px 14px',
+          padding: '10px 14px',
           background: '#ffffff',
-          borderBottom: '1px solid #e2e8f0',
+          borderBottom: '2.5px solid #000000',
           zIndex: 10,
         }}
       >
         {/* Left: Window identity & Engine badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', letterSpacing: '-0.2px' }}>
+          <span style={{ fontSize: 13, fontWeight: 900, color: '#000000', textTransform: 'uppercase', letterSpacing: '-0.3px' }}>
             3D Elevation Globe
           </span>
           <span
             style={{
               fontSize: 10,
-              fontWeight: 500,
-              background: '#f1f5f9',
-              color: '#475569',
+              fontWeight: 800,
+              background: 'var(--nb-yellow)',
+              color: '#000000',
               padding: '2px 8px',
-              borderRadius: 6,
-              border: '1px solid #e2e8f0',
+              borderRadius: 4,
+              border: '1.5px solid #000000',
+              boxShadow: '1.5px 1.5px 0px #000000',
+              textTransform: 'uppercase',
             }}
           >
             Cesium 3D Engine
           </span>
         </div>
 
-        {/* Center / Right: Apple Segmented Mode Switcher, Imagery & Controls */}
+        {/* Center / Right: Neobrutalist Mode Switcher, Imagery & Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {/* Spatial Mode Switcher Tabs */}
           <div
             style={{
               display: 'flex',
-              background: '#f1f5f9',
-              border: '1px solid #e2e8f0',
+              background: '#ffffff',
+              border: '2px solid #000000',
+              boxShadow: '2px 2px 0px #000000',
               borderRadius: 8,
               padding: 2,
               gap: 2,
@@ -168,15 +171,15 @@ export default function CesiumGlobe() {
               onClick={() => setMapMode('2d')}
               style={{
                 fontSize: 11,
-                fontWeight: mapMode === '2d' ? 600 : 500,
+                fontWeight: 800,
                 padding: '4px 12px',
-                border: 'none',
-                background: mapMode === '2d' ? '#ffffff' : 'transparent',
-                color: mapMode === '2d' ? '#0f172a' : '#64748b',
-                boxShadow: mapMode === '2d' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                border: mapMode === '2d' ? '1.5px solid #000000' : '1.5px solid transparent',
+                background: mapMode === '2d' ? 'var(--nb-mint)' : 'transparent',
+                color: '#000000',
+                boxShadow: mapMode === '2d' ? '1px 1px 0px #000000' : 'none',
                 borderRadius: 6,
                 cursor: 'pointer',
-                transition: 'all 0.15s ease',
+                transition: 'all 0.1s ease',
               }}
               title="Switch to 2D Vector Slippy Map"
             >
@@ -186,15 +189,15 @@ export default function CesiumGlobe() {
               onClick={() => setMapMode('3d')}
               style={{
                 fontSize: 11,
-                fontWeight: mapMode === '3d' ? 600 : 500,
+                fontWeight: 800,
                 padding: '4px 12px',
-                border: 'none',
-                background: mapMode === '3d' ? '#ffffff' : 'transparent',
-                color: mapMode === '3d' ? '#0f172a' : '#64748b',
-                boxShadow: mapMode === '3d' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                border: mapMode === '3d' ? '1.5px solid #000000' : '1.5px solid transparent',
+                background: mapMode === '3d' ? 'var(--nb-mint)' : 'transparent',
+                color: '#000000',
+                boxShadow: mapMode === '3d' ? '1px 1px 0px #000000' : 'none',
                 borderRadius: 6,
                 cursor: 'pointer',
-                transition: 'all 0.15s ease',
+                transition: 'all 0.1s ease',
               }}
               title="Switch to 3D Cesium Elevation Globe"
             >
@@ -206,8 +209,9 @@ export default function CesiumGlobe() {
           <div
             style={{
               display: 'flex',
-              background: '#f1f5f9',
-              border: '1px solid #e2e8f0',
+              background: '#ffffff',
+              border: '2px solid #000000',
+              boxShadow: '2px 2px 0px #000000',
               borderRadius: 8,
               padding: 2,
               gap: 2,
@@ -224,16 +228,16 @@ export default function CesiumGlobe() {
                 onClick={() => handleImagerySwitch(img.id as ImageryType)}
                 style={{
                   fontSize: 10,
-                  fontWeight: activeImagery === img.id ? 600 : 500,
+                  fontWeight: 800,
                   padding: '3px 8px',
-                  border: 'none',
-                  background: activeImagery === img.id ? '#ffffff' : 'transparent',
-                  color: activeImagery === img.id ? '#0f172a' : '#64748b',
-                  boxShadow: activeImagery === img.id ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                  border: activeImagery === img.id ? '1.5px solid #000000' : '1.5px solid transparent',
+                  background: activeImagery === img.id ? 'var(--nb-pink)' : 'transparent',
+                  color: activeImagery === img.id ? '#ffffff' : '#000000',
+                  boxShadow: activeImagery === img.id ? '1px 1px 0px #000000' : 'none',
                   borderRadius: 6,
                   cursor: 'pointer',
                   textTransform: 'uppercase',
-                  transition: 'all 0.15s ease',
+                  transition: 'all 0.1s ease',
                 }}
                 title={`Switch to ${img.label} base imagery`}
               >
@@ -246,24 +250,24 @@ export default function CesiumGlobe() {
           <button
             onClick={handleTerrainToggle}
             style={{
-              fontSize: 10,
-              fontWeight: 600,
-              padding: '4px 9px',
-              border: '1px solid',
-              borderColor: terrainActive ? '#bbf7d0' : '#e2e8f0',
-              background: terrainActive ? '#f0fdf4' : '#ffffff',
-              color: terrainActive ? '#15803d' : '#64748b',
+              fontSize: 11,
+              fontWeight: 800,
+              padding: '5px 10px',
+              border: '2px solid #000000',
+              background: terrainActive ? 'var(--nb-mint)' : '#ffffff',
+              color: '#000000',
               borderRadius: 8,
+              boxShadow: '2px 2px 0px #000000',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              transition: 'all 0.15s ease',
+              gap: 5,
+              transition: 'all 0.1s ease',
             }}
             title="Toggle 3D Elevation Terrain Mesh"
           >
             <span>⛰️</span>
-            <span>{terrainActive ? '3D DEM On' : 'Flat 2D'}</span>
+            <span>{terrainActive ? 'DEM ON' : 'FLAT 2D'}</span>
           </button>
 
           {/* Recenter Button */}
@@ -273,16 +277,17 @@ export default function CesiumGlobe() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: 28,
-              height: 28,
+              width: 30,
+              height: 30,
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
+              border: '2px solid #000000',
               borderRadius: 8,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              boxShadow: '2px 2px 0px #000000',
               cursor: 'pointer',
-              fontSize: 14,
-              color: '#334155',
-              transition: 'all 0.15s ease',
+              fontSize: 15,
+              fontWeight: 900,
+              color: '#000000',
+              transition: 'all 0.1s ease',
             }}
             title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
           >
@@ -293,7 +298,7 @@ export default function CesiumGlobe() {
 
       <div ref={containerRef} className="cesium-container" style={{ flex: 1, position: 'relative' }} />
 
-      {/* Floating Apple Camera & Zoom Controls on 3D Globe */}
+      {/* Floating Neobrutalist Camera & Zoom Controls on 3D Globe */}
       <div
         style={{
           position: 'absolute',
@@ -304,108 +309,115 @@ export default function CesiumGlobe() {
           flexDirection: 'column',
           background: '#ffffff',
           borderRadius: 8,
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+          border: '2.5px solid #000000',
+          boxShadow: '4px 4px 0px #000000',
           overflow: 'hidden',
         }}
       >
         <button
           onClick={() => zoomIn(0.4)}
           style={{
-            width: 32,
-            height: 32,
+            width: 34,
+            height: 34,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: '#ffffff',
             border: 'none',
-            borderBottom: '1px solid #f1f5f9',
+            borderBottom: '2px solid #000000',
             cursor: 'pointer',
-            color: '#0f172a',
-            transition: 'background 0.15s',
+            color: '#000000',
+            transition: 'background 0.1s',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
           title="Zoom In (+)"
         >
-          <Plus size={16} />
+          <Plus size={18} strokeWidth={2.5} />
         </button>
 
         <button
           onClick={() => zoomOut(0.5)}
           style={{
-            width: 32,
-            height: 32,
+            width: 34,
+            height: 34,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: '#ffffff',
             border: 'none',
-            borderBottom: '1px solid #f1f5f9',
+            borderBottom: '2px solid #000000',
             cursor: 'pointer',
-            color: '#0f172a',
-            transition: 'background 0.15s',
+            color: '#000000',
+            transition: 'background 0.1s',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
           title="Zoom Out (-)"
         >
-          <Minus size={16} />
+          <Minus size={18} strokeWidth={2.5} />
         </button>
 
         <button
           onClick={() => flyToFullGlobe()}
           style={{
-            width: 32,
-            height: 32,
+            width: 34,
+            height: 34,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: '#ffffff',
             border: 'none',
-            borderBottom: '1px solid #f1f5f9',
+            borderBottom: '2px solid #000000',
             cursor: 'pointer',
-            color: '#0284c7',
-            transition: 'background 0.15s',
+            color: '#000000',
+            transition: 'background 0.1s',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
           title="Full Planetary View (View Earth from Space)"
         >
-          <GlobeIcon size={15} />
+          <GlobeIcon size={17} strokeWidth={2.5} />
         </button>
 
         <button
           onClick={() => flyToUttarakhand()}
           style={{
-            width: 32,
-            height: 32,
+            width: 34,
+            height: 34,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: '#ffffff',
             border: 'none',
             cursor: 'pointer',
-            color: '#334155',
-            fontSize: 14,
-            fontWeight: 600,
-            transition: 'background 0.15s',
+            color: '#000000',
+            fontSize: 16,
+            fontWeight: 900,
+            transition: 'background 0.1s',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
           title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
         >
           ⌖
         </button>
       </div>
 
-      {/* Floating HUD Legend for GIS Layers */}
+      {/* Floating Neobrutalist HUD Legend for GIS Layers */}
       <div
         style={{
           position: 'absolute',
           bottom: 14,
           left: 14,
-          background: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(8px)',
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-          borderRadius: 8,
-          padding: '6px 12px',
-          color: '#0f172a',
+          background: '#ffffff',
+          border: '2.5px solid #000000',
+          boxShadow: '4px 4px 0px #000000',
+          borderRadius: 10,
+          padding: '8px 14px',
+          color: '#000000',
           fontSize: 11,
-          fontWeight: 500,
+          fontWeight: 800,
           display: 'flex',
           gap: 14,
           alignItems: 'center',
@@ -413,28 +425,28 @@ export default function CesiumGlobe() {
           pointerEvents: 'none',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#ef4444' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: '50%', background: 'var(--nb-pink)', border: '1px solid #000000' }} />
           <span>At-Risk Village</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#2563eb' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: '50%', background: 'var(--nb-mint)', border: '1px solid #000000' }} />
           <span>Safe Haven</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ display: 'inline-block', width: 12, height: 3, background: '#0284c7', borderRadius: 1 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ display: 'inline-block', width: 14, height: 4, background: '#0284c7', border: '1px solid #000000' }} />
           <span>Road Corridor</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: 2, background: '#10b981' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: 2, background: 'var(--nb-lime)', border: '1px solid #000000' }} />
           <span>IDRN Infrastructure</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#0284c7' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: '50%', background: 'var(--nb-cyan)', border: '1px solid #000000' }} />
           <span>CWC Gauge</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ display: 'inline-block', width: 10, height: 6, background: 'rgba(234, 88, 12, 0.3)', border: '1px solid #ea580c', borderRadius: 1 }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ display: 'inline-block', width: 12, height: 8, background: 'var(--nb-orange)', border: '1.5px solid #000000', borderRadius: 2 }} />
           <span>Hazard Polygon</span>
         </div>
       </div>

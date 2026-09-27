@@ -81,19 +81,28 @@ export default function RightPanel() {
 
   return (
     <aside className="right-panel">
-      {/* Clean Minimal Header */}
+      {/* Neobrutalist Window Titlebar */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px 16px',
-          borderBottom: '1px solid #e2e8f0',
-          background: '#ffffff',
+          padding: '10px 14px',
+          borderBottom: '2.5px solid #000000',
+          background: 'var(--nb-mint)',
+          userSelect: 'none',
         }}
       >
-        <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
-          {getWindowTitle()}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Retro Window Dots */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#000000' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#000000' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#000000' }} />
+          </div>
+          <span style={{ fontSize: 13, fontWeight: 900, color: '#000000', textTransform: 'uppercase', letterSpacing: '-0.3px' }}>
+            {getWindowTitle()}
+          </span>
         </div>
         <button
           onClick={handleClose}
@@ -101,26 +110,27 @@ export default function RightPanel() {
             width: 26,
             height: 26,
             borderRadius: 6,
-            border: '1px solid #e2e8f0',
-            background: '#ffffff',
+            border: '2px solid #000000',
+            boxShadow: '2px 2px 0px #000000',
+            background: 'var(--nb-pink)',
+            color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#64748b',
             cursor: 'pointer',
-            transition: 'all 0.15s ease',
+            transition: 'all 0.1s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#f1f5f9';
-            e.currentTarget.style.color = '#0f172a';
+            e.currentTarget.style.transform = 'translate(-1px, -1px)';
+            e.currentTarget.style.boxShadow = '3px 3px 0px #000000';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#ffffff';
-            e.currentTarget.style.color = '#64748b';
+            e.currentTarget.style.transform = 'none';
+            e.currentTarget.style.boxShadow = '2px 2px 0px #000000';
           }}
-          title="Dismiss View"
+          title="Dismiss Panel"
         >
-          <X size={14} />
+          <X size={14} strokeWidth={3} />
         </button>
       </div>
 
