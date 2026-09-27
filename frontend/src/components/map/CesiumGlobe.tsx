@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { Plus, Minus, Globe as GlobeIcon } from 'lucide-react';
 import { initViewer, destroyViewer, switchViewerImagery, switchViewerTerrain, getViewer } from '../../cesium/viewer';
-import { flyToUttarakhand } from '../../cesium/camera';
+import { flyToUttarakhand, zoomIn, zoomOut, flyToFullGlobe } from '../../cesium/camera';
 import {
   renderHabitations,
   renderRelocationSites,
@@ -291,6 +292,104 @@ export default function CesiumGlobe() {
       </div>
 
       <div ref={containerRef} className="cesium-container" style={{ flex: 1, position: 'relative' }} />
+
+      {/* Floating Apple Camera & Zoom Controls on 3D Globe */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 60,
+          right: 14,
+          zIndex: 40,
+          display: 'flex',
+          flexDirection: 'column',
+          background: '#ffffff',
+          borderRadius: 8,
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+          overflow: 'hidden',
+        }}
+      >
+        <button
+          onClick={() => zoomIn(0.4)}
+          style={{
+            width: 32,
+            height: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#ffffff',
+            border: 'none',
+            borderBottom: '1px solid #f1f5f9',
+            cursor: 'pointer',
+            color: '#0f172a',
+            transition: 'background 0.15s',
+          }}
+          title="Zoom In (+)"
+        >
+          <Plus size={16} />
+        </button>
+
+        <button
+          onClick={() => zoomOut(0.5)}
+          style={{
+            width: 32,
+            height: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#ffffff',
+            border: 'none',
+            borderBottom: '1px solid #f1f5f9',
+            cursor: 'pointer',
+            color: '#0f172a',
+            transition: 'background 0.15s',
+          }}
+          title="Zoom Out (-)"
+        >
+          <Minus size={16} />
+        </button>
+
+        <button
+          onClick={() => flyToFullGlobe()}
+          style={{
+            width: 32,
+            height: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#ffffff',
+            border: 'none',
+            borderBottom: '1px solid #f1f5f9',
+            cursor: 'pointer',
+            color: '#0284c7',
+            transition: 'background 0.15s',
+          }}
+          title="Full Planetary View (View Earth from Space)"
+        >
+          <GlobeIcon size={15} />
+        </button>
+
+        <button
+          onClick={() => flyToUttarakhand()}
+          style={{
+            width: 32,
+            height: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#ffffff',
+            border: 'none',
+            cursor: 'pointer',
+            color: '#334155',
+            fontSize: 14,
+            fontWeight: 600,
+            transition: 'background 0.15s',
+          }}
+          title="Recenter Camera to Uttarakhand (Chamoli / Rudraprayag)"
+        >
+          ⌖
+        </button>
+      </div>
 
       {/* Floating HUD Legend for GIS Layers */}
       <div

@@ -1,0 +1,112 @@
+OpenBUSL License (Business Source License — Non-Commercial & Community Edition)
+
+Version 1.1 (Modified: Perpetual / Sole Licensor Authority)
+
+Copyright (c) 2026 The ResQ-GIS Project Authors and Licensor. All rights reserved.
+
+================================================================================
+1. PREAMBLE & OWNERSHIP
+================================================================================
+
+This License governs the use, copying, modification, redistribution, and
+contribution to the software known as "ResQ-GIS" (including all source code,
+algorithms, machine learning models, frontend components, spatial datasets,
+documentation, and associated media).
+
+The Licensor retains full, exclusive, and unencumbered intellectual property
+rights, copyright, and governance over this software. No title or ownership in
+the software is transferred to any licensee or contributor.
+
+================================================================================
+2. PERMITTED USE (NON-COMMERCIAL, RESEARCH & HUMANITARIAN)
+================================================================================
+
+You are hereby granted a non-exclusive, worldwide, royalty-free, perpetual
+license to use, copy, inspect, modify, and distribute the software solely for
+Non-Commercial Purposes, subject to the conditions set forth herein:
+
+  (a) Research & Education: Academic research, non-commercial scientific study,
+      university teaching, coursework, and personal educational projects.
+
+  (b) Humanitarian & Public Disaster Relief: Non-profit humanitarian aid,
+      emergency rescue preparedness, civil defense testing, and disaster
+      management research by non-commercial public safety authorities.
+
+  (c) Public Demonstration & Evaluation: Running the software locally or in
+      non-monetized staging environments for technology demonstration and
+      technical evaluation.
+
+================================================================================
+3. COMMERCIAL USE PROHIBITION
+================================================================================
+
+Any Commercial Use of the software is strictly prohibited without a separate,
+expressly written commercial license signed by the Licensor.
+
+"Commercial Use" includes, but is not limited to:
+  (a) Offering the software or any derivative work as a paid service,
+      Software-as-a-Service (SaaS), hosted service, or cloud API;
+  (b) Incorporating the software into any commercial product, proprietary suite,
+      or revenue-generating service;
+  (c) Charging subscription, access, deployment, or licensing fees for the
+      software or services directly built upon it;
+  (d) Reselling, sublicensing, or distributing the software for monetary gain.
+
+To obtain a commercial license, contact the Licensor directly.
+
+================================================================================
+4. COMMUNITY CONTRIBUTIONS
+================================================================================
+
+Community participation, code contributions, pull requests, bug fixes, and
+feature enhancements are welcome under the following conditions:
+
+  (a) All contributions submitted to the project (via pull request, patch,
+      or commit) are contributed under the terms of this License.
+  (b) By submitting a contribution, the contributor grants the Licensor a
+      perpetual, worldwide, non-exclusive, royalty-free, transferable, and
+      sublicensable license to use, reproduce, modify, merge, publish, and
+      distribute the contribution as part of ResQ-GIS.
+  (c) The Licensor retains full rights and authority over the project's
+      roadmap, distribution, governance, and licensing.
+
+================================================================================
+5. NO AUTOMATIC CHANGE DATE (PERPETUAL LICENSOR AUTHORITY)
+================================================================================
+
+Unlike standard Business Source License (BUSL 1.1) provisions that mandate an
+automatic timer-based Change Date:
+
+  THERE IS NO EXPIRATION DATE OR AUTOMATIC CONVERSION OF THIS LICENSE.
+  THIS LICENSE DOES NOT CHANGE OR REVERT TO ANY OTHER LICENSE (WHETHER GPL,
+  APACHE, MIT, OR OTHERWISE) UNLESS AND UNTIL THE LICENSOR EXPLICITLY,
+  SOLEMNLY, AND IN WRITING DECLARES A CHANGE OF LICENSE.
+
+The Licensor holds full and perpetual rights to maintain, amend, or relicense
+the project at the Licensor's sole discretion.
+
+================================================================================
+6. REDISTRIBUTION CONDITIONS
+================================================================================
+
+You may redistribute copies or modifications of the software for Non-Commercial
+Purposes, provided that you:
+  (a) Retain this complete LICENSE text in all copies or substantial portions;
+  (b) Retain all prominent copyright, provenance, and authorship notices;
+  (c) Clearly state any modifications made to the original codebase;
+  (d) Do not represent demo, synthetic, or simulation data as certified official
+      government alerts without verified agency authorization.
+
+================================================================================
+7. DISCLAIMER OF WARRANTIES & LIMITATION OF LIABILITY
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+RESQ-GIS IS AN AI/GIS DECISION-SUPPORT TOOL FOR SIMULATION, RESEARCH, AND
+STAGING. IN NO EVENT SHALL THE COPYRIGHT HOLDER, LICENSOR, OR CONTRIBUTORS BE
+LIABLE FOR ANY CLAIM, DAMAGES, LOSS OF LIFE, INJURY, OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF,
+OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

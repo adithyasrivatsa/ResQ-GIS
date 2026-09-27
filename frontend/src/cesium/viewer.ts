@@ -72,6 +72,21 @@ export function initViewer(container: HTMLElement): Cesium.Viewer {
   scene.fog.density = 0.0002;
   scene.globe.depthTestAgainstTerrain = false;
 
+  // Unconstrained zoom camera controls: allows full zoom out to deep space / full planetary view
+  const controller = scene.screenSpaceCameraController;
+  controller.enableZoom = true;
+  controller.enableTranslate = true;
+  controller.enableTilt = true;
+  controller.enableRotate = true;
+  controller.enableCollisionDetection = false; // prevents terrain collision clamping camera when zooming out
+  controller.maximumZoomDistance = 60000000; // 60,000 km altitude (full Earth & space view)
+  controller.minimumZoomDistance = 10; // allows close ground inspection
+  controller.zoomEventTypes = [
+    Cesium.CameraEventType.RIGHT_DRAG,
+    Cesium.CameraEventType.WHEEL,
+    Cesium.CameraEventType.PINCH,
+  ];
+
   (window as any).cesiumViewer = viewerInstance;
 
   return viewerInstance;

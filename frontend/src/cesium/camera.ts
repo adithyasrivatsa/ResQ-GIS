@@ -94,3 +94,41 @@ export function flyToState(stateName: string) {
 export function resetCamera() {
   flyToUttarakhand();
 }
+
+/**
+ * Zoom into the current camera target by a proportional fraction of its altitude
+ */
+export function zoomIn(amount: number = 0.5) {
+  const viewer = getViewer();
+  if (!viewer) return;
+  const currentHeight = viewer.camera.positionCartographic.height;
+  viewer.camera.zoomIn(Math.max(currentHeight * amount, 200));
+}
+
+/**
+ * Zoom out from the current camera target by a proportional fraction of its altitude
+ */
+export function zoomOut(amount: number = 0.5) {
+  const viewer = getViewer();
+  if (!viewer) return;
+  const currentHeight = viewer.camera.positionCartographic.height;
+  viewer.camera.zoomOut(Math.max(currentHeight * amount, 200));
+}
+
+/**
+ * Fly out to a high-altitude full globe planetary view (12,000km altitude)
+ */
+export function flyToFullGlobe() {
+  const viewer = getViewer();
+  if (!viewer) return;
+
+  viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(79.3, 22.0, 12000000), // 12,000 km altitude showing Earth
+    orientation: {
+      heading: Cesium.Math.toRadians(0),
+      pitch: Cesium.Math.toRadians(-90),
+      roll: 0,
+    },
+    duration: 1.8,
+  });
+}

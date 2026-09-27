@@ -79,3 +79,14 @@ SIH2ndPS/
 ```
 
 > ⚠️ **DEMO MODE**: The application runs in demo mode by default with simulated data. Demo data is never presented as live government information.
+
+## License
+
+This project is licensed under the **OpenBUSL License (Business Source License — Non-Commercial & Community Edition)**.
+
+- **Permitted**: Free for non-commercial research, education, humanitarian relief, civil defense, and open community contributions.
+- **Contributions**: Contributions and pull requests are welcomed under the terms of this license.
+- **Commercial Restrictions**: Commercial deployment, paid SaaS, and proprietary licensing require explicit written authorization from the Licensor.
+- **Perpetual Authority**: The Licensor retains full, unencumbered rights; no automatic expiration or conversion of license occurs without explicit written declaration by the Licensor.
+
+See the full text in [`LICENSE`](./LICENSE).
