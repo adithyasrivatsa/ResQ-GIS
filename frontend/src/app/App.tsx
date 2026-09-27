@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import TopBar from '../components/layout/TopBar';
 import LeftNav from '../components/layout/LeftNav';
-import FilterBar from '../components/layout/FilterBar';
 import BottomDataTable from '../components/layout/BottomDataTable';
 import RightOperationsPanel from '../components/layout/RightOperationsPanel';
 import CesiumGlobe from '../components/map/CesiumGlobe';
@@ -9,26 +8,35 @@ import Map2D from '../components/map/Map2D';
 import { useAppStore } from '../store/useAppStore';
 
 export default function App() {
-  const { loadData, mapMode } = useAppStore();
+  const { loadData, mapMode, theme, autoRefreshInterval } = useAppStore();
 
   useEffect(() => {
     loadData();
-  }, [loadData]);
+    // Initialize theme attribute on root element
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [loadData, theme]);
+
+  // Periodic background telemetry refresh
+  useEffect(() => {
+    if (autoRefreshInterval <= 0) return;
+    const timer = setInterval(() => {
+      loadData();
+    }, autoRefreshInterval * 1000);
+    return () => clearInterval(timer);
+  }, [autoRefreshInterval, loadData]);
 
   return (
     <div className="app">
-      {/* 4-Card Neobrutalist Header Bar */}
+      {/* Sleek Unified Command Header */}
       <TopBar />
 
-      {/* Main 3-Column Tactical Workstation Layout */}
+      {/* Main Tactical Workstation Layout */}
       <div className="app__body">
-        {/* Left Navigation Bar with Quick Actions */}
+        {/* Bendable Left Navigation Sidebar */}
         <LeftNav />
 
-        {/* Center Column: Filter Bar + Interactive Map + Bottom Data Table */}
+        {/* Center Column: Interactive GIS Map & Foldable Bottom Data Table */}
         <main className="app__center">
-          <FilterBar />
-
           <div className="app__map-wrapper">
             <div
               style={{
@@ -56,13 +64,13 @@ export default function App() {
             </div>
           </div>
 
+          {/* Bendable High-Density Bottom Data Table */}
           <BottomDataTable />
         </main>
 
-        {/* Right Operations Panel (Situation KPIs, Live Feeds, Risk Donut, Recent Alerts) */}
+        {/* Bendable Right Operations Desk */}
         <RightOperationsPanel />
       </div>
     </div>
   );
 }
-

@@ -39,55 +39,39 @@ export default function AnalysisPanel() {
   return (
     <div className="panel">
       {/* Header Banner */}
-      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
-        <div className="panel__row panel__row--between" style={{ marginBottom: 0 }}>
+      <div className="panel__section" style={{ background: 'var(--bg-subtle)' }}>
+        <div className="panel__row panel__row--between">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
-                width: 36,
-                height: 36,
-                background: 'var(--nb-yellow)',
-                border: '2px solid #000000',
-                boxShadow: '2px 2px 0px #000000',
-                borderRadius: 8,
+                width: 34,
+                height: 34,
+                background: 'var(--accent-amber-subtle)',
+                border: '1px solid var(--accent-amber)',
+                borderRadius: 'var(--radius-md)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#000000',
+                color: 'var(--accent-amber)',
               }}
             >
-              <Trophy size={18} strokeWidth={2.5} />
+              <Trophy size={18} strokeWidth={2} />
             </div>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
                 TOPSIS Leaderboard
               </div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
                 Multi-Criteria Evacuation Staging
               </div>
             </div>
           </div>
 
           <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 5,
-              background: weightsOpen ? 'var(--nb-mint)' : '#ffffff',
-              color: '#000000',
-              border: '2px solid #000000',
-              boxShadow: '2px 2px 0px #000000',
-              padding: '6px 12px',
-              borderRadius: 8,
-              fontSize: 11,
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              transition: 'all 0.1s ease',
-            }}
+            className={`btn-action ${weightsOpen ? 'btn-action--primary' : ''}`}
             onClick={() => setWeightsOpen(!weightsOpen)}
           >
-            <Sliders size={13} strokeWidth={2.5} />
+            <Sliders size={13} strokeWidth={2} />
             <span>{weightsOpen ? 'Close' : 'Weights'}</span>
           </button>
         </div>
@@ -95,25 +79,26 @@ export default function AnalysisPanel() {
 
       {/* Dynamic Weight Sliders Drawer */}
       {weightsOpen && (
-        <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', borderBottom: '2px solid #000000', padding: '14px 16px' }}>
+        <div className="panel__section" style={{ background: 'var(--bg-subtle)' }}>
           <div className="panel__row panel__row--between" style={{ marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 800, color: '#000000', textTransform: 'uppercase' }}>DECISION CRITERIA WEIGHTS</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+              Decision Criteria Weights
+            </span>
             <button
               onClick={handleResetWeights}
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#000000',
+                color: 'var(--accent-blue)',
                 fontSize: 11,
-                fontWeight: 800,
+                fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 4,
-                textDecoration: 'underline',
               }}
             >
-              <RotateCcw size={11} strokeWidth={2.5} />
+              <RotateCcw size={11} />
               <span>Reset</span>
             </button>
           </div>
@@ -127,16 +112,15 @@ export default function AnalysisPanel() {
             ].map((slider) => (
               <div key={slider.key}>
                 <div className="panel__row panel__row--between" style={{ fontSize: 11, marginBottom: 2 }}>
-                  <span style={{ color: '#000000', fontWeight: 800 }}>{slider.label}:</span>
+                  <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{slider.label}:</span>
                   <span
                     style={{
-                      background: 'var(--nb-yellow)',
-                      color: '#000000',
-                      border: '1.5px solid #000000',
-                      boxShadow: '1px 1px 0px #000000',
-                      padding: '2px 6px',
-                      borderRadius: 4,
-                      fontWeight: 800,
+                      background: 'var(--accent-amber-subtle)',
+                      color: 'var(--accent-amber)',
+                      border: '1px solid var(--border-color)',
+                      padding: '1px 6px',
+                      borderRadius: 'var(--radius-pill)',
+                      fontWeight: 700,
                       fontSize: 10,
                     }}
                   >
@@ -150,7 +134,7 @@ export default function AnalysisPanel() {
                   step="0.05"
                   value={slider.val}
                   onChange={(e) => handleWeightChange(slider.key as any, parseFloat(e.target.value))}
-                  style={{ width: '100%', height: 6, marginTop: 4, accentColor: '#000000' }}
+                  style={{ width: '100%', height: 6, marginTop: 4, accentColor: 'var(--accent-blue)' }}
                 />
               </div>
             ))}
@@ -159,83 +143,86 @@ export default function AnalysisPanel() {
       )}
 
       {/* Ranked List */}
-      <div className="panel__list">
+      <div className="panel__list" style={{ padding: '12px', gap: 8 }}>
         {prioritizationResults.map((item) => {
           const hab = habitations.find((h) => h.id === item.habitationId);
           const site = relocationSites.find((s) => s.id === item.nearestRelocationSite);
 
           const rankBadgeBg =
             item.rank === 1
-              ? 'var(--nb-pink)'
+              ? 'var(--accent-rose-subtle)'
               : item.rank === 2
-              ? 'var(--nb-orange)'
-              : 'var(--nb-yellow)';
-          const rankBadgeColor = item.rank === 1 ? '#ffffff' : '#000000';
+              ? 'var(--accent-amber-subtle)'
+              : 'var(--bg-subtle)';
+          const rankBadgeColor =
+            item.rank === 1
+              ? 'var(--accent-rose)'
+              : item.rank === 2
+              ? 'var(--accent-amber)'
+              : 'var(--text-secondary)';
 
           return (
             <div
               key={item.habitationId}
               style={{
-                background: '#ffffff',
-                border: '2px solid #000000',
-                boxShadow: '3px 3px 0px #000000',
-                borderRadius: 8,
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-color)',
+                boxShadow: 'var(--shadow-xs)',
+                borderRadius: 'var(--radius-md)',
                 padding: '12px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 8,
-                transition: 'all 0.1s ease',
+                transition: 'all 0.15s ease',
               }}
             >
               {/* Card Header */}
-              <div className="panel__row panel__row--between" style={{ marginBottom: 0 }}>
+              <div className="panel__row panel__row--between">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span
                     style={{
                       fontSize: 11,
-                      fontWeight: 900,
-                      padding: '3px 8px',
+                      fontWeight: 700,
+                      padding: '2px 7px',
                       background: rankBadgeBg,
                       color: rankBadgeColor,
-                      border: '1.5px solid #000000',
-                      boxShadow: '1.5px 1.5px 0px #000000',
-                      borderRadius: 6,
+                      border: '1px solid var(--border-color)',
+                      borderRadius: 'var(--radius-sm)',
                     }}
                   >
                     #{item.rank}
                   </span>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 900, color: '#000000' }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
                       {item.name}
                     </div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
+                    <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
                       {item.district} &bull; Pop: {item.population.toLocaleString()}
                     </div>
                   </div>
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, color: '#525252', textTransform: 'uppercase' }}>TOPSIS SCORE</div>
-                  <div style={{ fontSize: 15, fontWeight: 900, color: '#000000', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>TOPSIS</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                     {item.score.toFixed(3)}
                   </div>
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div style={{ width: '100%', height: 8, background: '#ffffff', border: '1.5px solid #000000', borderRadius: 9999, overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: 6, background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-pill)', overflow: 'hidden' }}>
                 <div
                   style={{
                     width: `${Math.min(item.score * 100, 100)}%`,
                     height: '100%',
-                    background: item.score >= 0.7 ? 'var(--nb-pink)' : item.score >= 0.4 ? 'var(--nb-orange)' : 'var(--nb-mint)',
-                    borderRight: '1.5px solid #000000',
+                    background: item.score >= 0.7 ? 'var(--accent-rose)' : item.score >= 0.4 ? 'var(--accent-amber)' : 'var(--accent-emerald)',
                   }}
                 />
               </div>
 
               {/* Factor reasoning */}
-              <div style={{ fontSize: 11, color: '#000000', fontWeight: 600, lineHeight: 1.4 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
                 <strong>Factors:</strong> {item.reason}
               </div>
 
@@ -246,41 +233,26 @@ export default function AnalysisPanel() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    background: 'var(--nb-canvas-subtle)',
-                    border: '1.5px solid #000000',
-                    borderRadius: 6,
-                    padding: '8px 10px',
+                    background: 'var(--bg-subtle)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '6px 10px',
                     marginTop: 2,
                   }}
                 >
-                  <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
-                    Haven: <strong style={{ color: '#000000' }}>{site.name}</strong> ({site.distanceFromAffected} km)
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                    Haven: <strong style={{ color: 'var(--text-primary)' }}>{site.name}</strong> ({site.distanceFromAffected} km)
                   </div>
                   <button
                     onClick={() => {
                       selectHabitation(item.habitationId);
                       if (hab) flyToHabitation(hab.location.lng, hab.location.lat);
                     }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 4,
-                      background: 'var(--nb-yellow)',
-                      border: '1.5px solid #000000',
-                      boxShadow: '1.5px 1.5px 0px #000000',
-                      borderRadius: 6,
-                      padding: '4px 10px',
-                      fontSize: 10,
-                      fontWeight: 800,
-                      color: '#000000',
-                      cursor: 'pointer',
-                      transition: 'all 0.1s ease',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-mint)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
+                    className="btn-action"
+                    style={{ padding: '3px 8px', fontSize: 10 }}
                   >
                     <span>View</span>
-                    <ArrowRight size={11} strokeWidth={2.5} />
+                    <ArrowRight size={11} />
                   </button>
                 </div>
               )}

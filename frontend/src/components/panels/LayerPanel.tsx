@@ -2,10 +2,10 @@ import { Eye, EyeOff, Layers } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  base: 'BASE TERRAIN & MAPS',
-  hazard: 'HAZARD OVERLAYS (ISRO/GSI)',
-  infrastructure: 'TRANSPORT & EVAC CORRIDORS',
-  operational: 'OPERATIONAL ZONES',
+  base: 'Base Terrain & Maps',
+  hazard: 'Hazard Overlays (ISRO / GSI)',
+  infrastructure: 'Transport & Evacuation Corridors',
+  operational: 'Operational Zones',
 };
 
 export default function LayerPanel() {
@@ -15,52 +15,51 @@ export default function LayerPanel() {
   return (
     <div className="panel">
       {/* Header */}
-      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
+      <div className="panel__section" style={{ background: 'var(--bg-subtle)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div
             style={{
-              width: 36,
-              height: 36,
-              background: 'var(--nb-yellow)',
-              border: '2px solid #000000',
-              boxShadow: '2px 2px 0px #000000',
-              borderRadius: 8,
+              width: 34,
+              height: 34,
+              background: 'var(--accent-blue-subtle)',
+              border: '1px solid var(--accent-blue)',
+              borderRadius: 'var(--radius-md)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#000000',
+              color: 'var(--accent-blue)',
             }}
           >
-            <Layers size={18} strokeWidth={2.5} />
+            <Layers size={18} strokeWidth={2} />
           </div>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
               GIS Layer Stack
             </div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
-              Toggle Active Geographic Overlays
+            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+              Geographic spatial data overlays
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ padding: '14px 16px' }}>
+      <div style={{ padding: '14px 16px', overflowY: 'auto' }}>
         {categories.map((cat) => (
           <div key={cat} style={{ marginBottom: 16 }}>
             <div
               style={{
-                fontSize: 11,
-                fontWeight: 900,
-                color: '#000000',
+                fontSize: 10,
+                fontWeight: 700,
+                color: 'var(--text-muted)',
                 marginBottom: 8,
-                letterSpacing: '0.2px',
+                letterSpacing: '0.4px',
                 textTransform: 'uppercase',
               }}
             >
               {CATEGORY_LABELS[cat] || (cat ? cat.toUpperCase() : 'OVERLAYS')}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {layers
                 .filter((l) => (l.category || 'hazard') === cat)
                 .map((layer) => (
@@ -71,44 +70,38 @@ export default function LayerPanel() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      background: layer.visible ? 'var(--nb-mint-light)' : '#ffffff',
-                      border: '2px solid #000000',
-                      boxShadow: layer.visible ? '3px 3px 0px #000000' : '2px 2px 0px #000000',
-                      borderRadius: 8,
-                      padding: '9px 12px',
+                      background: layer.visible ? 'var(--accent-blue-subtle)' : 'var(--bg-surface)',
+                      border: layer.visible ? '1px solid var(--accent-blue)' : '1px solid var(--border-color)',
+                      boxShadow: 'var(--shadow-xs)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '8px 12px',
                       cursor: 'pointer',
                       textAlign: 'left',
-                      transition: 'all 0.1s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!layer.visible) e.currentTarget.style.background = 'var(--nb-canvas-subtle)';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!layer.visible) e.currentTarget.style.background = '#ffffff';
+                      transition: 'all 0.15s ease',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <div
                         style={{
-                          width: 26,
-                          height: 26,
-                          background: layer.visible ? 'var(--nb-mint)' : '#f4f4f5',
-                          border: '1.5px solid #000000',
-                          color: '#000000',
-                          borderRadius: 6,
+                          width: 24,
+                          height: 24,
+                          background: layer.visible ? 'var(--accent-blue)' : 'var(--bg-subtle)',
+                          border: '1px solid var(--border-color)',
+                          color: layer.visible ? '#ffffff' : 'var(--text-muted)',
+                          borderRadius: 'var(--radius-xs)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          transition: 'all 0.1s ease',
+                          transition: 'all 0.15s ease',
                         }}
                       >
-                        {layer.visible ? <Eye size={14} strokeWidth={2.5} /> : <EyeOff size={14} strokeWidth={2.5} />}
+                        {layer.visible ? <Eye size={13} strokeWidth={2} /> : <EyeOff size={13} strokeWidth={2} />}
                       </div>
                       <span
                         style={{
                           fontSize: 12,
-                          fontWeight: 800,
-                          color: '#000000',
+                          fontWeight: 600,
+                          color: layer.visible ? 'var(--accent-blue)' : 'var(--text-primary)',
                         }}
                       >
                         {layer.name}
@@ -118,15 +111,14 @@ export default function LayerPanel() {
                     <span
                       style={{
                         fontSize: 10,
-                        fontWeight: 800,
-                        background: layer.visible ? 'var(--nb-yellow)' : '#f4f4f5',
-                        color: '#000000',
-                        border: '1.5px solid #000000',
-                        boxShadow: '1px 1px 0px #000000',
+                        fontWeight: 700,
+                        background: layer.visible ? 'var(--accent-emerald-subtle)' : 'var(--bg-subtle)',
+                        color: layer.visible ? 'var(--accent-emerald)' : 'var(--text-muted)',
+                        border: '1px solid var(--border-color)',
                         padding: '2px 8px',
-                        borderRadius: 6,
+                        borderRadius: 'var(--radius-pill)',
                         textTransform: 'uppercase',
-                        transition: 'all 0.1s ease',
+                        transition: 'all 0.15s ease',
                       }}
                     >
                       {layer.visible ? 'Active' : 'Hidden'}

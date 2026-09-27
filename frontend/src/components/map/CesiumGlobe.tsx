@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Plus, Minus, Globe as GlobeIcon } from 'lucide-react';
-import { initViewer, destroyViewer, switchViewerImagery, switchViewerTerrain, getViewer } from '../../cesium/viewer';
+import { initViewer, destroyViewer, switchViewerImagery, switchViewerTerrain, getViewer, setTerrainExaggeration } from '../../cesium/viewer';
 import { flyToUttarakhand, zoomIn, zoomOut, flyToFullGlobe } from '../../cesium/camera';
 import {
   renderHabitations,
@@ -40,6 +40,7 @@ export default function CesiumGlobe() {
     getLayerVisibilityMap,
     mapMode,
     setMapMode,
+    terrainExaggeration,
   } = useAppStore();
 
 
@@ -48,6 +49,9 @@ export default function CesiumGlobe() {
     if (!containerRef.current) return;
 
     initViewer(containerRef.current);
+
+    // Apply initial terrain exaggeration
+    setTerrainExaggeration(terrainExaggeration);
 
     // Fly to Uttarakhand on load
     flyToUttarakhand();
@@ -65,6 +69,11 @@ export default function CesiumGlobe() {
       destroyViewer();
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Dynamically update terrain relief exaggeration when changed in Settings
+  useEffect(() => {
+    setTerrainExaggeration(terrainExaggeration);
+  }, [terrainExaggeration]);
 
   // When mapMode is '3d', ensure Cesium viewer recalculates its canvas dimensions
   useEffect(() => {

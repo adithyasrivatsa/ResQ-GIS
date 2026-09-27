@@ -20,6 +20,8 @@ import type {
   SystemProvidersStatusResponse,
   MLStatusResponse,
   DynamicHazardAssessment,
+  WorkspaceFolder,
+  SurveillanceZone,
 } from '../types';
 import { DEMO_HABITATIONS } from '../data/habitations';
 import { DEMO_RELOCATION_SITES } from '../data/relocationSites';
@@ -28,9 +30,36 @@ import { DEMO_WEATHER } from '../data/weather';
 import { DEMO_RIVER_STATIONS } from '../data/rivers';
 import { DEMO_HAZARDS } from '../data/hazards';
 import { DEFAULT_LAYERS } from '../data/layers';
+import { INITIAL_WORKSPACES, INITIAL_SURVEILLANCE_ZONES } from '../data/workspaces';
 import { api } from '../services/api';
 
 interface AppState {
+  // Theme & Appearance
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
+
+  // Bendable / Collapsible Panels
+  isLeftNavCollapsed: boolean;
+  toggleLeftNav: () => void;
+  isRightPanelCollapsed: boolean;
+  toggleRightPanel: () => void;
+  bottomTableState: 'collapsed' | 'normal' | 'expanded';
+  setBottomTableState: (state: 'collapsed' | 'normal' | 'expanded') => void;
+
+  // Workspaces & Regional Folders
+  workspaces: WorkspaceFolder[];
+  activeWorkspaceId: string;
+  setActiveWorkspaceId: (id: string) => void;
+  addWorkspace: (workspace: WorkspaceFolder) => void;
+
+  // Surveillance & Region Marking
+  isSurveillanceActive: boolean;
+  toggleSurveillance: () => void;
+  surveillanceZones: SurveillanceZone[];
+  activeSurveillanceZone: SurveillanceZone | null;
+  setActiveSurveillanceZone: (zone: SurveillanceZone | null) => void;
+  addSurveillanceZone: (zone: SurveillanceZone) => void;
+
   // Navigation & Spatial Engine Mode
   activeNav: NavSection;
   setActiveNav: (nav: NavSection) => void;
@@ -45,11 +74,19 @@ interface AppState {
   selectedState: string;
   selectedDistrict: string;
   selectedBlock: string | null;
+  selectedHazardType: string | null;
   adminHierarchy: AdministrativeHierarchyResponse | null;
   setSelectedRegion: (region: string) => void;
   setSelectedState: (state: string) => void;
   setSelectedDistrict: (district: string) => void;
   setSelectedBlock: (block: string | null) => void;
+  setSelectedHazardType: (type: string | null) => void;
+
+  // Visual & Operational Settings
+  terrainExaggeration: number;
+  setTerrainExaggeration: (factor: number) => void;
+  autoRefreshInterval: number;
+  setAutoRefreshInterval: (seconds: number) => void;
 
   // Search
   searchQuery: string;
@@ -96,6 +133,7 @@ interface AppState {
 
   // Actions
   loadData: () => Promise<void>;
+  loadAllData: () => Promise<void>;
   loadWeather: (district: string) => Promise<void>;
   loadProvidersDetailedStatus: () => Promise<void>;
   loadMLStatus: () => Promise<void>;
@@ -122,6 +160,52 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
+  // Theme & Appearance
+  theme: 'light',
+  toggleTheme: () => {
+    const next = get().theme === 'light' ? 'dark' : 'light';
+    set({ theme: next });
+    document.documentElement.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('resq_theme', next);
+    } catch {}
+  },
+
+  // Bendable / Collapsible Panels
+  isLeftNavCollapsed: false,
+  toggleLeftNav: () => set((state) => ({ isLeftNavCollapsed: !state.isLeftNavCollapsed })),
+  isRightPanelCollapsed: false,
+  toggleRightPanel: () => set((state) => ({ isRightPanelCollapsed: !state.isRightPanelCollapsed })),
+  bottomTableState: 'normal',
+  setBottomTableState: (bState) => set({ bottomTableState: bState }),
+
+  // Workspaces & Regional Folders
+  workspaces: INITIAL_WORKSPACES,
+  activeWorkspaceId: 'ws-chamoli',
+  setActiveWorkspaceId: (id) => {
+    const ws = get().workspaces.find((w) => w.id === id);
+    if (ws) {
+      set({ activeWorkspaceId: id, selectedDistrict: ws.district });
+      get().loadWeather(ws.district);
+    } else {
+      set({ activeWorkspaceId: id });
+    }
+  },
+  addWorkspace: (workspace) =>
+    set((state) => ({ workspaces: [workspace, ...state.workspaces], activeWorkspaceId: workspace.id })),
+
+  // Surveillance & Region Marking
+  isSurveillanceActive: false,
+  toggleSurveillance: () => set((state) => ({ isSurveillanceActive: !state.isSurveillanceActive })),
+  surveillanceZones: INITIAL_SURVEILLANCE_ZONES,
+  activeSurveillanceZone: INITIAL_SURVEILLANCE_ZONES[0],
+  setActiveSurveillanceZone: (zone) => set({ activeSurveillanceZone: zone }),
+  addSurveillanceZone: (zone) =>
+    set((state) => ({
+      surveillanceZones: [zone, ...state.surveillanceZones],
+      activeSurveillanceZone: zone,
+    })),
+
   // Navigation & Spatial Engine Mode
   activeNav: 'map',
   setActiveNav: (nav) =>
@@ -198,6 +282,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   selectedState: 'Uttarakhand',
   selectedDistrict: 'Chamoli',
   selectedBlock: null,
+  selectedHazardType: null,
   adminHierarchy: null,
   setSelectedRegion: (region) => set({ selectedRegion: region, selectedDistrict: '', selectedBlock: null }),
   setSelectedState: (state) => set({ selectedState: state, selectedDistrict: '', selectedBlock: null }),
@@ -206,6 +291,13 @@ export const useAppStore = create<AppState>((set, get) => ({
     get().loadDistrictReport(district);
   },
   setSelectedBlock: (block) => set({ selectedBlock: block }),
+  setSelectedHazardType: (type) => set({ selectedHazardType: type }),
+
+  // Visual & Operational Settings
+  terrainExaggeration: 1.5,
+  setTerrainExaggeration: (factor) => set({ terrainExaggeration: factor }),
+  autoRefreshInterval: 300,
+  setAutoRefreshInterval: (seconds) => set({ autoRefreshInterval: seconds }),
 
   // Initial Data
   habitations: DEMO_HABITATIONS,
@@ -317,6 +409,10 @@ export const useAppStore = create<AppState>((set, get) => ({
       isSyncing: false,
     });
     get().calculatePrioritization();
+  },
+
+  loadAllData: async () => {
+    await get().loadData();
   },
 
   loadWeather: async (district: string) => {
@@ -469,10 +565,23 @@ export const useAppStore = create<AppState>((set, get) => ({
     return layers.filter((l) => l.visible);
   },
   getFilteredHabitations: () => {
-    const { habitations, searchQuery } = get();
-    if (!searchQuery.trim()) return habitations;
+    const { habitations, searchQuery, selectedHazardType } = get();
+    let list = habitations;
+    if (selectedHazardType) {
+      const hz = selectedHazardType.toLowerCase();
+      list = list.filter((h) => {
+        if (h.hazardExposure && h.hazardExposure.some((e) => e.type.toLowerCase().includes(hz))) {
+          return true;
+        }
+        return (
+          h.recommendedAction.toLowerCase().includes(hz) ||
+          (hz === 'landslide' && h.riskScore >= 0.6)
+        );
+      });
+    }
+    if (!searchQuery.trim()) return list;
     const q = searchQuery.toLowerCase();
-    return habitations.filter(
+    return list.filter(
       (h) =>
         h.name.toLowerCase().includes(q) ||
         h.district.toLowerCase().includes(q) ||

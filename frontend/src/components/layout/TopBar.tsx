@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
-  User,
+  FolderKanban,
   ChevronDown,
+  Plus,
+  Radio,
+  Sun,
+  Moon,
+  Layers,
+  Globe,
   Check,
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
@@ -9,423 +15,650 @@ import { flyToDistrict } from '../../cesium/camera';
 
 export default function TopBar() {
   const {
+    theme,
+    toggleTheme,
+    mapMode,
+    setMapMode,
+    backendConnected,
     alerts,
+    workspaces,
+    activeWorkspaceId,
+    setActiveWorkspaceId,
+    addWorkspace,
+    isSurveillanceActive,
+    toggleSurveillance,
     selectedDistrict,
-    selectedState,
     setSelectedDistrict,
-    loadDistrictReport,
+    selectedBlock,
+    setSelectedBlock,
+    selectedHazardType,
+    setSelectedHazardType,
     setActiveNav,
   } = useAppStore();
 
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
+  const [newWorkspaceModalOpen, setNewWorkspaceModalOpen] = useState(false);
+  const [newWsName, setNewWsName] = useState('');
+  const [newWsDistrict, setNewWsDistrict] = useState('Chamoli');
+  const [newWsDescription, setNewWsDescription] = useState('');
+  const workspaceDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Find latest critical warning
-  const criticalAlert = alerts.find((a) => a.severity === 'red') || alerts[0] || {
-    headline: 'IMD HEAVY RAINFALL WARNING',
-    area: 'Chamoli, Rudraprayag',
-    issuedAt: '28 Sep – 30 Sep 2026',
-    severity: 'red',
+  const activeWorkspace = workspaces.find((w) => w.id === activeWorkspaceId) || workspaces[0];
+  const topAlert = alerts[0];
+
+  // Close workspace dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        workspaceDropdownRef.current &&
+        !workspaceDropdownRef.current.contains(event.target as Node)
+      ) {
+        setWorkspaceMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleCreateWorkspace = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newWsName.trim()) return;
+
+    const newWs = {
+      id: `ws-${Date.now()}`,
+      name: newWsName.trim(),
+      district: newWsDistrict,
+      description: newWsDescription.trim() || 'Custom operational monitoring sector',
+      color: '#3b82f6',
+      habitationsCount: 5,
+      safeSitesCount: 2,
+      priority: 'HIGH' as const,
+      surveillanceZones: [],
+      createdAt: new Date().toISOString().slice(0, 10),
+    };
+
+    addWorkspace(newWs);
+    setActiveWorkspaceId(newWs.id);
+    setSelectedDistrict(newWsDistrict);
+    flyToDistrict(newWsDistrict);
+    setNewWsName('');
+    setNewWsDescription('');
+    setNewWorkspaceModalOpen(false);
+    setWorkspaceMenuOpen(false);
   };
 
   const handleDistrictChange = (dist: string) => {
     setSelectedDistrict(dist);
-    loadDistrictReport(dist);
     flyToDistrict(dist);
-    setIsProfileOpen(false);
   };
 
   return (
     <header
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'auto 1fr auto auto',
-        gap: 10,
-        alignItems: 'stretch',
-        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: 52,
+        padding: '0 12px',
+        background: 'var(--bg-surface)',
+        border: '1px solid var(--border-color)',
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: 'var(--shadow-sm)',
+        gap: 12,
         flexShrink: 0,
-        zIndex: 100,
+        zIndex: 50,
       }}
     >
-      {/* 1. ResQ-GIS Brand Card */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          background: '#38bdf8',
-          border: '2.5px solid #000000',
-          boxShadow: '3px 3px 0px #000000',
-          borderRadius: 10,
-          padding: '8px 14px',
-          minWidth: 250,
-        }}
-      >
-        <div
-          style={{
-            width: 38,
-            height: 38,
-            background: '#ffffff',
-            border: '2px solid #000000',
-            boxShadow: '2px 2px 0px #000000',
-            borderRadius: 6,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 20,
-            color: '#000000',
-            flexShrink: 0,
-          }}
-        >
-          ▲
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 18,
-                fontWeight: 900,
-                color: '#000000',
-                letterSpacing: '-0.5px',
-                lineHeight: 1,
-              }}
-            >
-              ResQ-GIS
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 10,
-              fontWeight: 800,
-              color: '#000000',
-              marginTop: 2,
-              lineHeight: 1.1,
-            }}
-          >
-            Disaster Decision Support Platform
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 8,
-              fontWeight: 800,
-              color: '#000000',
-              marginTop: 2,
-              letterSpacing: '-0.2px',
-            }}
-          >
-            Uttarakhand | NDMA | IMD | CWC | ISRO | GSI
-          </span>
-        </div>
-      </div>
-
-      {/* 2. Emergency Warning Banner */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: '#fecdd3',
-          border: '2.5px solid #000000',
-          boxShadow: '3px 3px 0px #000000',
-          borderRadius: 10,
-          padding: '8px 16px',
-          gap: 12,
-          minWidth: 0,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+      {/* 1. Brand Logo + Version + Workspace Dropdown */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {/* Brand */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div
             style={{
-              width: 34,
-              height: 34,
-              background: '#ffffff',
-              border: '2px solid #000000',
-              boxShadow: '2px 2px 0px #000000',
-              borderRadius: 6,
+              width: 32,
+              height: 32,
+              borderRadius: 'var(--radius-md)',
+              background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 18,
-              color: '#ef4444',
-              flexShrink: 0,
+              color: '#ffffff',
+              fontWeight: 800,
+              fontSize: 16,
+              boxShadow: '0 2px 4px rgba(37, 99, 235, 0.2)',
             }}
           >
-            ⚠️
+            ▲
           </div>
-          <div style={{ minWidth: 0 }}>
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 13,
-                fontWeight: 900,
-                color: '#000000',
-                letterSpacing: '-0.2px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {criticalAlert.headline || 'IMD HEAVY RAINFALL WARNING'}
-            </div>
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 11,
-                fontWeight: 700,
-                color: '#404040',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              Chamoli, Rudraprayag | 28 Sep – 30 Sep 2026
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 15,
+                  fontWeight: 800,
+                  color: 'var(--text-primary)',
+                  letterSpacing: '-0.3px',
+                }}
+              >
+                ResQ-GIS
+              </span>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  padding: '1px 5px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'var(--accent-blue-subtle)',
+                  color: 'var(--accent-blue)',
+                  letterSpacing: '0.2px',
+                }}
+              >
+                PRO
+              </span>
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <span
+        {/* Vertical Divider */}
+        <div style={{ width: 1, height: 24, background: 'var(--border-color)' }} />
+
+        {/* Workspace Folder Dropdown */}
+        <div ref={workspaceDropdownRef} style={{ position: 'relative' }}>
+          <button
+            onClick={() => setWorkspaceMenuOpen(!workspaceMenuOpen)}
+            className="btn-action"
             style={{
-              background: '#ef4444',
-              color: '#ffffff',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 10,
-              fontWeight: 900,
-              padding: '3px 8px',
-              borderRadius: 4,
-              border: '1.5px solid #000000',
-              boxShadow: '1.5px 1.5px 0px #000000',
-              textTransform: 'uppercase',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 7,
+              padding: '5px 10px',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              fontSize: 12,
+              fontWeight: 600,
+              color: 'var(--text-primary)',
             }}
           >
-            RED
-          </span>
+            <FolderKanban size={14} color="var(--accent-indigo)" />
+            <span style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {activeWorkspace?.name || 'Workspace'}
+            </span>
+            <ChevronDown size={13} color="var(--text-muted)" />
+          </button>
 
+          {/* Dropdown Menu */}
+          {workspaceMenuOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 6px)',
+                left: 0,
+                width: 280,
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--shadow-lg)',
+                padding: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+                zIndex: 100,
+              }}
+            >
+              <div
+                style={{
+                  padding: '6px 8px',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                Regional Workspaces & Folders
+              </div>
+
+              {workspaces.map((ws) => {
+                const isSelected = ws.id === activeWorkspaceId;
+                return (
+                  <button
+                    key={ws.id}
+                    onClick={() => {
+                      setActiveWorkspaceId(ws.id);
+                      setWorkspaceMenuOpen(false);
+                      flyToDistrict(ws.district);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '8px 10px',
+                      background: isSelected ? 'var(--accent-blue-subtle)' : 'transparent',
+                      border: '1px solid',
+                      borderColor: isSelected ? 'var(--accent-blue)' : 'transparent',
+                      borderRadius: 'var(--radius-md)',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'background 0.12s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) e.currentTarget.style.background = 'var(--bg-hover)';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 14 }}>📁</span>
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)' }}>
+                          {ws.name}
+                        </div>
+                        <div style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)' }}>
+                          {ws.district} &bull; {ws.habitationsCount} sectors
+                        </div>
+                      </div>
+                    </div>
+                    {isSelected && <Check size={14} color="var(--accent-blue)" strokeWidth={2.5} />}
+                  </button>
+                );
+              })}
+
+              <div style={{ height: 1, background: 'var(--border-color)', margin: '4px 0' }} />
+
+              <button
+                onClick={() => {
+                  setNewWorkspaceModalOpen(true);
+                  setWorkspaceMenuOpen(false);
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '7px 10px',
+                  background: 'var(--bg-subtle)',
+                  border: '1px dashed var(--border-color)',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: 'var(--accent-blue)',
+                  cursor: 'pointer',
+                }}
+              >
+                <Plus size={14} />
+                <span>Create New Workspace Folder</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 2. Unified Filter Controls */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'nowrap' }}>
+        {/* District Select */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>District</span>
+          <select
+            value={selectedDistrict}
+            onChange={(e) => handleDistrictChange(e.target.value)}
+            style={{
+              padding: '4px 8px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+          >
+            <option value="Chamoli">Chamoli</option>
+            <option value="Rudraprayag">Rudraprayag</option>
+            <option value="Pithoragarh">Pithoragarh</option>
+            <option value="Uttarkashi">Uttarkashi</option>
+          </select>
+        </div>
+
+        {/* Block Select */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>Block</span>
+          <select
+            value={selectedBlock ?? 'all'}
+            onChange={(e) => setSelectedBlock(e.target.value === 'all' ? null : e.target.value)}
+            style={{
+              padding: '4px 8px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+          >
+            <option value="all">All Blocks</option>
+            <option value="Joshimath">Joshimath</option>
+            <option value="Dasholi">Dasholi</option>
+            <option value="Ghat">Ghat</option>
+            <option value="Ukhimath">Ukhimath</option>
+          </select>
+        </div>
+
+        {/* Hazard Filter */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>Hazard</span>
+          <select
+            value={selectedHazardType ?? 'all'}
+            onChange={(e) => setSelectedHazardType(e.target.value === 'all' ? null : (e.target.value as any))}
+            style={{
+              padding: '4px 8px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 11,
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+          >
+            <option value="all">All Hazards</option>
+            <option value="landslide">Landslide</option>
+            <option value="flood">Riverine Flood</option>
+            <option value="glof">GLOF</option>
+            <option value="earthquake">Seismic Risk</option>
+          </select>
+        </div>
+
+        {/* Live Alert Ticker Pill */}
+        {topAlert && (
           <button
             onClick={() => setActiveNav('alerts')}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 4,
-              background: '#ffffff',
-              color: '#000000',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 11,
-              fontWeight: 800,
-              padding: '5px 10px',
-              borderRadius: 6,
-              border: '1.5px solid #000000',
-              boxShadow: '1.5px 1.5px 0px #000000',
+              gap: 6,
+              background: topAlert.severity === 'red' ? 'var(--accent-rose-subtle)' : 'var(--accent-amber-subtle)',
+              border: `1px solid ${topAlert.severity === 'red' ? 'rgba(244, 63, 94, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
+              padding: '3px 10px',
+              borderRadius: 'var(--radius-pill)',
               cursor: 'pointer',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.1s ease',
+              marginLeft: 4,
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '#ffffff')}
           >
-            <span>View Details</span>
-            <span>&rarr;</span>
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: topAlert.severity === 'red' ? 'var(--accent-rose)' : 'var(--accent-amber)',
+                boxShadow: `0 0 6px ${topAlert.severity === 'red' ? 'var(--accent-rose)' : 'var(--accent-amber)'}`,
+              }}
+            />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                color: topAlert.severity === 'red' ? 'var(--accent-rose)' : 'var(--accent-amber)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {topAlert.eventType || 'Active Warning'}: {topAlert.area ? topAlert.area.split(',')[0] : 'Regional'}
+            </span>
+          </button>
+        )}
+      </div>
+
+      {/* 3. Action Tools: Surveillance, Map Mode, Telemetry & Theme */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {/* Surveillance Mode Toggle Button */}
+        <button
+          onClick={() => {
+            toggleSurveillance();
+            if (!isSurveillanceActive) {
+              setActiveNav('surveillance');
+            }
+          }}
+          className="btn-action"
+          style={{
+            background: isSurveillanceActive ? 'var(--accent-rose)' : 'var(--bg-surface)',
+            color: isSurveillanceActive ? '#ffffff' : 'var(--text-primary)',
+            borderColor: isSurveillanceActive ? 'var(--accent-rose)' : 'var(--border-color)',
+            boxShadow: isSurveillanceActive ? '0 0 10px rgba(244, 63, 94, 0.3)' : 'var(--shadow-xs)',
+          }}
+          title="Toggle Surveillance AOI Tool"
+        >
+          <Radio size={13} className={isSurveillanceActive ? 'pulse' : ''} />
+          <span>{isSurveillanceActive ? 'Monitoring Zone Active' : 'Mark Surveillance'}</span>
+        </button>
+
+        {/* 2D / 3D Map Switcher */}
+        <div
+          style={{
+            display: 'flex',
+            background: 'var(--bg-subtle)',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius-md)',
+            padding: 2,
+          }}
+        >
+          <button
+            onClick={() => setMapMode('2d')}
+            style={{
+              padding: '3px 8px',
+              fontSize: 11,
+              fontWeight: 700,
+              background: mapMode === '2d' ? 'var(--bg-surface)' : 'transparent',
+              color: mapMode === '2d' ? 'var(--accent-blue)' : 'var(--text-muted)',
+              border: 'none',
+              borderRadius: 'var(--radius-sm)',
+              boxShadow: mapMode === '2d' ? 'var(--shadow-xs)' : 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
+            <Layers size={12} />
+            <span>2D GIS</span>
+          </button>
+          <button
+            onClick={() => setMapMode('3d')}
+            style={{
+              padding: '3px 8px',
+              fontSize: 11,
+              fontWeight: 700,
+              background: mapMode === '3d' ? 'var(--bg-surface)' : 'transparent',
+              color: mapMode === '3d' ? 'var(--accent-blue)' : 'var(--text-muted)',
+              border: 'none',
+              borderRadius: 'var(--radius-sm)',
+              boxShadow: mapMode === '3d' ? 'var(--shadow-xs)' : 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
+            <Globe size={12} />
+            <span>3D Cesium</span>
           </button>
         </div>
-      </div>
 
-      {/* 3. System Status Card */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          background: '#86efac',
-          border: '2.5px solid #000000',
-          boxShadow: '3px 3px 0px #000000',
-          borderRadius: 10,
-          padding: '6px 14px',
-          minWidth: 155,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 10,
-            fontWeight: 800,
-            color: '#000000',
-            textTransform: 'uppercase',
-          }}
-        >
-          System Status
-        </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
-          <span
-            style={{
-              width: 9,
-              height: 9,
-              borderRadius: '50%',
-              background: '#15803d',
-              border: '1.5px solid #000000',
-              display: 'inline-block',
-            }}
-          />
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 13,
-              fontWeight: 900,
-              color: '#000000',
-            }}
-          >
-            Operational
-          </span>
-        </div>
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 8,
-            fontWeight: 700,
-            color: '#1e3a1e',
-            marginTop: 2,
-          }}
-        >
-          Updated: 27 Sep 2026, 14:32 IST
-        </span>
-      </div>
-
-      {/* 4. District Emergency Operator Profile Card */}
-      <div style={{ position: 'relative' }}>
-        <button
-          onClick={() => setIsProfileOpen(!isProfileOpen)}
+        {/* Telemetry Status Pill */}
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 10,
-            background: '#7dd3fc',
-            border: '2.5px solid #000000',
-            boxShadow: '3px 3px 0px #000000',
-            borderRadius: 10,
-            padding: '6px 14px',
-            cursor: 'pointer',
-            height: '100%',
-            textAlign: 'left',
-            transition: 'all 0.1s ease',
+            gap: 5,
+            padding: '4px 8px',
+            background: backendConnected ? 'var(--accent-emerald-subtle)' : 'var(--accent-amber-subtle)',
+            border: `1px solid ${backendConnected ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
+            borderRadius: 'var(--radius-pill)',
+            fontSize: 10,
+            fontWeight: 700,
+            color: backendConnected ? 'var(--accent-emerald)' : 'var(--accent-amber)',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = 'translate(-1px, -1px)')}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = 'none')}
+          title={backendConnected ? 'FastAPI & Live Government Ingestion active' : 'Offline simulation'}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: backendConnected ? 'var(--accent-emerald)' : 'var(--accent-amber)',
+            }}
+          />
+          <span>{backendConnected ? 'Live Synced' : 'Demo Mode'}</span>
+        </div>
+
+        {/* Dark/Light Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="btn-action"
+          style={{ padding: '6px 8px' }}
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+        >
+          {theme === 'light' ? <Moon size={14} /> : <Sun size={14} color="#fde047" />}
+        </button>
+      </div>
+
+      {/* New Workspace Creation Modal */}
+      {newWorkspaceModalOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
         >
           <div
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: '50%',
-              background: '#000000',
-              color: '#ffffff',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-xl)',
+              boxShadow: 'var(--shadow-lg)',
+              padding: 20,
+              width: 380,
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 14,
-              flexShrink: 0,
+              flexDirection: 'column',
+              gap: 14,
             }}
           >
-            <User size={16} strokeWidth={2.5} />
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 11,
-                fontWeight: 900,
-                color: '#000000',
-                lineHeight: 1.1,
-              }}
-            >
-              District Emergency Operator
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-              <span
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: '#1e293b',
-                }}
-              >
-                {selectedDistrict}, {selectedState}
-              </span>
-              <ChevronDown size={13} strokeWidth={3} color="#000000" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <FolderKanban size={18} color="var(--accent-blue)" />
+              <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-primary)' }}>
+                Create Operational Workspace
+              </div>
             </div>
-          </div>
-        </button>
 
-        {/* District Switcher Dropdown Popover */}
-        {isProfileOpen && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 'calc(100% + 6px)',
-              right: 0,
-              width: 220,
-              background: '#ffffff',
-              border: '2.5px solid #000000',
-              boxShadow: '4px 4px 0px #000000',
-              borderRadius: 8,
-              padding: 6,
-              zIndex: 1000,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 900,
-                color: '#525252',
-                padding: '4px 8px',
-                textTransform: 'uppercase',
-                borderBottom: '1.5px solid #000000',
-                marginBottom: 4,
-              }}
-            >
-              Select Operating District
-            </div>
-            {['Chamoli', 'Rudraprayag', 'Pithoragarh', 'Uttarkashi'].map((dist) => {
-              const isSelected = selectedDistrict.toLowerCase() === dist.toLowerCase();
-              return (
-                <button
-                  key={dist}
-                  onClick={() => handleDistrictChange(dist)}
+            <form onSubmit={handleCreateWorkspace} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+                  Workspace / Sector Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Joshimath Rapid Surveillance"
+                  value={newWsName}
+                  onChange={(e) => setNewWsName(e.target.value)}
+                  required
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
                     width: '100%',
-                    padding: '6px 10px',
-                    border: 'none',
-                    borderRadius: 4,
-                    background: isSelected ? 'var(--nb-yellow)' : 'transparent',
-                    color: '#000000',
+                    padding: '8px 10px',
                     fontFamily: 'var(--font-sans)',
                     fontSize: 12,
-                    fontWeight: isSelected ? 900 : 700,
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'background 0.1s ease',
+                    background: 'var(--bg-subtle)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--text-primary)',
+                    outline: 'none',
                   }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) e.currentTarget.style.background = '#f4f4f5';
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) e.currentTarget.style.background = 'transparent';
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+                  Assigned Administrative District
+                </label>
+                <select
+                  value={newWsDistrict}
+                  onChange={(e) => setNewWsDistrict(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 12,
+                    background: 'var(--bg-subtle)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--text-primary)',
+                    outline: 'none',
                   }}
                 >
-                  <span>{dist}</span>
-                  {isSelected && <Check size={14} strokeWidth={3} />}
+                  <option value="Chamoli">Chamoli</option>
+                  <option value="Rudraprayag">Rudraprayag</option>
+                  <option value="Pithoragarh">Pithoragarh</option>
+                  <option value="Uttarkashi">Uttarkashi</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>
+                  Mission Objective & Description
+                </label>
+                <textarea
+                  placeholder="Describe focus: subsidence tracking, flash flood, evacuation corridors..."
+                  value={newWsDescription}
+                  onChange={(e) => setNewWsDescription(e.target.value)}
+                  rows={3}
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 12,
+                    background: 'var(--bg-subtle)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--text-primary)',
+                    outline: 'none',
+                    resize: 'none',
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 4 }}>
+                <button
+                  type="button"
+                  onClick={() => setNewWorkspaceModalOpen(false)}
+                  className="btn-action"
+                  style={{ padding: '7px 14px' }}
+                >
+                  Cancel
                 </button>
-              );
-            })}
+                <button
+                  type="submit"
+                  className="btn-action btn-action--primary"
+                  style={{ padding: '7px 16px' }}
+                >
+                  Create Folder
+                </button>
+              </div>
+            </form>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 }

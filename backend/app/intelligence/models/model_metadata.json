@@ -2,7 +2,7 @@
   "model_name": "Himalayan Landslide Susceptibility Classifier",
   "algorithm": "RandomForestClassifier",
   "version": "2.0.0",
-  "trained_at": "2026-09-27T10:00:12.192818Z",
+  "trained_at": "2026-09-27T12:18:42.086525+00:00",
   "provenance": "NASA Global Landslide Catalog (GLC) & GSI NLSM Himalayan Inventory",
   "sample_count": 1794,
   "positive_events": 897,
@@ -18,20 +18,20 @@
     "lithology_shear_index"
   ],
   "feature_importances": {
-    "slope_degrees": 0.1105,
-    "rainfall_24h_mm": 0.1218,
-    "elevation_m": 0.0027,
-    "dist_to_fault_km": 0.0668,
-    "river_proximity_km": 0.0643,
-    "historical_disaster_count": 0.3943,
-    "lithology_shear_index": 0.2395
+    "slope_degrees": 0.252,
+    "rainfall_24h_mm": 0.0347,
+    "elevation_m": 0.0122,
+    "dist_to_fault_km": 0.14,
+    "river_proximity_km": 0.0866,
+    "historical_disaster_count": 0.1171,
+    "lithology_shear_index": 0.3574
   },
   "metrics": {
-    "accuracy": 0.9972,
-    "precision": 0.9944,
-    "recall": 1.0,
-    "f1_score": 0.9972,
-    "roc_auc": 1.0
+    "accuracy": 0.9192,
+    "precision": 0.9464,
+    "recall": 0.8883,
+    "f1_score": 0.9164,
+    "roc_auc": 0.9773
   },
   "target_classes": {
     "0": "STABLE",

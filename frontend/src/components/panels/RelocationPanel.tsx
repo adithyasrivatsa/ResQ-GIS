@@ -1,4 +1,4 @@
-import { Check, X as XIcon, Users, Ruler, ShieldCheck, Compass } from 'lucide-react';
+import { Check, X as XIcon, Users, Ruler, ShieldCheck, Compass, ArrowLeft } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { flyToSite } from '../../cesium/camera';
 
@@ -12,43 +12,42 @@ interface Props {
   showList?: boolean;
 }
 
-export default function RelocationPanel({ showList }: Props) {
+export default function RelocationPanel(_props: Props = {}) {
   const { relocationSites, getSelectedSite, selectedSiteId, selectSite } = useAppStore();
   const site = getSelectedSite();
 
-  if (showList && !site) {
+  if (!site) {
     return (
       <div className="panel">
-        <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
+        <div className="panel__section" style={{ background: 'var(--bg-subtle)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
-                width: 36,
-                height: 36,
-                background: 'var(--nb-mint)',
-                border: '2px solid #000000',
-                boxShadow: '2px 2px 0px #000000',
-                borderRadius: 8,
+                width: 34,
+                height: 34,
+                background: 'var(--accent-emerald-subtle)',
+                border: '1px solid var(--accent-emerald)',
+                borderRadius: 'var(--radius-md)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#000000',
+                color: 'var(--accent-emerald)',
               }}
             >
-              <Compass size={18} strokeWidth={2.5} />
+              <Compass size={18} strokeWidth={2} />
             </div>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 900, color: '#000000', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
                 Safe Haven Registry
               </div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
-                Designated Disaster Relocation Grounds
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                Designated Disaster Relocation Grounds ({relocationSites.length} Verified)
               </div>
             </div>
           </div>
         </div>
 
-        <div className="panel__list">
+        <div className="panel__list" style={{ padding: '12px', gap: 6 }}>
           {relocationSites.map((s) => (
             <button
               key={s.id}
@@ -61,16 +60,15 @@ export default function RelocationPanel({ showList }: Props) {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div
                   style={{
-                    width: 36,
-                    height: 36,
-                    background: 'var(--nb-mint)',
-                    border: '2px solid #000000',
-                    boxShadow: '1.5px 1.5px 0px #000000',
-                    borderRadius: 8,
+                    width: 32,
+                    height: 32,
+                    background: 'var(--accent-emerald-subtle)',
+                    border: '1px solid var(--accent-emerald)',
+                    borderRadius: 'var(--radius-md)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: 18,
+                    fontSize: 16,
                   }}
                 >
                   🏕️
@@ -92,49 +90,69 @@ export default function RelocationPanel({ showList }: Props) {
     );
   }
 
-  if (!site) {
-    return (
-      <div className="panel">
-        <div style={{ padding: 32, textAlign: 'center', color: '#525252', fontSize: 12, fontWeight: 700 }}>
-          Select a relocation site from the map or list to view telemetry.
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="panel">
+      {/* Return to Registry Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '8px 14px',
+          background: 'var(--bg-subtle)',
+          borderBottom: '1px solid var(--border-color)',
+        }}
+      >
+        <button
+          onClick={() => selectSite(null as any)}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontSize: 11,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            color: 'var(--accent-blue)',
+          }}
+        >
+          <ArrowLeft size={13} />
+          Back to Safe Haven Registry
+        </button>
+        <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>ID: {site.id}</span>
+      </div>
+
       {/* Site Avatar & Header */}
-      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
+      <div className="panel__section" style={{ background: 'var(--bg-surface)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div
             style={{
-              width: 44,
-              height: 44,
-              background: 'var(--nb-mint)',
-              border: '2px solid #000000',
-              boxShadow: '2.5px 2.5px 0px #000000',
-              borderRadius: 8,
+              width: 40,
+              height: 40,
+              background: 'var(--accent-emerald-subtle)',
+              border: '1px solid var(--accent-emerald)',
+              borderRadius: 'var(--radius-md)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 22,
+              fontSize: 20,
             }}
           >
             🏕️
           </div>
           <div>
-            <div style={{ fontSize: 15, fontWeight: 900, color: '#000000', textTransform: 'uppercase', letterSpacing: '-0.3px' }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
               {site.name}
             </div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
               {site.district}, Uttarakhand &bull; Elev: {site.location.elevation || 1200}m
             </div>
           </div>
         </div>
 
         <div style={{ marginTop: 12 }} className="panel__row panel__row--between">
-          <span style={{ fontSize: 11, fontWeight: 800, color: '#000000', textTransform: 'uppercase' }}>SUITABILITY GRADE:</span>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>SUITABILITY GRADE</span>
           <span className={`risk-badge ${SUIT_CLASS[site.suitability] || ''}`}>
             {site.suitabilityScore.toFixed(2)} &mdash; {site.suitability}
           </span>
@@ -142,36 +160,40 @@ export default function RelocationPanel({ showList }: Props) {
       </div>
 
       {/* Metrics Card */}
-      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
+      <div className="panel__section">
         <div className="panel__row panel__row--between">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Users size={15} color="#000000" />
-            <span className="panel__label">TOTAL BED CAPACITY:</span>
+            <Users size={15} color="var(--text-muted)" />
+            <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Total Bed Capacity:</span>
           </div>
-          <span className="panel__value" style={{ fontSize: 14 }}>{site.capacity.toLocaleString()}</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+            {site.capacity.toLocaleString()}
+          </span>
         </div>
 
-        <div className="panel__row panel__row--between" style={{ marginTop: 6 }}>
+        <div className="panel__row panel__row--between" style={{ marginTop: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Ruler size={15} color="#000000" />
-            <span className="panel__label">TRANSIT DISTANCE:</span>
+            <Ruler size={15} color="var(--text-muted)" />
+            <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Transit Distance:</span>
           </div>
-          <span className="panel__value" style={{ fontSize: 14 }}>{site.distanceFromAffected} km</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+            {site.distanceFromAffected} km
+          </span>
         </div>
       </div>
 
       {/* Slope & Infrastructure */}
-      <div className="panel__section" style={{ padding: '14px 16px' }}>
+      <div className="panel__section" style={{ overflowY: 'auto' }}>
         <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <ShieldCheck size={16} color="var(--nb-mint)" />
+          <ShieldCheck size={16} color="var(--accent-emerald)" />
           <span>Geological & Access Verification</span>
         </div>
 
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#000000', marginBottom: 10 }}>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginBottom: 10 }}>
           <strong>Terrain Gradient:</strong> {site.slopeGrade}
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {site.constraints.map((c, i) => (
             <div
               key={i}
@@ -180,22 +202,21 @@ export default function RelocationPanel({ showList }: Props) {
                 alignItems: 'center',
                 gap: 10,
                 padding: '8px 12px',
-                background: c.met ? 'var(--nb-mint-light)' : 'var(--nb-pink-light)',
-                border: '2px solid #000000',
-                borderRadius: 8,
-                boxShadow: '2px 2px 0px #000000',
+                background: c.met ? 'var(--accent-emerald-subtle)' : 'var(--accent-rose-subtle)',
+                border: c.met ? '1px solid var(--accent-emerald)' : '1px solid var(--accent-rose)',
+                borderRadius: 'var(--radius-sm)',
               }}
             >
               {c.met ? (
-                <Check size={16} color="#000000" strokeWidth={3} />
+                <Check size={15} color="var(--accent-emerald)" strokeWidth={2.5} />
               ) : (
-                <XIcon size={16} color="#000000" strokeWidth={3} />
+                <XIcon size={15} color="var(--accent-rose)" strokeWidth={2.5} />
               )}
               <span
                 style={{
                   fontSize: 11,
-                  fontWeight: 800,
-                  color: '#000000',
+                  fontWeight: 600,
+                  color: c.met ? 'var(--accent-emerald)' : 'var(--accent-rose)',
                 }}
               >
                 {c.label}

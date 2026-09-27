@@ -108,6 +108,16 @@ export function switchViewerTerrain(type: TerrainType) {
   }
 }
 
+export function setTerrainExaggeration(factor: number) {
+  if (viewerInstance && !viewerInstance.isDestroyed()) {
+    try {
+      (viewerInstance.scene.globe as any).terrainExaggeration = factor;
+    } catch (e) {
+      console.warn('Failed to set terrain exaggeration:', e);
+    }
+  }
+}
+
 export function destroyViewer() {
   if (viewerInstance && !viewerInstance.isDestroyed()) {
     viewerInstance.destroy();

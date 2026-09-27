@@ -216,8 +216,35 @@ export interface DistrictRiskReport {
 }
 
 // --- Navigation ---
-export type NavSection = 'map' | 'globe' | 'analysis' | 'habitations' | 'relocation' | 'alerts' | 'reports' | 'rivers';
+export type NavSection = 'map' | 'globe' | 'analysis' | 'habitations' | 'relocation' | 'alerts' | 'reports' | 'rivers' | 'layers' | 'datasources' | 'settings' | 'workspaces' | 'surveillance';
 export type MapMode = '2d' | '3d';
+
+// --- Workspaces & Regional Folders ---
+export interface SurveillanceZone {
+  id: string;
+  name: string;
+  district: string;
+  center: { lat: number; lng: number };
+  radiusKm: number;
+  assignedFolderId: string;
+  riskScore: number;
+  populationExposed: number;
+  activeAlertsCount: number;
+  lastScanned: string;
+}
+
+export interface WorkspaceFolder {
+  id: string;
+  name: string;
+  district: string;
+  description: string;
+  color: string;
+  habitationsCount: number;
+  safeSitesCount: number;
+  priority: 'CRITICAL' | 'HIGH' | 'MONITORING';
+  surveillanceZones: SurveillanceZone[];
+  createdAt: string;
+}
 
 
 // --- Data Source Provenance & Status ---

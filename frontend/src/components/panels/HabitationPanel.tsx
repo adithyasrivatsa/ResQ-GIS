@@ -1,6 +1,7 @@
-import { Users, ArrowRight, ShieldAlert, HeartHandshake, Compass, Gauge } from 'lucide-react';
+import { useState } from 'react';
+import { Users, ArrowRight, ShieldAlert, HeartHandshake, Compass, Gauge, Search, Home, ArrowLeft } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
-import { flyToSite } from '../../cesium/camera';
+import { flyToSite, flyToHabitation } from '../../cesium/camera';
 import type { RiskLevel, HazardType } from '../../types';
 
 const RISK_CLASS: Record<RiskLevel, string> = {
@@ -20,14 +21,126 @@ const HAZARD_LABEL: Record<HazardType, string> = {
 };
 
 export default function HabitationPanel() {
-  const { getSelectedHabitation, relocationSites, selectSite, activeHazardAssessment } = useAppStore();
+  const { getSelectedHabitation, habitations, selectHabitation, relocationSites, selectSite, activeHazardAssessment, selectedDistrict } = useAppStore();
   const hab = getSelectedHabitation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [riskFilter, setRiskFilter] = useState('ALL');
 
-  if (!hab) return null;
+  if (!hab) {
+    const filtered = habitations.filter((h) => {
+      const matchDistrict = !selectedDistrict || h.district.toLowerCase() === selectedDistrict.toLowerCase();
+      const matchSearch = !searchTerm || h.name.toLowerCase().includes(searchTerm.toLowerCase()) || (h.block && h.block.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchRisk = riskFilter === 'ALL' || h.riskLevel === riskFilter;
+      return matchDistrict && matchSearch && matchRisk;
+    });
+
+    return (
+      <div className="panel">
+        <div className="panel__section" style={{ background: 'var(--bg-subtle)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div
+              style={{
+                width: 34,
+                height: 34,
+                background: 'var(--accent-blue-subtle)',
+                border: '1px solid var(--accent-blue)',
+                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--accent-blue)',
+              }}
+            >
+              <Home size={18} strokeWidth={2} />
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
+                Habitations Directory
+              </div>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                {filtered.length} Settlements &bull; {selectedDistrict || 'Uttarakhand'}
+              </div>
+            </div>
+          </div>
+
+          {/* Search & Filter */}
+          <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '4px 8px',
+                flex: 1,
+              }}
+            >
+              <Search size={14} color="var(--text-muted)" />
+              <input
+                type="text"
+                placeholder="Search village or block..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ border: 'none', outline: 'none', width: '100%', fontSize: 11, background: 'transparent', color: 'var(--text-primary)' }}
+              />
+            </div>
+            <select
+              value={riskFilter}
+              onChange={(e) => setRiskFilter(e.target.value)}
+              style={{
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '4px 8px',
+                fontSize: 10,
+                fontWeight: 600,
+                color: 'var(--text-secondary)',
+              }}
+            >
+              <option value="ALL">All Risk</option>
+              <option value="CRITICAL">Critical</option>
+              <option value="HIGH">High</option>
+              <option value="MODERATE">Moderate</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="panel__list" style={{ padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {filtered.map((h) => (
+            <button
+              key={h.id}
+              onClick={() => {
+                selectHabitation(h.id);
+                if (h.location) flyToHabitation(h.location.lng, h.location.lat);
+              }}
+              className="panel__list-item"
+            >
+              <div>
+                <div className="panel__list-item-name">{h.name}</div>
+                <div className="panel__list-item-meta">
+                  {h.block || h.district} &bull; Pop: {h.population.toLocaleString()}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span className={`risk-badge risk-badge--sm ${RISK_CLASS[h.riskLevel]}`}>
+                  {h.riskLevel}
+                </span>
+                <ArrowRight size={13} color="var(--text-muted)" />
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const nearestSite = relocationSites.find((s) => s.id === hab.nearestRelocationSite);
 
-  // Dynamic telemetry values (if live assessment available, else fallback)
+  // Dynamic telemetry values
   const slopeDeg = activeHazardAssessment?.slope_degrees ?? (hab.location.elevation && hab.location.elevation > 2000 ? 32.5 : 24.2);
   const rain24h = activeHazardAssessment?.weather_observation?.rainfall_24h ?? 28.9;
   const riverDist = activeHazardAssessment?.nearest_river_dist_km ?? 0.65;
@@ -37,36 +150,66 @@ export default function HabitationPanel() {
 
   const riskPct = Math.round(hab.riskScore * 100);
   const barColor =
-    hab.riskScore >= 0.8 ? '#ef4444' : hab.riskScore >= 0.6 ? '#f59e0b' : '#10b981';
+    hab.riskScore >= 0.8 ? 'var(--accent-rose)' : hab.riskScore >= 0.6 ? 'var(--accent-amber)' : 'var(--accent-emerald)';
 
   return (
     <div className="panel">
+      {/* Return to Directory Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '8px 14px',
+          background: 'var(--bg-subtle)',
+          borderBottom: '1px solid var(--border-color)',
+        }}
+      >
+        <button
+          onClick={() => selectHabitation(null as any)}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontSize: 11,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            color: 'var(--accent-blue)',
+          }}
+        >
+          <ArrowLeft size={13} />
+          Back to Habitations
+        </button>
+        <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>ID: {hab.id}</span>
+      </div>
+
       {/* Village Avatar & Meta Section */}
-      <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px', borderBottom: '2.5px solid #000000' }}>
+      <div className="panel__section" style={{ background: 'var(--bg-surface)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div
               style={{
-                width: 44,
-                height: 44,
-                background: 'var(--nb-yellow)',
-                border: '2px solid #000000',
-                boxShadow: '2.5px 2.5px 0px #000000',
-                borderRadius: 8,
+                width: 40,
+                height: 40,
+                background: 'var(--accent-blue-subtle)',
+                border: '1px solid var(--accent-blue)',
+                borderRadius: 'var(--radius-md)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 22,
+                fontSize: 20,
               }}
             >
               🏔️
             </div>
 
             <div>
-              <div style={{ fontSize: 15, fontWeight: 900, color: '#000000', textTransform: 'uppercase', letterSpacing: '-0.3px' }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
                 {hab.name}
               </div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252' }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
                 {hab.district}, {hab.state} &bull; Elev: {hab.location.elevation || 1800}m
               </div>
             </div>
@@ -75,14 +218,13 @@ export default function HabitationPanel() {
           {/* Truthful Data Provenance Tag */}
           <span
             style={{
-              fontSize: 10,
-              padding: '3px 8px',
-              borderRadius: 6,
-              border: '1.5px solid #000000',
-              boxShadow: '1.5px 1.5px 0px #000000',
-              background: 'var(--nb-mint)',
-              color: '#000000',
-              fontWeight: 800,
+              fontSize: 9,
+              padding: '2px 8px',
+              borderRadius: 'var(--radius-pill)',
+              border: '1px solid var(--border-color)',
+              background: 'var(--accent-emerald-subtle)',
+              color: 'var(--accent-emerald)',
+              fontWeight: 700,
               textTransform: 'uppercase',
             }}
           >
@@ -93,7 +235,7 @@ export default function HabitationPanel() {
         {/* Clean Risk Score Meter */}
         <div style={{ marginTop: 8 }}>
           <div className="panel__row panel__row--between" style={{ marginBottom: 4 }}>
-            <span style={{ fontSize: 11, fontWeight: 800, color: '#000000', textTransform: 'uppercase' }}>DYNAMIC HAZARD SCORE</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Hazard Score</span>
             <span className={`risk-badge risk-badge--sm ${RISK_CLASS[hab.riskLevel]}`}>
               SCORE {hab.riskScore.toFixed(2)}
             </span>
@@ -102,11 +244,10 @@ export default function HabitationPanel() {
           <div
             style={{
               width: '100%',
-              height: 10,
-              background: '#ffffff',
-              border: '2px solid #000000',
-              borderRadius: 9999,
-              boxShadow: '1.5px 1.5px 0px #000000',
+              height: 6,
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-pill)',
               overflow: 'hidden',
               marginTop: 4,
             }}
@@ -116,7 +257,6 @@ export default function HabitationPanel() {
                 width: `${riskPct}%`,
                 height: '100%',
                 background: barColor,
-                borderRight: '2px solid #000000',
                 transition: 'width 0.3s ease',
               }}
             />
@@ -125,9 +265,9 @@ export default function HabitationPanel() {
       </div>
 
       {/* Measurable Telemetry & ML Susceptibility Breakdown */}
-      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
+      <div className="panel__section">
         <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <Gauge size={15} color="#000000" />
+          <Gauge size={15} color="var(--accent-indigo)" />
           <span>Measurable Hazard Drivers</span>
         </div>
 
@@ -135,97 +275,93 @@ export default function HabitationPanel() {
           {/* Slope */}
           <div
             style={{
-              padding: '10px',
-              background: '#ffffff',
-              border: '2px solid #000000',
-              borderRadius: 8,
-              boxShadow: '2px 2px 0px #000000',
+              padding: '8px 10px',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>COPERNICUS SLOPE</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: slopeDeg >= 30 ? 'var(--nb-pink)' : '#000000', marginTop: 2 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)' }}>COPERNICUS SLOPE</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: slopeDeg >= 30 ? 'var(--accent-rose)' : 'var(--text-primary)', marginTop: 2, fontFamily: 'var(--font-mono)' }}>
               {slopeDeg.toFixed(1)}°
             </div>
-            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>GLO-30 Finite Diff</div>
+            <div style={{ fontSize: 9, color: 'var(--text-muted)' }}>GLO-30 Finite Diff</div>
           </div>
 
           {/* 24h Rainfall */}
           <div
             style={{
-              padding: '10px',
-              background: '#ffffff',
-              border: '2px solid #000000',
-              borderRadius: 8,
-              boxShadow: '2px 2px 0px #000000',
+              padding: '8px 10px',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>24H PRECIPITATION</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: rain24h >= 30 ? 'var(--nb-pink)' : '#0284c7', marginTop: 2 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)' }}>24H PRECIPITATION</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: rain24h >= 30 ? 'var(--accent-rose)' : 'var(--accent-blue)', marginTop: 2, fontFamily: 'var(--font-mono)' }}>
               {rain24h.toFixed(1)} mm
             </div>
-            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>Open-Meteo Live</div>
+            <div style={{ fontSize: 9, color: 'var(--text-muted)' }}>Open-Meteo Live</div>
           </div>
 
           {/* River Proximity */}
           <div
             style={{
-              padding: '10px',
-              background: '#ffffff',
-              border: '2px solid #000000',
-              borderRadius: 8,
-              boxShadow: '2px 2px 0px #000000',
+              padding: '8px 10px',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>RIVER CORRIDOR</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: riverDist < 0.5 ? 'var(--nb-pink)' : '#000000', marginTop: 2 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)' }}>RIVER CORRIDOR</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: riverDist < 0.5 ? 'var(--accent-rose)' : 'var(--text-primary)', marginTop: 2, fontFamily: 'var(--font-mono)' }}>
               {riverDist.toFixed(2)} km
             </div>
-            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>CWC Gauging Stream</div>
+            <div style={{ fontSize: 9, color: 'var(--text-muted)' }}>CWC Gauging Stream</div>
           </div>
 
           {/* ML Susceptibility */}
           <div
             style={{
-              padding: '10px',
-              background: '#ffffff',
-              border: '2px solid #000000',
-              borderRadius: 8,
-              boxShadow: '2px 2px 0px #000000',
+              padding: '8px 10px',
+              background: 'var(--bg-subtle)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#525252' }}>ML SUSCEPTIBILITY</div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--nb-purple)', marginTop: 2 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)' }}>ML SUSCEPTIBILITY</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--accent-violet)', marginTop: 2, fontFamily: 'var(--font-mono)' }}>
               {mlScore.toFixed(2)}
             </div>
-            <div style={{ fontSize: 9, fontWeight: 700, color: '#737373' }}>RandomForest ({mlConf})</div>
+            <div style={{ fontSize: 9, color: 'var(--text-muted)' }}>RandomForest ({mlConf})</div>
           </div>
         </div>
       </div>
 
       {/* Population & Household Card */}
-      <div className="panel__section" style={{ padding: '12px 16px', borderBottom: '2px solid #000000' }}>
+      <div className="panel__section">
         <div className="panel__row panel__row--between">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Users size={15} color="#000000" />
-            <span className="panel__label">TOTAL POPULATION:</span>
+            <Users size={15} color="var(--text-muted)" />
+            <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Total Population:</span>
           </div>
-          <span className="panel__value" style={{ fontSize: 14 }}>{hab.population.toLocaleString()}</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{hab.population.toLocaleString()}</span>
         </div>
 
         <div className="panel__row panel__row--between" style={{ marginTop: 6 }}>
-          <span className="panel__label" style={{ paddingLeft: 21 }}>HOUSEHOLDS:</span>
-          <span className="panel__value" style={{ fontSize: 14 }}>{hab.households.toLocaleString()}</span>
+          <span style={{ fontSize: 11, color: 'var(--text-secondary)', paddingLeft: 21 }}>Households:</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{hab.households.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Per-Hazard Breakdown */}
-      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
+      <div className="panel__section">
         <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <ShieldAlert size={15} color="var(--nb-orange)" />
+          <ShieldAlert size={15} color="var(--accent-amber)" />
           <span>Hazard Exposure Matrix</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {hab.hazardExposure.map((hazard) => (
             <div
               key={hazard.type}
@@ -234,18 +370,17 @@ export default function HabitationPanel() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '8px 12px',
-                background: '#ffffff',
-                border: '2px solid #000000',
-                borderRadius: 8,
-                boxShadow: '2px 2px 0px #000000',
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)',
               }}
             >
               <div>
-                <span style={{ fontSize: 12, fontWeight: 800, color: '#000000' }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
                   {HAZARD_LABEL[hazard.type]}
                 </span>
                 {hazard.contributors.length > 0 && (
-                  <div style={{ fontSize: 10, fontWeight: 600, color: '#525252', marginTop: 1 }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 1 }}>
                     {hazard.contributors[0]}
                   </div>
                 )}
@@ -259,13 +394,13 @@ export default function HabitationPanel() {
       </div>
 
       {/* Vulnerability Index Bars */}
-      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: '2px solid #000000' }}>
+      <div className="panel__section">
         <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <HeartHandshake size={15} color="var(--nb-pink)" />
+          <HeartHandshake size={15} color="var(--accent-rose)" />
           <span>HVI (Vulnerability Index)</span>
         </div>
 
-        <div style={{ background: '#ffffff', padding: '12px 14px', border: '2px solid #000000', borderRadius: 8, boxShadow: '2px 2px 0px #000000' }}>
+        <div style={{ background: 'var(--bg-subtle)', padding: '10px 12px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
           <div className="vuln-bar">
             <span className="vuln-bar__label">Exposure</span>
             <div className="vuln-bar__track">
@@ -293,8 +428,8 @@ export default function HabitationPanel() {
       </div>
 
       {/* Recommended Action inside Speech Bubble */}
-      <div className="panel__section" style={{ padding: '14px 16px', borderBottom: nearestSite ? '2px solid #000000' : 'none' }}>
-        <div className="panel__title" style={{ marginBottom: 8 }}>
+      <div className="panel__section">
+        <div className="panel__title" style={{ marginBottom: 6 }}>
           Directive for Incident Commander
         </div>
 
@@ -305,9 +440,9 @@ export default function HabitationPanel() {
 
       {/* Nearest Safe Haven Corridor Card */}
       {nearestSite && (
-        <div className="panel__section" style={{ background: 'var(--nb-canvas-subtle)', padding: '14px 16px' }}>
-          <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#000000' }}>
-            <Compass size={15} color="#000000" />
+        <div className="panel__section" style={{ background: 'var(--bg-subtle)' }}>
+          <div className="panel__title" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+            <Compass size={15} color="var(--accent-emerald)" />
             <span>Designated Relocation Haven</span>
           </div>
 
@@ -316,18 +451,17 @@ export default function HabitationPanel() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: '#ffffff',
-              border: '2px solid #000000',
-              boxShadow: '3px 3px 0px #000000',
-              borderRadius: 8,
-              padding: '12px 14px',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              padding: '10px 12px',
             }}
           >
             <div>
-              <div style={{ fontSize: 13, fontWeight: 900, color: '#000000' }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
                 {nearestSite.name}
               </div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#525252', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
                 Dist: {nearestSite.distanceFromAffected} km &bull; Cap: {nearestSite.capacity.toLocaleString()} beds
               </div>
             </div>
@@ -337,27 +471,10 @@ export default function HabitationPanel() {
                 selectSite(nearestSite.id);
                 flyToSite(nearestSite.location.lng, nearestSite.location.lat);
               }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 5,
-                background: 'var(--nb-yellow)',
-                color: '#000000',
-                border: '2px solid #000000',
-                boxShadow: '2px 2px 0px #000000',
-                borderRadius: 6,
-                padding: '6px 12px',
-                fontSize: 11,
-                fontWeight: 800,
-                cursor: 'pointer',
-                transition: 'all 0.1s ease',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--nb-mint)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--nb-yellow)')}
-              title="Fly to site"
+              className="btn-action btn-action--primary"
             >
               <span>Inspect</span>
-              <ArrowRight size={12} strokeWidth={2.5} />
+              <ArrowRight size={12} />
             </button>
           </div>
         </div>
