@@ -290,6 +290,92 @@
         "recommendedAction": "Seasonal pilgrimage safety restrictions and pre-emptive evacuation",
         "nearestRelocationSite": "site-tilwara"
       }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-guptkashi",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.0719, 30.5292, 1319.0]
+      },
+      "properties": {
+        "id": "hab-guptkashi",
+        "name": "Guptkashi",
+        "village": "Guptkashi",
+        "district": "Rudraprayag",
+        "state": "Uttarakhand",
+        "latitude": 30.5292,
+        "longitude": 79.0719,
+        "elevation": 1319.0,
+        "population": 894,
+        "households": 210,
+        "riskScore": 0.65,
+        "riskLevel": "MODERATE",
+        "vulnerability": {
+          "kutchaHousePercentage": 22.0,
+          "elderlyCount": 110,
+          "childrenCount": 160,
+          "roadCutoffRisk": 0.58
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.62,
+          "level": "MODERATE",
+          "exposure": 0.68,
+          "sensitivity": 0.55,
+          "adaptiveCapacity": 0.45
+        },
+        "hazardExposure": [
+          { "type": "landslide", "level": "MODERATE", "score": 0.64, "contributors": ["Mandakini valley slope creep", "Monsoon runoff"] },
+          { "type": "flood", "level": "LOW", "score": 0.38, "contributors": ["Elevated above river terrace"] }
+        ],
+        "recommendedAction": "Slope reinforcement and buffer zoning along NH-107 corridor",
+        "nearestRelocationSite": "site-tilwara",
+        "bhuvan_vid": "0503000100199700",
+        "provenance": "ISRO Bhuvan Census 2011 Verified"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-tharali",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.5033, 30.0793, 1280.0]
+      },
+      "properties": {
+        "id": "hab-tharali",
+        "name": "Tharali",
+        "village": "Tharali",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.0793,
+        "longitude": 79.5033,
+        "elevation": 1280.0,
+        "population": 1789,
+        "households": 470,
+        "riskScore": 0.69,
+        "riskLevel": "MODERATE",
+        "vulnerability": {
+          "kutchaHousePercentage": 31.0,
+          "elderlyCount": 240,
+          "childrenCount": 310,
+          "roadCutoffRisk": 0.72
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.68,
+          "level": "MODERATE",
+          "exposure": 0.72,
+          "sensitivity": 0.65,
+          "adaptiveCapacity": 0.38
+        },
+        "hazardExposure": [
+          { "type": "flood", "level": "HIGH", "score": 0.78, "contributors": ["Pindar River flash flood plain", "Debris dam risk"] },
+          { "type": "landslide", "level": "MODERATE", "score": 0.62, "contributors": ["Tharali gorge slope instability"] }
+        ],
+        "recommendedAction": "Pindar riverbank embankment stabilization and elevated relocation staging",
+        "nearestRelocationSite": "site-gauchar",
+        "bhuvan_vid": "0502000500588200",
+        "provenance": "ISRO Bhuvan Census 2011 Verified"
+      }
     }
   ]
 }

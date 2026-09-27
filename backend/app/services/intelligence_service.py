@@ -31,6 +31,13 @@ from app.providers.copernicus.copernicus_adapter import get_copernicus_provider
 from app.providers.osm.osm_adapter import get_osm_provider
 from app.providers.cwc.cwc_adapter import get_cwc_provider
 from app.services.gis_service import get_gis_service
+from app.gis.spatial_calc import (
+    haversine_distance_km,
+    calculate_river_proximity_km,
+    calculate_glof_exposure,
+    calculate_fault_distance_km,
+    estimate_lithology_weakness,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,11 +72,8 @@ class DynamicIntelligenceService:
         slope_deg = terrain_pt.slope_degrees
         elevation = terrain_pt.elevation
 
-        # 3. Distance to nearest river & river flood condition
-        # River coordinates in Chamoli/Rudraprayag valley beds:
-        # Alaknanda riverbed flows roughly lng ~ 79.4 to 79.56
-        dist_to_river = round(abs(lng - 79.55) * 85.0 + abs(lat - 30.54) * 40.0, 2)
-        dist_to_river = max(0.2, min(dist_to_river, 8.0))
+        # 3. Distance to nearest river & river flood condition via geodesic GIS
+        dist_to_river = calculate_river_proximity_km(lat, lng)
 
         # Check if nearby river stations are in Warning/Danger
         river_stations = await self.cwc_provider.get_river_stations(hab.district)
@@ -78,24 +82,27 @@ class DynamicIntelligenceService:
             for s in river_stations
         )
         if active_river_danger and dist_to_river < 2.0:
-            dist_to_river *= 0.5  # amplify proximity under high stage
+            dist_to_river = max(0.05, round(dist_to_river * 0.5, 2))  # amplify proximity under high stage
 
-        # 4. GLOF exposure: high altitude catchments with moraine lakes (e.g. Kedarnath / Reni / Satopanth)
-        is_glof_trajectory = any(kw in hab.name.lower() for kw in ["reni", "kedarnath", "joshimath", "tapovan"])
-        glof_score = 0.85 if is_glof_trajectory and elevation > 1800 else (0.4 if elevation > 2000 else 0.1)
+        # 4. GLOF exposure: geodesic proximity to high-altitude moraine breach trajectories
+        glof_score = calculate_glof_exposure(lat, lng, elevation)
 
         # 5. Historical documented disasters
         hist_events = self.history_svc.get_event_count_for_habitation(hab.id)
 
         # 6. Real Machine Learning Landslide Susceptibility Inference
+        # Derived from spatial fault distance and physics-based lithological weakness
+        dist_fault = calculate_fault_distance_km(lat, lng)
+        lithology_shear = estimate_lithology_weakness(lat, lng, slope_deg)
+
         ml_result = predict_landslide_susceptibility(
             slope_degrees=slope_deg,
             rainfall_24h_mm=rainfall_24h,
             elevation_m=elevation,
-            dist_to_fault_km=2.5 if "joshimath" in hab.name.lower() else 5.0,
+            dist_to_fault_km=dist_fault,
             river_proximity_km=dist_to_river,
             historical_count=hist_events,
-            lithology_shear_index=0.8 if "joshimath" in hab.name.lower() or "reni" in hab.name.lower() else 0.4,
+            lithology_shear_index=lithology_shear,
         )
         ml_prob = ml_result.get("probability", 0.5)
 
@@ -233,8 +240,8 @@ class DynamicIntelligenceService:
         dem_pt = await self.dem_provider.get_slope(lat, lng)
         real_slope = dem_pt.slope_degrees
 
-        # Distance from affected habitation
-        dist_km = math.hypot((lat - affected_lat) * 111.0, (lng - affected_lng) * 96.0)
+        # Distance from affected habitation via great-circle Haversine
+        dist_km = haversine_distance_km(lat, lng, affected_lat, affected_lng)
 
         # Road proximity via OSM
         dist_road = await self.osm_provider.get_distance_to_road(lat, lng)

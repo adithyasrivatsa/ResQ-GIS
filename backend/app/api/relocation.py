@@ -32,9 +32,10 @@ async def list_relocation_sites(
         sites = [s for s in sites if s.capacity >= min_capacity]
 
     if dynamic:
+        import asyncio
         intel = get_intelligence_service()
-        enriched: list[RelocationSiteResponse] = []
-        for s in sites:
+
+        async def _enrich_site(s: RelocationSiteResponse) -> RelocationSiteResponse:
             try:
                 lat = s.latitude or (s.location.lat if s.location else 30.429)
                 lng = s.longitude or (s.location.lng if s.location else 79.431)
@@ -46,8 +47,9 @@ async def list_relocation_sites(
                 s.provenance = assessment.provenance
             except Exception:
                 pass
-            enriched.append(s)
-        return enriched
+            return s
+
+        return await asyncio.gather(*[_enrich_site(s) for s in sites])
 
     return sites
 

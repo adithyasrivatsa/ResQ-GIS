@@ -26,7 +26,9 @@ export default function RightPanel() {
     if (selectedRiverId) return 'RIVER_GAUGE_TELEMETRY.SYS';
     switch (activeNav) {
       case 'map':
-        return 'MAP_LAYERS.SYS';
+        return '2D_MAP_LAYERS.SYS';
+      case 'globe':
+        return '3D_GLOBE_LAYERS.SYS';
       case 'habitations':
         return 'RISK_OVERVIEW.SYS';
       case 'relocation':
@@ -51,6 +53,7 @@ export default function RightPanel() {
 
     switch (activeNav) {
       case 'map':
+      case 'globe':
         return <LayerPanel />;
       case 'habitations':
         return <RiskOverviewPanel />;

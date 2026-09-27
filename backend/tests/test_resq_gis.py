@@ -185,3 +185,57 @@ def test_openmeteo_normalization():
     assert len(forecast) == 2
     assert "RAIN" in forecast[0].condition
 
+
+def test_bhuvan_api_status_and_districts():
+    """Verify official ISRO Bhuvan health probe and district registry endpoints."""
+    async def _test():
+        async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+            resp_status = await client.get("/api/bhuvan/status")
+            assert resp_status.status_code == 200
+            data_status = resp_status.json()
+            assert data_status["portal"] == "ISRO Bhuvan / NRSC"
+            assert "services" in data_status
+            assert data_status["services"]["village_geocoding"] is True
+
+            resp_dist = await client.get("/api/bhuvan/districts")
+            assert resp_dist.status_code == 200
+            districts = resp_dist.json()
+            assert len(districts) >= 10
+            chamoli = next((d for d in districts if d["name"].lower() == "chamoli"), None)
+            assert chamoli is not None
+            assert chamoli["code"] == "0502"
+
+    asyncio.run(_test())
+
+
+def test_geodesic_spatial_calculations():
+    """Verify exact spherical Haversine, river proximity, and fault calculations."""
+    from app.gis.spatial_calc import (
+        haversine_distance_km,
+        calculate_river_proximity_km,
+        calculate_glof_exposure,
+        calculate_fault_distance_km,
+        estimate_lithology_weakness,
+    )
+
+    # 1. Haversine distance between Joshimath (30.555, 79.566) and Marwari (30.542, 79.558)
+    dist = haversine_distance_km(30.555, 79.566, 30.542, 79.558)
+    assert 1.0 < dist < 2.5
+
+    # 2. River proximity for Joshimath / Alaknanda valley
+    river_dist = calculate_river_proximity_km(30.555, 79.566)
+    assert 0.05 <= river_dist <= 12.0
+
+    # 3. GLOF exposure for high-altitude moraine zone (Kedarnath / Chorabari)
+    glof_kedarnath = calculate_glof_exposure(30.735, 79.067, 3580)
+    assert glof_kedarnath >= 0.80
+
+    # 4. Fault distance to MCT
+    fault_dist = calculate_fault_distance_km(30.555, 79.566)
+    assert 0.1 <= fault_dist <= 25.0
+
+    # 5. Lithology shear weakness
+    weakness = estimate_lithology_weakness(30.555, 79.566, 38.0)
+    assert 0.35 <= weakness <= 0.95
+
+

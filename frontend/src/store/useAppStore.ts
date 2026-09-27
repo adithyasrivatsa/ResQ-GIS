@@ -7,6 +7,7 @@ import type {
   WeatherReport,
   MapLayer,
   NavSection,
+  MapMode,
   RiverObservation,
   RiverStation,
   HazardLayerItem,
@@ -30,9 +31,14 @@ import { DEFAULT_LAYERS } from '../data/layers';
 import { api } from '../services/api';
 
 interface AppState {
-  // Navigation
+  // Navigation & Spatial Engine Mode
   activeNav: NavSection;
   setActiveNav: (nav: NavSection) => void;
+  mapMode: MapMode;
+  setMapMode: (mode: MapMode) => void;
+  mapCenterTarget: { lat: number; lng: number; zoom?: number } | null;
+  setMapCenterTarget: (target: { lat: number; lng: number; zoom?: number } | null) => void;
+
 
   // Administrative Scope & Multi-Tier Hierarchy
   selectedRegion: string;
@@ -116,9 +122,27 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
-  // Navigation
+  // Navigation & Spatial Engine Mode
   activeNav: 'map',
-  setActiveNav: (nav) => set({ activeNav: nav }),
+  setActiveNav: (nav) =>
+    set({
+      activeNav: nav,
+      mapMode: nav === 'globe' ? '3d' : (nav === 'map' ? '2d' : get().mapMode),
+    }),
+  mapMode: '2d',
+  setMapMode: (mode) =>
+    set({
+      mapMode: mode,
+      activeNav:
+        mode === '3d' && get().activeNav === 'map'
+          ? 'globe'
+          : mode === '2d' && get().activeNav === 'globe'
+          ? 'map'
+          : get().activeNav,
+    }),
+  mapCenterTarget: null,
+  setMapCenterTarget: (target) => set({ mapCenterTarget: target }),
+
 
   // Search
   searchQuery: '',

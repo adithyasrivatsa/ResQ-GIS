@@ -1,5 +1,6 @@
 import {
-  Monitor,
+  Map,
+  Globe,
   BarChart3,
   Home,
   ArrowRightLeft,
@@ -14,12 +15,13 @@ import type { NavSection } from '../../types';
 interface NavItemDef {
   id: NavSection;
   label: string;
-  icon: typeof Monitor;
+  icon: typeof Map;
   bg: string;
 }
 
 const NAV_ITEMS: NavItemDef[] = [
-  { id: 'map', label: 'RADAR', icon: Monitor, bg: '#38bdf8' },
+  { id: 'map', label: '2D MAP', icon: Map, bg: '#38bdf8' },
+  { id: 'globe', label: '3D GLOBE', icon: Globe, bg: '#818cf8' },
   { id: 'analysis', label: 'TOPSIS', icon: BarChart3, bg: '#ff9f1c' },
   { id: 'habitations', label: 'SECTOR', icon: Home, bg: '#fde047' },
   { id: 'relocation', label: 'HAVENS', icon: ArrowRightLeft, bg: '#a78bfa' },
@@ -62,10 +64,10 @@ export default function LeftNav() {
       {/* Retro Layers Button & Avatar Badge */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, width: '100%' }}>
         <button
-          className={`left-nav__item ${activeNav === 'map' ? 'left-nav__item--active' : ''}`}
+          className={`left-nav__item ${activeNav === 'map' || activeNav === 'globe' ? 'left-nav__item--active' : ''}`}
           style={{ backgroundColor: '#4ade80' }}
-          onClick={() => setActiveNav('map')}
-          title="MAP LAYERS"
+          onClick={() => setActiveNav(activeNav === 'globe' ? 'globe' : 'map')}
+          title="GIS LAYER STACK"
         >
           <Layers size={18} strokeWidth={2.5} color="#000" />
           <span className="left-nav__label" style={{ color: '#000' }}>LAYERS</span>

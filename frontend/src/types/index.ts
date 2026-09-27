@@ -215,7 +215,9 @@ export interface DistrictRiskReport {
 }
 
 // --- Navigation ---
-export type NavSection = 'map' | 'analysis' | 'habitations' | 'relocation' | 'alerts' | 'reports' | 'rivers';
+export type NavSection = 'map' | 'globe' | 'analysis' | 'habitations' | 'relocation' | 'alerts' | 'reports' | 'rivers';
+export type MapMode = '2d' | '3d';
+
 
 // --- Data Source Provenance & Status ---
 export interface TelemetrySourceStatus {

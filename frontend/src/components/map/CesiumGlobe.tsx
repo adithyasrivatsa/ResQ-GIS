@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { initViewer, destroyViewer, switchViewerImagery, switchViewerTerrain } from '../../cesium/viewer';
+import { initViewer, destroyViewer, switchViewerImagery, switchViewerTerrain, getViewer } from '../../cesium/viewer';
 import { flyToUttarakhand } from '../../cesium/camera';
 import {
   renderHabitations,
@@ -37,7 +37,10 @@ export default function CesiumGlobe() {
     selectHazard,
     getSelectedHabitation,
     getLayerVisibilityMap,
+    mapMode,
+    setMapMode,
   } = useAppStore();
+
 
   // Initialize Cesium Viewer once
   useEffect(() => {
@@ -61,6 +64,18 @@ export default function CesiumGlobe() {
       destroyViewer();
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // When mapMode is '3d', ensure Cesium viewer recalculates its canvas dimensions
+  useEffect(() => {
+    if (mapMode === '3d') {
+      setTimeout(() => {
+        const v = getViewer();
+        if (v && !v.isDestroyed()) {
+          v.resize();
+        }
+      }, 50);
+    }
+  }, [mapMode]);
 
   // Re-render GIS layers and overlays when store data or layer visibility toggles
   useEffect(() => {
@@ -122,7 +137,45 @@ export default function CesiumGlobe() {
         </div>
 
         {/* Quick Basemap & Camera Controls in Window Titlebar */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {/* Spatial Mode Switcher Tabs */}
+          <div style={{ display: 'flex', background: '#000000', border: '2px solid #000', borderRadius: 5, padding: 2, gap: 2 }}>
+            <button
+              onClick={() => setMapMode('2d')}
+              style={{
+                fontFamily: 'Silkscreen',
+                fontSize: 9,
+                fontWeight: 700,
+                padding: '2px 8px',
+                border: 'none',
+                background: mapMode === '2d' ? '#38bdf8' : 'transparent',
+                color: mapMode === '2d' ? '#000000' : '#ffffff',
+                borderRadius: 3,
+                cursor: 'pointer',
+              }}
+              title="Switch to High-Performance 2D Vector Slippy Map"
+            >
+              🗺️ 2D MAP
+            </button>
+            <button
+              onClick={() => setMapMode('3d')}
+              style={{
+                fontFamily: 'Silkscreen',
+                fontSize: 9,
+                fontWeight: 700,
+                padding: '2px 8px',
+                border: 'none',
+                background: mapMode === '3d' ? '#a78bfa' : 'transparent',
+                color: mapMode === '3d' ? '#000000' : '#ffffff',
+                borderRadius: 3,
+                cursor: 'pointer',
+              }}
+              title="Switch to 3D CesiumJS Elevation Terrain Globe"
+            >
+              🌐 3D GLOBE
+            </button>
+          </div>
+
           <div style={{ display: 'flex', background: '#ffffff', border: '1.5px solid #000', borderRadius: 4, padding: 1, gap: 2 }}>
             <button
               onClick={() => handleImagerySwitch('sentinel2')}

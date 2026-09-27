@@ -52,37 +52,54 @@ class NDMAClient:
         for item in items:
             try:
                 # Create dedup key
-                dedup_key = hashlib.md5(
-                    f"{item.get('identifier', '')}{item.get('sent', '')}".encode()
-                ).hexdigest()
+                ident = str(item.get("identifier", ""))
+                sent_time = str(item.get("effective_start_time") or item.get("sent", ""))
+                dedup_key = hashlib.md5(f"{ident}{sent_time}".encode()).hexdigest()
 
                 if dedup_key in _seen_alerts:
                     continue
                 _seen_alerts.add(dedup_key)
 
                 # Map severity
-                severity_str = (item.get("severity") or item.get("color") or "minor").lower()
-                severity_map = {
-                    "extreme": Severity.RED, "severe": Severity.RED,
-                    "moderate": Severity.ORANGE,
-                    "minor": Severity.YELLOW,
-                    "unknown": Severity.GREEN,
-                }
-                severity = severity_map.get(severity_str, Severity.YELLOW)
+                color_str = str(item.get("severity_color", "")).lower()
+                severity_str = str(item.get("severity") or item.get("color") or "yellow").lower()
+                if color_str == "red" or severity_str in ("red", "extreme", "severe", "alert"):
+                    severity = Severity.RED
+                elif color_str == "orange" or severity_str in ("orange", "moderate", "warning"):
+                    severity = Severity.ORANGE
+                elif color_str == "yellow" or severity_str in ("yellow", "minor", "watch"):
+                    severity = Severity.YELLOW
+                elif color_str == "green" or severity_str in ("green", "minimal"):
+                    severity = Severity.GREEN
+                else:
+                    severity = Severity.YELLOW
 
                 # Extract area
-                area_desc = item.get("areaDesc") or item.get("area", "Unknown")
+                area_desc = item.get("area_description") or item.get("areaDesc") or item.get("area", "Unknown")
                 if isinstance(area_desc, list):
                     area_desc = ", ".join(area_desc)
 
+                event_type = item.get("disaster_type") or item.get("event") or item.get("event_type", "Alert")
+                desc = item.get("warning_message") or item.get("description") or item.get("headline", "")
+
+                geometry = item.get("geometry")
+                if not geometry and item.get("centroid"):
+                    try:
+                        parts = str(item["centroid"]).split(",")
+                        if len(parts) == 2:
+                            lon, lat = float(parts[0].strip()), float(parts[1].strip())
+                            geometry = {"type": "Point", "coordinates": [lon, lat]}
+                    except Exception:
+                        pass
+
                 alerts.append(NDMAAlert(
-                    event_type=item.get("event") or item.get("event_type", "Alert"),
+                    event_type=str(event_type),
                     severity=severity,
-                    area=area_desc,
-                    issued_at=_parse_datetime(item.get("sent") or item.get("issued_at")),
-                    expires_at=_parse_datetime(item.get("expires")),
-                    description=item.get("description") or item.get("headline", ""),
-                    geometry=item.get("geometry"),
+                    area=str(area_desc),
+                    issued_at=_parse_datetime(item.get("effective_start_time") or item.get("sent") or item.get("issued_at")),
+                    expires_at=_parse_datetime(item.get("effective_end_time") or item.get("expires")),
+                    description=str(desc),
+                    geometry=geometry,
                 ))
             except Exception as e:
                 logger.warning(f"Failed to parse NDMA alert: {e}")
@@ -92,11 +109,20 @@ class NDMAClient:
 
 
 def _parse_datetime(val: str | None) -> datetime:
-    """Best-effort datetime parsing."""
+    """Best-effort datetime parsing for ISO and SACHET formats."""
     if not val:
         return datetime.utcnow()
+    if isinstance(val, datetime):
+        return val
+    val_str = str(val).strip()
+    import re
     try:
-        return datetime.fromisoformat(val.replace("Z", "+00:00"))
+        clean = re.sub(r"\s+[A-Z]{3,4}\s+", " ", val_str)
+        return datetime.strptime(clean, "%a %b %d %H:%M:%S %Y")
+    except Exception:
+        pass
+    try:
+        return datetime.fromisoformat(val_str.replace("Z", "+00:00"))
     except (ValueError, AttributeError):
         return datetime.utcnow()
 

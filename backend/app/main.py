@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from app.config import get_settings
-from app.api import habitations, relocation, alerts, weather, hazards, rivers, analysis, emergency, terrain, admin
+from app.api import habitations, relocation, alerts, weather, hazards, rivers, analysis, emergency, terrain, admin, bhuvan
 from app.database.session import is_database_connected, check_db_connection
 from app.database.init_db import init_database
 from app.services.cache_service import get_cache
@@ -54,6 +54,7 @@ app.include_router(analysis.router)
 app.include_router(emergency.router)
 app.include_router(terrain.router)
 app.include_router(admin.router)
+app.include_router(bhuvan.router)
 
 
 @app.get("/api/health")
@@ -79,7 +80,12 @@ async def system_status():
     cwc_status = "LIVE" if (settings.is_live_mode and settings.cwc_api_base_url) else "STATIC"
     osm_status = "LIVE" if (settings.is_live_mode and settings.osm_overpass_url) else "STATIC"
     copernicus_status = "LIVE" if (settings.is_live_mode and settings.copernicus_dem_url) else "STATIC"
-    bhuvan_status = "LIVE" if (settings.is_live_mode and settings.bhuvan_wms_url) else "STATIC"
+    bhuvan_has_tokens = bool(
+        settings.bhuvan_token_village_geocoding
+        or settings.bhuvan_token_routing
+        or settings.bhuvan_token_lulc_stats
+    )
+    bhuvan_status = "LIVE" if bhuvan_has_tokens else ("STATIC" if settings.bhuvan_wms_url else "DEMO")
     lgd_status = "LIVE" if (settings.is_live_mode and settings.lgd_api_base_url) else "STATIC"
     gsi_status = "LIVE" if (settings.is_live_mode and settings.gsi_bhukosh_wms_url) else "STATIC"
     sdma_status = "LIVE" if (settings.is_live_mode and settings.sdma_api_base_url) else "STATIC"
@@ -101,7 +107,7 @@ async def system_status():
             "bhuvan": DataSourceStatus(
                 status=bhuvan_status,
                 last_updated=datetime.utcnow(),
-                details="ISRO Bhuvan WMS Service (Live)" if bhuvan_status == "LIVE" else "ISRO Bhuvan Glacial Lake & Inundation Atlas (Static)",
+                details="ISRO Bhuvan Web API & NRSC Portal (Live: Census Village Geocoding, Road Routing, LULC 50k, Post/Hospitals)" if bhuvan_status == "LIVE" else "ISRO Bhuvan Glacial Lake & Inundation Atlas (Static)",
             ),
             "lgd": DataSourceStatus(
                 status=lgd_status,

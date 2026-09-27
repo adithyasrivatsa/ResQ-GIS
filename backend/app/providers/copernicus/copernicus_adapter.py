@@ -142,7 +142,7 @@ class CopernicusDEMAdapter(BaseLifecycleProvider[dict, dict, TerrainElevationPoi
             {"latitude": lat, "longitude": lng + delta},
         ]
         try:
-            async with httpx.AsyncClient(timeout=4.5) as client:
+            async with httpx.AsyncClient(timeout=1.2) as client:
                 resp = await client.post(self.dem_url, json={"locations": locations})
                 if resp.status_code == 200:
                     data = resp.json()

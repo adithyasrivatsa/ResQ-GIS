@@ -29,9 +29,10 @@ async def list_habitations(
     habitations = await gis.get_habitations(region=region, district=district, block=block)
 
     if dynamic:
+        import asyncio
         intel = get_intelligence_service()
-        enriched: list[HabitationResponse] = []
-        for h in habitations:
+
+        async def _enrich_hab(h: HabitationResponse) -> HabitationResponse:
             try:
                 hz = await intel.assess_habitation_hazard(h)
                 vuln = await intel.assess_habitation_vulnerability(h, hz)
@@ -70,8 +71,10 @@ async def list_habitations(
                 h.provenance = hz.provenance
             except Exception:
                 pass
-            enriched.append(h)
-        habitations = enriched
+            return h
+
+        habitations = await asyncio.gather(*[_enrich_hab(h) for h in habitations])
+
 
     if min_risk is not None:
         habitations = [h for h in habitations if h.risk_score >= min_risk]

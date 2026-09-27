@@ -55,30 +55,79 @@ class SachetAdapter(BaseLifecycleProvider[list, list, list[DisasterAlert]], Aler
         alerts: list[DisasterAlert] = []
         for a in validated:
             try:
-                area_desc = a.get("area_description", a.get("area", "Uttarakhand"))
-                severity_str = str(a.get("severity", "yellow")).lower()
-                sev = (
-                    Severity.RED if severity_str in ("red", "extreme", "severe")
-                    else Severity.ORANGE if severity_str in ("orange", "moderate")
-                    else Severity.YELLOW
-                )
+                color_str = str(a.get("severity_color", "")).lower()
+                sev_str = str(a.get("severity", "")).lower()
+                if color_str == "red" or sev_str in ("red", "extreme", "severe", "alert"):
+                    sev = Severity.RED
+                elif color_str == "orange" or sev_str in ("orange", "moderate", "warning"):
+                    sev = Severity.ORANGE
+                elif color_str == "yellow" or sev_str in ("yellow", "minor", "watch"):
+                    sev = Severity.YELLOW
+                elif color_str == "green" or sev_str in ("green", "minimal"):
+                    sev = Severity.GREEN
+                else:
+                    sev = Severity.YELLOW
+
+                disaster_type = a.get("disaster_type") or a.get("event") or a.get("type") or "Disaster Alert"
+                area_desc = a.get("area_description") or a.get("area") or a.get("region") or "Uttarakhand"
+                if isinstance(area_desc, list):
+                    area_desc = ", ".join(area_desc)
+
+                warning_msg = a.get("warning_message") or a.get("description") or a.get("headline") or ""
+                title = a.get("headline") or a.get("title") or f"{disaster_type}: {area_desc[:60]}"
+
+                geometry = a.get("geometry")
+                if not geometry and a.get("centroid"):
+                    try:
+                        parts = str(a["centroid"]).split(",")
+                        if len(parts) == 2:
+                            lon, lat = float(parts[0].strip()), float(parts[1].strip())
+                            geometry = {"type": "Point", "coordinates": [lon, lat]}
+                    except Exception:
+                        pass
+
+                alert_id = str(a.get("identifier") or a.get("id") or f"alert-{len(alerts)+1}")
+                issued_at = self._parse_sachet_time(a.get("effective_start_time") or a.get("sent"))
+                expires_at = self._parse_sachet_time(a.get("effective_end_time") or a.get("expires"))
+
                 alerts.append(
                     DisasterAlert(
-                        id=str(a.get("identifier", a.get("id", f"alert-{len(alerts)+1}"))),
-                        type=str(a.get("event", a.get("type", "Disaster Alert"))),
+                        id=alert_id,
+                        type=str(disaster_type),
                         severity=sev,
-                        title=str(a.get("headline", a.get("title", "Disaster Warning"))),
-                        description=str(a.get("description", "")),
-                        issued_at=datetime.fromisoformat(a.get("sent", datetime.utcnow().isoformat())),
-                        region=area_desc,
-                        geometry=a.get("geometry"),
-                        source="SACHET",
+                        title=str(title),
+                        description=str(warning_msg),
+                        issued_at=issued_at,
+                        expires_at=expires_at,
+                        region=str(area_desc),
+                        geometry=geometry,
+                        source="SACHET (NDMA)",
                         provenance=DataProvenance.LIVE,
                     )
                 )
             except Exception as e:
                 logger.warning(f"Error normalizing SACHET alert: {e}")
         return alerts
+
+    @staticmethod
+    def _parse_sachet_time(val: Any) -> datetime:
+        if not val:
+            return datetime.utcnow()
+        if isinstance(val, datetime):
+            return val
+        val_str = str(val).strip()
+        import re
+        try:
+            # Handle SACHET format e.g. "Sun Sep 27 13:09:00 IST 2026"
+            clean = re.sub(r"\s+[A-Z]{3,4}\s+", " ", val_str)
+            return datetime.strptime(clean, "%a %b %d %H:%M:%S %Y")
+        except Exception:
+            pass
+        try:
+            return datetime.fromisoformat(val_str.replace("Z", "+00:00"))
+        except Exception:
+            pass
+        return datetime.utcnow()
 
     async def get_active_alerts(self, region: str | None = None) -> list[DisasterAlert]:
         cache_key = f"sachet:alerts:{region.lower() if region else 'all'}"
@@ -98,6 +147,15 @@ class SachetAdapter(BaseLifecycleProvider[list, list, list[DisasterAlert]], Aler
                 latency = (time.perf_counter() - t0) * 1000.0
 
                 if live_alerts:
+                    if region:
+                        reg_lower = region.lower()
+                        filtered = [
+                            al for al in live_alerts
+                            if reg_lower in al.region.lower() or "uttarakhand" in al.region.lower() or reg_lower in al.title.lower()
+                        ]
+                        if filtered:
+                            live_alerts = filtered
+
                     self._last_status = ProviderHealthStatus(
                         provider="alerts_sachet",
                         status="LIVE",

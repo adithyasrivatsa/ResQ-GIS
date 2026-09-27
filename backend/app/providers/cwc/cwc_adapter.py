@@ -82,8 +82,11 @@ class CWCAdapter(RiverProvider):
             for feat in data.get("features", []):
                 props = feat.get("properties", {})
                 dist = props.get("district", "Chamoli")
-                if region and region.lower() not in dist.lower():
-                    continue
+                state = props.get("state", "Uttarakhand")
+                if region:
+                    reg_lower = region.lower()
+                    if reg_lower not in dist.lower() and reg_lower not in state.lower():
+                        continue
 
                 lat = props.get("latitude", 0.0)
                 lng = props.get("longitude", 0.0)

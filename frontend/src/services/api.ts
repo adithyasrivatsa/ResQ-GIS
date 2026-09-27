@@ -429,4 +429,17 @@ export const api = {
 
   // Machine Learning Model Provenance & Metrics
   getMLStatus: () => fetchJson<MLStatusResponse>('/api/analysis/ml-status'),
+
+  // ISRO Bhuvan / NRSC Geospatial Services
+  getBhuvanStatus: () => fetchJson<{ portal: string; overall_status: string; services: Record<string, boolean> }>('/api/bhuvan/status'),
+  getBhuvanDistricts: () => fetchJson<Array<{ code: string; name: string }>>('/api/bhuvan/districts'),
+  geocodeVillageBhuvan: (villageName: string, state: string = 'UTTARAKHAND') =>
+    fetchJson<{ query: string; count: number; results: any[] }>(`/api/bhuvan/village/${encodeURIComponent(villageName)}?state=${encodeURIComponent(state)}`),
+  getBhuvanShortestRoute: (lat1: number, lon1: number, lat2: number, lon2: number) =>
+    fetchJson<any>(`/api/bhuvan/route?lat1=${lat1}&lon1=${lon1}&lat2=${lat2}&lon2=${lon2}`),
+  getBhuvanDistrictLULC: (distcode: string = '0502', year: string = '1112') =>
+    fetchJson<any>(`/api/bhuvan/lulc/district/${distcode}?year=${year}`),
+  getBhuvanFacilities: (theme: string = 'hospital', lat: number = 30.555, lon: number = 79.566, buffer: number = 20000) =>
+    fetchJson<any>(`/api/bhuvan/facilities?theme=${theme}&lat=${lat}&lon=${lon}&buffer=${buffer}`),
 };
+
