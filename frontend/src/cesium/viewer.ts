@@ -69,7 +69,7 @@ export function initViewer(container: HTMLElement): Cesium.Viewer {
 
   // Atmospheric and render settings for high-fidelity GIS
   const scene = viewerInstance.scene;
-  scene.globe.enableLighting = true;
+  scene.globe.enableLighting = false;
   scene.fog.enabled = true;
   scene.fog.density = 0.0002;
   scene.globe.depthTestAgainstTerrain = false;

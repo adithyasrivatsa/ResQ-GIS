@@ -102,7 +102,7 @@ export default function CesiumGlobe() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
+    <div className="retro-window" style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', position: 'relative' }}>
       <div className="retro-titlebar retro-titlebar--orange" style={{ borderBottom: '3px solid #000' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span>🛰️ RADAR_TERRAIN_3D.EXE</span>
