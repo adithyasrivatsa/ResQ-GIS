@@ -1,0 +1,37 @@
+{
+  "model_name": "Himalayan Landslide Susceptibility Classifier",
+  "algorithm": "RandomForestClassifier",
+  "version": "1.0.0",
+  "trained_at": "2026-09-27T13:40:00Z",
+  "sample_count": 500,
+  "test_size": 100,
+  "features": [
+    "slope_degrees",
+    "rainfall_24h_mm",
+    "elevation_m",
+    "dist_to_fault_km",
+    "river_proximity_km",
+    "historical_disaster_count",
+    "lithology_shear_index"
+  ],
+  "feature_importances": {
+    "slope_degrees": 0.5227,
+    "rainfall_24h_mm": 0.1547,
+    "elevation_m": 0.0564,
+    "dist_to_fault_km": 0.1003,
+    "river_proximity_km": 0.0702,
+    "historical_disaster_count": 0.0109,
+    "lithology_shear_index": 0.0849
+  },
+  "metrics": {
+    "accuracy": 0.8,
+    "precision": 0.8333,
+    "recall": 0.7692,
+    "f1_score": 0.8,
+    "roc_auc": 0.8994
+  },
+  "target_classes": {
+    "0": "STABLE",
+    "1": "SUSCEPTIBLE"
+  }
+}

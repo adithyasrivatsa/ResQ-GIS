@@ -1,0 +1,28 @@
+{
+  "authority": "USDMA (Uttarakhand State Disaster Management Authority)",
+  "state": "Uttarakhand",
+  "bulletins": [
+    {
+      "id": "sdma-usdma-001",
+      "type": "Road Blockage & Slope Failure",
+      "severity": "red",
+      "title": "USDMA Emergency Dispatch: Joshimath-Badrinath NH-7 Segment Km 245 Blocked",
+      "description": "Debris fall at Marwari bridge approach; BRO teams mobilizing heavy excavators. Diverting light vehicles via Helang bypass.",
+      "issuedAt": "2026-09-27T04:30:00Z",
+      "region": "Chamoli",
+      "district": "Chamoli",
+      "source": "USDMA / SEOC Dehradun"
+    },
+    {
+      "id": "sdma-usdma-002",
+      "type": "River Overflow Advisory",
+      "severity": "orange",
+      "title": "USDMA Advisory: Mandakini Catchment High Silt & Discharge Warning",
+      "description": "Intense localized cloudburst in Kedarnath upper peaks; river stage rising. Habitations in Guptkashi and Sonprayag to maintain high alert.",
+      "issuedAt": "2026-09-27T03:15:00Z",
+      "region": "Rudraprayag",
+      "district": "Rudraprayag",
+      "source": "USDMA / DEOC Rudraprayag"
+    }
+  ]
+}

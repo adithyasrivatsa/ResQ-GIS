@@ -1,0 +1,38 @@
+{
+  "updatedAt": "2026-09-26T14:00:00Z",
+  "districts": {
+    "Chamoli": {
+      "current": {
+        "temperature": 18.5,
+        "humidity": 88,
+        "windSpeed": 14.2,
+        "rainfall24h": 46.5,
+        "condition": "HEAVY_RAIN",
+        "warning": "orange"
+      },
+      "forecast": [
+        { "date": "2026-09-26", "dayLabel": "Today", "condition": "RAIN", "maxTemp": 21, "minTemp": 13, "rainfall": 48.0, "warning": "orange" },
+        { "date": "2026-09-27", "dayLabel": "Sun", "condition": "RAIN", "maxTemp": 20, "minTemp": 12, "rainfall": 52.0, "warning": "orange" },
+        { "date": "2026-09-28", "dayLabel": "Mon", "condition": "CLOUD", "maxTemp": 22, "minTemp": 14, "rainfall": 18.0, "warning": "yellow" },
+        { "date": "2026-09-29", "dayLabel": "Tue", "condition": "CLEAR", "maxTemp": 24, "minTemp": 15, "rainfall": 2.0 },
+        { "date": "2026-09-30", "dayLabel": "Wed", "condition": "CLEAR", "maxTemp": 25, "minTemp": 15, "rainfall": 0.0 }
+      ]
+    },
+    "Rudraprayag": {
+      "current": {
+        "temperature": 20.2,
+        "humidity": 82,
+        "windSpeed": 11.5,
+        "rainfall24h": 32.0,
+        "condition": "MODERATE_RAIN",
+        "warning": "yellow"
+      },
+      "forecast": [
+        { "date": "2026-09-26", "dayLabel": "Today", "condition": "RAIN", "maxTemp": 23, "minTemp": 15, "rainfall": 35.0, "warning": "yellow" },
+        { "date": "2026-09-27", "dayLabel": "Sun", "condition": "RAIN", "maxTemp": 22, "minTemp": 14, "rainfall": 38.0, "warning": "yellow" },
+        { "date": "2026-09-28", "dayLabel": "Mon", "condition": "CLOUD", "maxTemp": 25, "minTemp": 16, "rainfall": 12.0 },
+        { "date": "2026-09-29", "dayLabel": "Tue", "condition": "CLEAR", "maxTemp": 26, "minTemp": 17, "rainfall": 0.0 }
+      ]
+    }
+  }
+}

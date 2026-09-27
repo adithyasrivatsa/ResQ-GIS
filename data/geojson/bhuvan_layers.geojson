@@ -1,0 +1,82 @@
+{
+  "type": "FeatureCollection",
+  "name": "ISRO_Bhuvan_NRSC_Thematic_Layers",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "bhuvan-glof-satopanth",
+      "properties": {
+        "id": "bhuvan-glof-satopanth",
+        "name": "Bhuvan: Satopanth Glacial Lake Buffer",
+        "type": "glof",
+        "severity": "red",
+        "source": "ISRO Bhuvan / High Altitude Glacial Lakes Atlas",
+        "description": "Monitored glacial moraine-dammed lake (Altitude 4600m). Expansion rate monitored by Cartosat/Sentinel-2.",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.350, 30.745],
+            [79.380, 30.740],
+            [79.375, 30.715],
+            [79.340, 30.720],
+            [79.350, 30.745]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "bhuvan-flood-chamoli",
+      "properties": {
+        "id": "bhuvan-flood-chamoli",
+        "name": "Bhuvan: Flood Inundation Hazard Zone (Chamoli-Pipalkoti)",
+        "type": "flood",
+        "severity": "orange",
+        "source": "NRSC Disaster Management Support Programme (DMSP)",
+        "description": "Hydrological inundation boundary mapped from historical peak water discharge events.",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.390, 30.400],
+            [79.420, 30.435],
+            [79.470, 30.470],
+            [79.460, 30.460],
+            [79.410, 30.420],
+            [79.390, 30.400]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "bhuvan-lulc-moraine",
+      "properties": {
+        "id": "bhuvan-lulc-moraine",
+        "name": "Bhuvan: Unconsolidated Moraine / Scree Slope",
+        "type": "landslide",
+        "severity": "orange",
+        "source": "ISRO Bhuvan Thematic LULC 1:50000",
+        "description": "Unconsolidated fluvial-glacial debris deposits highly susceptible to heavy rainfall liquefaction.",
+        "visible": false
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.520, 30.540],
+            [79.550, 30.545],
+            [79.545, 30.525],
+            [79.515, 30.520],
+            [79.520, 30.540]
+          ]
+        ]
+      }
+    }
+  ]
+}

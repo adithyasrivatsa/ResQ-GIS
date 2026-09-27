@@ -1,0 +1,98 @@
+{
+  "type": "FeatureCollection",
+  "name": "IDRN_DEOC_Emergency_Resources_Uttarakhand",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "idrn-shelter-pipalkoti",
+      "properties": {
+        "id": "idrn-shelter-pipalkoti",
+        "name": "Pipalkoti Central Community Shelter & Relief Staging Center",
+        "resource_type": "shelter",
+        "district": "Chamoli",
+        "block": "Dasholi",
+        "capacity": 3500,
+        "equipment": ["Generator 125kVA", "Water Purification RO Unit 5000L/hr", "Medical Triage Tents", "Satellite Phone INMARSAT"],
+        "contact_person": "District Relief Officer, DEOC Chamoli",
+        "contact_phone": "+91-1372-251010",
+        "status": "operational",
+        "latitude": 30.430,
+        "longitude": 79.430,
+        "elevation": 1260.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.430, 30.430, 1260.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "idrn-helipad-ravigram",
+      "properties": {
+        "id": "idrn-helipad-ravigram",
+        "name": "Ravigram Strategic Disaster Evacuation Helipad",
+        "resource_type": "helipad",
+        "district": "Chamoli",
+        "block": "Joshimath",
+        "capacity": 4,
+        "equipment": ["Airfield Firefighting Foam Trailer", "Aviation Fuel Storage 10KL", "SDRF Mountain Rescue Team Alpha"],
+        "contact_person": "Air Operations Liaison, Chamoli",
+        "contact_phone": "+91-1372-252200",
+        "status": "operational",
+        "latitude": 30.562,
+        "longitude": 79.575,
+        "elevation": 1940.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.575, 30.562, 1940.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "idrn-depot-helang",
+      "properties": {
+        "id": "idrn-depot-helang",
+        "name": "Helang BRO Earthmoving & Heavy Equipment Depot",
+        "resource_type": "equipment_depot",
+        "district": "Chamoli",
+        "block": "Joshimath",
+        "capacity": 12,
+        "equipment": ["Heavy Excavators (JCB 3DX) x 4", "Wheel Loaders x 3", "Pneumatic Rock Drills", "Pre-fab Bailey Bridge Sections"],
+        "contact_person": "BRO Sector Commander Helang",
+        "contact_phone": "+91-1372-253105",
+        "status": "operational",
+        "latitude": 30.515,
+        "longitude": 79.518,
+        "elevation": 1470.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.518, 30.515, 1470.0]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "idrn-medical-guptkashi",
+      "properties": {
+        "id": "idrn-medical-guptkashi",
+        "name": "Guptkashi Sub-Divisional Field Hospital & DEOC Post",
+        "resource_type": "medical_post",
+        "district": "Rudraprayag",
+        "block": "Ukhimath",
+        "capacity": 150,
+        "equipment": ["Trauma ICU 20-Bed", "Ambulance 4x4 Fleet x 6", "Blood Storage Refrigerator", "Mobile Oxygen Concentrator"],
+        "contact_person": "Chief Medical Officer, Guptkashi",
+        "contact_phone": "+91-1364-267108",
+        "status": "operational",
+        "latitude": 30.528,
+        "longitude": 79.072,
+        "elevation": 1319.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.072, 30.528, 1319.0]
+      }
+    }
+  ]
+}

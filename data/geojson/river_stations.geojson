@@ -1,0 +1,102 @@
+{
+  "type": "FeatureCollection",
+  "name": "CWC_River_Monitoring_Stations",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "cwc-vishnuprayag",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.575, 30.565, 1370.0]
+      },
+      "properties": {
+        "stationId": "cwc-vishnuprayag",
+        "name": "Vishnuprayag Confluence",
+        "river": "Alaknanda / Dhauliganga",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.565,
+        "longitude": 79.575,
+        "elevation": 1370.0,
+        "waterLevel": 1371.4,
+        "warningLevel": 1372.5,
+        "dangerLevel": 1374.0,
+        "status": "normal",
+        "flowDischargeCumecs": 420.5,
+        "lastObserved": "2026-09-26T14:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cwc-marwari-bridge",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.558, 30.545, 1350.0]
+      },
+      "properties": {
+        "stationId": "cwc-marwari-bridge",
+        "name": "Marwari Bridge Gauge",
+        "river": "Alaknanda",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.545,
+        "longitude": 79.558,
+        "elevation": 1350.0,
+        "waterLevel": 1352.8,
+        "warningLevel": 1352.0,
+        "dangerLevel": 1354.5,
+        "status": "warning",
+        "flowDischargeCumecs": 580.0,
+        "lastObserved": "2026-09-26T14:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cwc-karnaprayag",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.220, 30.260, 780.0]
+      },
+      "properties": {
+        "stationId": "cwc-karnaprayag",
+        "name": "Karnaprayag Gauge",
+        "river": "Alaknanda / Pindar",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.260,
+        "longitude": 79.220,
+        "elevation": 780.0,
+        "waterLevel": 780.8,
+        "warningLevel": 782.0,
+        "dangerLevel": 784.0,
+        "status": "normal",
+        "flowDischargeCumecs": 740.0,
+        "lastObserved": "2026-09-26T14:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cwc-rudraprayag",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [78.980, 30.285, 610.0]
+      },
+      "properties": {
+        "stationId": "cwc-rudraprayag",
+        "name": "Rudraprayag Sangam",
+        "river": "Alaknanda / Mandakini",
+        "district": "Rudraprayag",
+        "state": "Uttarakhand",
+        "latitude": 30.285,
+        "longitude": 78.980,
+        "elevation": 610.0,
+        "waterLevel": 611.5,
+        "warningLevel": 613.0,
+        "dangerLevel": 615.0,
+        "status": "normal",
+        "flowDischargeCumecs": 890.0,
+        "lastObserved": "2026-09-26T14:00:00Z"
+      }
+    }
+  ]
+}

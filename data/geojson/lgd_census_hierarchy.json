@@ -1,0 +1,146 @@
+{
+  "regions": [
+    "Western Himalayas",
+    "North-Western Himalayas",
+    "Eastern Himalayas",
+    "Western Ghats",
+    "North-East Region",
+    "Eastern Coastal"
+  ],
+  "states": [
+    "Uttarakhand",
+    "Himachal Pradesh",
+    "Sikkim",
+    "Kerala",
+    "Assam",
+    "Odisha"
+  ],
+  "nodes": [
+    {
+      "region": "Western Himalayas",
+      "state": "Uttarakhand",
+      "district": "Chamoli",
+      "block": "Joshimath",
+      "lgd_code": "0478",
+      "villages": ["Joshimath Town", "Reni", "Helang", "Tapovan", "Mana", "Ravigram", "Sunil", "Marwari"],
+      "demographics": {
+        "total_population": 28450,
+        "households": 6120,
+        "kutcha_house_ratio": 0.32,
+        "vulnerable_ratio": 0.28
+      }
+    },
+    {
+      "region": "Western Himalayas",
+      "state": "Uttarakhand",
+      "district": "Chamoli",
+      "block": "Dasholi",
+      "lgd_code": "0479",
+      "villages": ["Pipalkoti", "Gopeshwar", "Chamoli Town", "Bairangana"],
+      "demographics": {
+        "total_population": 42100,
+        "households": 9340,
+        "kutcha_house_ratio": 0.18,
+        "vulnerable_ratio": 0.22
+      }
+    },
+    {
+      "region": "Western Himalayas",
+      "state": "Uttarakhand",
+      "district": "Rudraprayag",
+      "block": "Ukhimath",
+      "lgd_code": "0482",
+      "villages": ["Guptkashi", "Phata", "Sonprayag", "Gaurikund", "Triyuginarayan"],
+      "demographics": {
+        "total_population": 36800,
+        "households": 7950,
+        "kutcha_house_ratio": 0.25,
+        "vulnerable_ratio": 0.26
+      }
+    },
+    {
+      "region": "Western Himalayas",
+      "state": "Uttarakhand",
+      "district": "Rudraprayag",
+      "block": "Augustmuni",
+      "lgd_code": "0483",
+      "villages": ["Agastyamuni", "Tilwara", "Chhanikaty", "Syur"],
+      "demographics": {
+        "total_population": 45200,
+        "households": 10200,
+        "kutcha_house_ratio": 0.15,
+        "vulnerable_ratio": 0.20
+      }
+    },
+    {
+      "region": "North-Western Himalayas",
+      "state": "Himachal Pradesh",
+      "district": "Kinnaur",
+      "block": "Pooh",
+      "lgd_code": "0215",
+      "villages": ["Nako", "Chango", "Yangthang", "Leo"],
+      "demographics": {
+        "total_population": 15400,
+        "households": 3400,
+        "kutcha_house_ratio": 0.29,
+        "vulnerable_ratio": 0.30
+      }
+    },
+    {
+      "region": "Eastern Himalayas",
+      "state": "Sikkim",
+      "district": "Mangan",
+      "block": "Chungthang",
+      "lgd_code": "0245",
+      "villages": ["Chungthang Town", "Lachen", "Lachung", "Toong"],
+      "demographics": {
+        "total_population": 12800,
+        "households": 2900,
+        "kutcha_house_ratio": 0.35,
+        "vulnerable_ratio": 0.31
+      }
+    },
+    {
+      "region": "Western Ghats",
+      "state": "Kerala",
+      "district": "Wayanad",
+      "block": "Mananthavady",
+      "lgd_code": "0587",
+      "villages": ["Chooralmala", "Meppadi", "Mundakkai", "Vellarmala"],
+      "demographics": {
+        "total_population": 52100,
+        "households": 12400,
+        "kutcha_house_ratio": 0.22,
+        "vulnerable_ratio": 0.25
+      }
+    },
+    {
+      "region": "North-East Region",
+      "state": "Assam",
+      "district": "Dima Hasao",
+      "block": "Haflong",
+      "lgd_code": "0312",
+      "villages": ["Haflong Town", "Mahur", "Jatinga", "Harangajao"],
+      "demographics": {
+        "total_population": 38900,
+        "households": 8700,
+        "kutcha_house_ratio": 0.38,
+        "vulnerable_ratio": 0.33
+      }
+    },
+    {
+      "region": "Eastern Coastal",
+      "state": "Odisha",
+      "district": "Ganjam",
+      "block": "Chhatrapur",
+      "lgd_code": "0378",
+      "villages": ["Gopalpur", "Chhatrapur Town", "Aryapalli", "Kanchana"],
+      "demographics": {
+        "total_population": 78200,
+        "households": 18100,
+        "kutcha_house_ratio": 0.28,
+        "vulnerable_ratio": 0.34
+      }
+    }
+  ]
+}

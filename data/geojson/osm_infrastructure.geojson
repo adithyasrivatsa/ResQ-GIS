@@ -1,0 +1,106 @@
+{
+  "type": "FeatureCollection",
+  "name": "OSM_Evacuation_Corridors_Uttarakhand",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "osm-road-nh7",
+      "properties": {
+        "id": "osm-road-nh7",
+        "name": "NH-7 (Rishikesh - Joshimath - Badrinath National Highway)",
+        "highway": "primary",
+        "lanes": 2,
+        "surface": "asphalt",
+        "is_evacuation_route": true,
+        "passability_status": "clear",
+        "district": "Chamoli",
+        "description": "Primary Himalayan lifeline corridor connecting Chamoli, Pipalkoti, Helang, and Joshimath.",
+        "length_km": 42.5
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.355, 30.380],
+          [79.430, 30.430],
+          [79.500, 30.480],
+          [79.530, 30.520],
+          [79.566, 30.555]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-road-helang-marwari",
+      "properties": {
+        "id": "osm-road-helang-marwari",
+        "name": "Helang - Marwari Bypass Feeder Corridor",
+        "highway": "secondary",
+        "lanes": 2,
+        "surface": "paved",
+        "is_evacuation_route": true,
+        "passability_status": "clear",
+        "district": "Chamoli",
+        "description": "Critical bypass route avoiding active subsidence zones in central Joshimath.",
+        "length_km": 11.8
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.510, 30.510],
+          [79.535, 30.535],
+          [79.555, 30.560]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-road-dhauli-corridor",
+      "properties": {
+        "id": "osm-road-dhauli-corridor",
+        "name": "Dhauliganga - Reni - Tapovan Link Road",
+        "highway": "tertiary",
+        "lanes": 1,
+        "surface": "paved",
+        "is_evacuation_route": true,
+        "passability_status": "compromised",
+        "district": "Chamoli",
+        "description": "Border access road through Tapovan and Reni gorge, subject to debris flow washouts.",
+        "length_km": 18.2
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.570, 30.555],
+          [79.630, 30.535],
+          [79.720, 30.570],
+          [79.756, 30.593]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-road-mandakini-nh107",
+      "properties": {
+        "id": "osm-road-mandakini-nh107",
+        "name": "NH-107 (Rudraprayag - Guptkashi - Kedarnath Highway)",
+        "highway": "primary",
+        "lanes": 2,
+        "surface": "asphalt",
+        "is_evacuation_route": true,
+        "passability_status": "clear",
+        "district": "Rudraprayag",
+        "description": "Mandakini Valley evacuation spine providing transit for high-vulnerability riverward habitations.",
+        "length_km": 36.4
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [78.980, 30.285],
+          [79.030, 30.390],
+          [79.060, 30.490],
+          [79.072, 30.528]
+        ]
+      }
+    }
+  ]
+}

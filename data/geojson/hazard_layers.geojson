@@ -1,0 +1,83 @@
+{
+  "type": "FeatureCollection",
+  "name": "Uttarakhand_Hazard_Polygons",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "haz-landslide-joshimath",
+      "properties": {
+        "id": "haz-landslide-joshimath",
+        "name": "Joshimath Subsidence & Landslide Zone",
+        "type": "landslide",
+        "severity": "red",
+        "source": "GSI / NRSC Subsidence Study 2023",
+        "description": "Active slope subsidence with rotational slips affecting Sunil, Marwari and Manohar Bagh sectors.",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.540, 30.565],
+            [79.585, 30.565],
+            [79.580, 30.530],
+            [79.535, 30.535],
+            [79.540, 30.565]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "haz-flood-alaknanda",
+      "properties": {
+        "id": "haz-flood-alaknanda",
+        "name": "Alaknanda 100-Year Flood Inundation Buffer",
+        "type": "flood",
+        "severity": "orange",
+        "source": "CWC / Bhuvan Flood Hazard Atlas",
+        "description": "High velocity floodway zone along Alaknanda riverbed between Vishnuprayag and Chamoli.",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.560, 30.570],
+            [79.545, 30.540],
+            [79.430, 30.430],
+            [79.438, 30.425],
+            [79.555, 30.535],
+            [79.570, 30.565],
+            [79.560, 30.570]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "haz-glof-rishiganga",
+      "properties": {
+        "id": "haz-glof-rishiganga",
+        "name": "Rishiganga - Raunthi Glacier GLOF Corridor",
+        "type": "glof",
+        "severity": "red",
+        "source": "IIRS / ISRO High Altitude Glacial Lake Inventory",
+        "description": "Historical rock/ice avalanche and glacial outburst flood trajectory (Feb 2021 event pathway).",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.740, 30.610],
+            [79.770, 30.605],
+            [79.760, 30.575],
+            [79.730, 30.585],
+            [79.740, 30.610]
+          ]
+        ]
+      }
+    }
+  ]
+}

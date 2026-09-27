@@ -1,0 +1,47 @@
+[
+  {
+    "id": "alert-imd-001",
+    "source": "IMD",
+    "type": "Heavy Rain",
+    "severity": "orange",
+    "title": "Heavy to Very Heavy Rain Alert",
+    "description": "Intense spells of rain likely across Chamoli and Rudraprayag districts during next 24 hours. Possibility of localized landslides along ghat roads.",
+    "issuedAt": "2026-09-26T12:00:00Z",
+    "expiresAt": "2026-09-27T12:00:00Z",
+    "region": "Chamoli & Rudraprayag Districts",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [79.566, 30.555]
+    }
+  },
+  {
+    "id": "alert-sachet-002",
+    "source": "SACHET",
+    "type": "Landslide",
+    "severity": "red",
+    "title": "Active Slope Creep Warning",
+    "description": "Continuous ground displacement sensors detected active slope creep on Joshimath-Auli spur. Residents in Ward 1 and 2 advised to stage for relocation.",
+    "issuedAt": "2026-09-26T13:30:00Z",
+    "expiresAt": "2026-09-28T00:00:00Z",
+    "region": "Joshimath Sector, Chamoli",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [79.566, 30.555]
+    }
+  },
+  {
+    "id": "alert-cwc-003",
+    "source": "CWC",
+    "type": "Flood",
+    "severity": "orange",
+    "title": "Alaknanda Warning Level Exceeded",
+    "description": "Water level at Marwari bridge gauge station crossed warning mark of 1352.0m (current: 1352.8m). Low-lying habitations alert issued.",
+    "issuedAt": "2026-09-26T13:45:00Z",
+    "expiresAt": "2026-09-27T18:00:00Z",
+    "region": "Alaknanda River Corridor",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [79.558, 30.545]
+    }
+  }
+]

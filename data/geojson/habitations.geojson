@@ -1,0 +1,295 @@
+{
+  "type": "FeatureCollection",
+  "name": "Uttarakhand_Habitations",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "hab-joshimath",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.566, 30.555, 1890.0]
+      },
+      "properties": {
+        "id": "hab-joshimath",
+        "name": "Joshimath",
+        "village": "Joshimath Town",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.555,
+        "longitude": 79.566,
+        "elevation": 1890.0,
+        "population": 4213,
+        "households": 892,
+        "riskScore": 0.78,
+        "riskLevel": "HIGH",
+        "vulnerability": {
+          "kutchaHousePercentage": 35.0,
+          "elderlyCount": 612,
+          "childrenCount": 845,
+          "roadCutoffRisk": 0.85
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.78,
+          "level": "HIGH",
+          "exposure": 0.82,
+          "sensitivity": 0.74,
+          "adaptiveCapacity": 0.31
+        },
+        "hazardExposure": [
+          { "type": "landslide", "level": "HIGH", "score": 0.85, "contributors": ["High landslide susceptibility", "Active subsidence zone", "Steep slope gradient"] },
+          { "type": "flood", "level": "MODERATE", "score": 0.55, "contributors": ["Proximity to Alaknanda", "Recent rainfall anomaly"] },
+          { "type": "glof", "level": "MODERATE", "score": 0.52, "contributors": ["Upstream glacial lakes", "Climate warming trend"] },
+          { "type": "earthquake", "level": "LOW", "score": 0.35, "contributors": ["Seismic Zone V"] }
+        ],
+        "recommendedAction": "Prioritize phased relocation along NH-7 corridor",
+        "nearestRelocationSite": "site-pipalkoti"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-reni",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.756, 30.593, 2200.0]
+      },
+      "properties": {
+        "id": "hab-reni",
+        "name": "Reni",
+        "village": "Reni Village",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.593,
+        "longitude": 79.756,
+        "elevation": 2200.0,
+        "population": 380,
+        "households": 85,
+        "riskScore": 0.75,
+        "riskLevel": "HIGH",
+        "vulnerability": {
+          "kutchaHousePercentage": 68.0,
+          "elderlyCount": 54,
+          "childrenCount": 88,
+          "roadCutoffRisk": 0.95
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.75,
+          "level": "HIGH",
+          "exposure": 0.85,
+          "sensitivity": 0.72,
+          "adaptiveCapacity": 0.28
+        },
+        "hazardExposure": [
+          { "type": "landslide", "level": "CRITICAL", "score": 0.92, "contributors": ["Feb 2021 rock/ice avalanche zone", "Extreme slope"] },
+          { "type": "flood", "level": "HIGH", "score": 0.70, "contributors": ["Rishiganga valley", "Debris dam failure risk"] },
+          { "type": "glof", "level": "HIGH", "score": 0.72, "contributors": ["Upstream glacial features"] },
+          { "type": "earthquake", "level": "LOW", "score": 0.35, "contributors": ["Seismic Zone V"] }
+        ],
+        "recommendedAction": "Immediate evacuation recommended to Pipalkoti shelter",
+        "nearestRelocationSite": "site-pipalkoti"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-marwari",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.558, 30.542, 1750.0]
+      },
+      "properties": {
+        "id": "hab-marwari",
+        "name": "Marwari",
+        "village": "Marwari Ward",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.542,
+        "longitude": 79.558,
+        "elevation": 1750.0,
+        "population": 1850,
+        "households": 410,
+        "riskScore": 0.72,
+        "riskLevel": "HIGH",
+        "vulnerability": {
+          "kutchaHousePercentage": 42.0,
+          "elderlyCount": 240,
+          "childrenCount": 390,
+          "roadCutoffRisk": 0.75
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.72,
+          "level": "HIGH",
+          "exposure": 0.76,
+          "sensitivity": 0.70,
+          "adaptiveCapacity": 0.34
+        },
+        "hazardExposure": [
+          { "type": "landslide", "level": "HIGH", "score": 0.80, "contributors": ["Slope toe erosion", "Poor drainage channel"] },
+          { "type": "flood", "level": "MODERATE", "score": 0.50, "contributors": ["Flash flood channel proximity"] }
+        ],
+        "recommendedAction": "Initiate relocation planning for toe-slope houses",
+        "nearestRelocationSite": "site-pipalkoti"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-sunil",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.543, 30.538, 1680.0]
+      },
+      "properties": {
+        "id": "hab-sunil",
+        "name": "Sunil Village",
+        "village": "Sunil",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.538,
+        "longitude": 79.543,
+        "elevation": 1680.0,
+        "population": 820,
+        "households": 180,
+        "riskScore": 0.65,
+        "riskLevel": "MODERATE",
+        "vulnerability": {
+          "kutchaHousePercentage": 38.0,
+          "elderlyCount": 110,
+          "childrenCount": 165,
+          "roadCutoffRisk": 0.60
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.65,
+          "level": "MODERATE",
+          "exposure": 0.68,
+          "sensitivity": 0.64,
+          "adaptiveCapacity": 0.38
+        },
+        "hazardExposure": [
+          { "type": "landslide", "level": "MODERATE", "score": 0.60, "contributors": ["Deforested hillside", "Near seasonal nala"] }
+        ],
+        "recommendedAction": "Monitor slope cracks and prepare contingency transport",
+        "nearestRelocationSite": "site-pipalkoti"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-auli",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.565, 30.528, 2519.0]
+      },
+      "properties": {
+        "id": "hab-auli",
+        "name": "Auli",
+        "village": "Auli Rural",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.528,
+        "longitude": 79.565,
+        "elevation": 2519.0,
+        "population": 450,
+        "households": 95,
+        "riskScore": 0.42,
+        "riskLevel": "LOW",
+        "vulnerability": {
+          "kutchaHousePercentage": 15.0,
+          "elderlyCount": 42,
+          "childrenCount": 68,
+          "roadCutoffRisk": 0.40
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.42,
+          "level": "LOW",
+          "exposure": 0.40,
+          "sensitivity": 0.38,
+          "adaptiveCapacity": 0.55
+        },
+        "hazardExposure": [
+          { "type": "landslide", "level": "LOW", "score": 0.30, "contributors": ["Rocky terrain", "Gentler meadow gradient"] }
+        ],
+        "recommendedAction": "Standard monitoring and road clearance maintenance",
+        "nearestRelocationSite": "site-chamoli-town"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-augustmuni",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.025, 30.392, 750.0]
+      },
+      "properties": {
+        "id": "hab-augustmuni",
+        "name": "Augustmuni",
+        "village": "Augustmuni Market",
+        "district": "Rudraprayag",
+        "state": "Uttarakhand",
+        "latitude": 30.392,
+        "longitude": 79.025,
+        "elevation": 750.0,
+        "population": 3200,
+        "households": 680,
+        "riskScore": 0.68,
+        "riskLevel": "HIGH",
+        "vulnerability": {
+          "kutchaHousePercentage": 28.0,
+          "elderlyCount": 380,
+          "childrenCount": 590,
+          "roadCutoffRisk": 0.70
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.68,
+          "level": "HIGH",
+          "exposure": 0.72,
+          "sensitivity": 0.65,
+          "adaptiveCapacity": 0.42
+        },
+        "hazardExposure": [
+          { "type": "flood", "level": "HIGH", "score": 0.78, "contributors": ["Mandakini flood plain", "Historical 2013 flood inundation"] },
+          { "type": "landslide", "level": "MODERATE", "score": 0.55, "contributors": ["River bank erosion"] }
+        ],
+        "recommendedAction": "Stage early warning sirens along Mandakini riverbank",
+        "nearestRelocationSite": "site-tilwara"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hab-kedarnath-base",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.066, 30.735, 3583.0]
+      },
+      "properties": {
+        "id": "hab-kedarnath-base",
+        "name": "Kedarnath (Base Area)",
+        "village": "Kedarnath Settlement",
+        "district": "Rudraprayag",
+        "state": "Uttarakhand",
+        "latitude": 30.735,
+        "longitude": 79.066,
+        "elevation": 3583.0,
+        "population": 650,
+        "households": 120,
+        "riskScore": 0.71,
+        "riskLevel": "HIGH",
+        "vulnerability": {
+          "kutchaHousePercentage": 52.0,
+          "elderlyCount": 45,
+          "childrenCount": 30,
+          "roadCutoffRisk": 0.98
+        },
+        "vulnerabilityIndex": {
+          "overall": 0.71,
+          "level": "HIGH",
+          "exposure": 0.88,
+          "sensitivity": 0.62,
+          "adaptiveCapacity": 0.22
+        },
+        "hazardExposure": [
+          { "type": "glof", "level": "HIGH", "score": 0.85, "contributors": ["Chorabari moraine dammed lake trajectory", "High altitude glacial moraines"] },
+          { "type": "flood", "level": "HIGH", "score": 0.75, "contributors": ["Mandakini headwaters channel"] }
+        ],
+        "recommendedAction": "Seasonal pilgrimage safety restrictions and pre-emptive evacuation",
+        "nearestRelocationSite": "site-tilwara"
+      }
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "type": "FeatureCollection",
+  "name": "Uttarakhand_Relocation_Sites",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "site-pipalkoti",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.431, 30.429, 1260.0]
+      },
+      "properties": {
+        "id": "site-pipalkoti",
+        "name": "Pipalkoti Safe Haven",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.429,
+        "longitude": 79.431,
+        "elevation": 1260.0,
+        "usableAreaSqM": 45000,
+        "emergencyCapacity": 6000,
+        "capacity": 6000,
+        "slope": 7.5,
+        "slopeGrade": "Gentle (5-10°)",
+        "roadAccess": true,
+        "drinkingWater": true,
+        "electricity": true,
+        "medicalFacilityNearby": true,
+        "distanceToRoadKm": 0.1,
+        "distanceToMedicalKm": 2.5,
+        "hazardExposure": 0.15,
+        "suitability": "HIGH",
+        "suitabilityScore": 0.85,
+        "distanceFromAffected": 4.2,
+        "constraints": [
+          { "label": "Low slope gradient (<10°)", "met": true },
+          { "label": "Outside major hazard zones", "met": true },
+          { "label": "Road access (NH-7)", "met": true },
+          { "label": "Potable water supply", "met": true },
+          { "label": "Sufficient carrying capacity", "met": true },
+          { "label": "Healthcare within 5km", "met": true }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "site-gauchar",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.185, 30.289, 800.0]
+      },
+      "properties": {
+        "id": "site-gauchar",
+        "name": "Gauchar Airstrip Ground",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.289,
+        "longitude": 79.185,
+        "elevation": 800.0,
+        "usableAreaSqM": 75000,
+        "emergencyCapacity": 8000,
+        "capacity": 8000,
+        "slope": 3.0,
+        "slopeGrade": "Flat (0-5°)",
+        "roadAccess": true,
+        "drinkingWater": true,
+        "electricity": true,
+        "medicalFacilityNearby": true,
+        "distanceToRoadKm": 0.05,
+        "distanceToMedicalKm": 1.2,
+        "hazardExposure": 0.12,
+        "suitability": "HIGH",
+        "suitabilityScore": 0.88,
+        "distanceFromAffected": 22.0,
+        "constraints": [
+          { "label": "Low slope gradient (<10°)", "met": true },
+          { "label": "Outside major hazard zones", "met": true },
+          { "label": "Road access (NH-7)", "met": true },
+          { "label": "Helipad / Airstrip staging capability", "met": true },
+          { "label": "Potable water supply", "met": true },
+          { "label": "Healthcare + School within 3km", "met": true }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "site-chamoli-town",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.325, 30.405, 1300.0]
+      },
+      "properties": {
+        "id": "site-chamoli-town",
+        "name": "Chamoli Town Relief Center",
+        "district": "Chamoli",
+        "state": "Uttarakhand",
+        "latitude": 30.405,
+        "longitude": 79.325,
+        "elevation": 1300.0,
+        "usableAreaSqM": 28000,
+        "emergencyCapacity": 3500,
+        "capacity": 3500,
+        "slope": 12.0,
+        "slopeGrade": "Moderate (10-15°)",
+        "roadAccess": true,
+        "drinkingWater": true,
+        "electricity": true,
+        "medicalFacilityNearby": true,
+        "distanceToRoadKm": 0.2,
+        "distanceToMedicalKm": 1.8,
+        "hazardExposure": 0.32,
+        "suitability": "MODERATE",
+        "suitabilityScore": 0.68,
+        "distanceFromAffected": 12.5,
+        "constraints": [
+          { "label": "Low slope gradient (<10°)", "met": false },
+          { "label": "Outside major hazard zones", "met": true },
+          { "label": "Road access", "met": true },
+          { "label": "Potable water supply", "met": true },
+          { "label": "Sufficient carrying capacity", "met": false },
+          { "label": "Healthcare within 5km", "met": true }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "site-tilwara",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [78.985, 30.345, 820.0]
+      },
+      "properties": {
+        "id": "site-tilwara",
+        "name": "Tilwara Open Ground",
+        "district": "Rudraprayag",
+        "state": "Uttarakhand",
+        "latitude": 30.345,
+        "longitude": 78.985,
+        "elevation": 820.0,
+        "usableAreaSqM": 35000,
+        "emergencyCapacity": 4500,
+        "capacity": 4500,
+        "slope": 5.0,
+        "slopeGrade": "Gentle (0-5°)",
+        "roadAccess": true,
+        "drinkingWater": true,
+        "electricity": true,
+        "medicalFacilityNearby": true,
+        "distanceToRoadKm": 0.1,
+        "distanceToMedicalKm": 4.0,
+        "hazardExposure": 0.18,
+        "suitability": "HIGH",
+        "suitabilityScore": 0.82,
+        "distanceFromAffected": 14.0,
+        "constraints": [
+          { "label": "Low slope gradient (<10°)", "met": true },
+          { "label": "Outside major hazard zones", "met": true },
+          { "label": "Road access (NH-107)", "met": true },
+          { "label": "Potable water supply", "met": true },
+          { "label": "Healthcare within 5km", "met": true }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # Spatial PostgreSQL + PostGIS 3.4
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: resqgis_postgis
+    environment:
+      POSTGRES_DB: resqgis
+      POSTGRES_USER: resqgis
+      POSTGRES_PASSWORD: resqgis_secret_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U resqgis -d resqgis"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ResQ-GIS Backend (FastAPI + Provider Adapters)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: resqgis_backend
+    environment:
+      DATABASE_URL: postgresql://resqgis:resqgis_secret_password@db:5432/resqgis
+      DATA_MODE: ${DATA_MODE:-demo}
+      IMD_API_KEY: ${IMD_API_KEY:-}
+      IMD_API_BASE_URL: ${IMD_API_BASE_URL:-https://api.imd.gov.in/api/v1}
+      NDMA_CAP_FEED_URL: ${NDMA_CAP_FEED_URL:-https://sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails}
+      CWC_API_BASE_URL: ${CWC_API_BASE_URL:-}
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ResQ-GIS Frontend (React + CesiumJS 3D Globe)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: resqgis_frontend
+    environment:
+      VITE_CESIUM_ION_TOKEN: ${CESIUM_ION_TOKEN:-}
+      VITE_API_BASE_URL: http://backend:8000
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Optional Redis Cache (start with: docker compose --profile cache up)
+  redis:
+    image: redis:7-alpine
+    container_name: resqgis_redis
+    profiles:
+      - cache
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgis_data:

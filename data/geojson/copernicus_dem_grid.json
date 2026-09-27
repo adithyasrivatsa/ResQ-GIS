@@ -1,0 +1,29 @@
+{
+  "dataset": "Copernicus GLO-30 Digital Elevation Model",
+  "resolution": "30m",
+  "crs": "EPSG:4326",
+  "region": "Chamoli & Rudraprayag, Garhwal Himalayas",
+  "sample_elevation_nodes": [
+    {"lat": 30.555, "lng": 79.566, "elevation": 1890.0, "slope_degrees": 28.5, "location": "Joshimath Central"},
+    {"lat": 30.565, "lng": 79.540, "elevation": 1520.0, "slope_degrees": 34.0, "location": "Marwari / Alaknanda Confluence"},
+    {"lat": 30.542, "lng": 79.558, "elevation": 1750.0, "slope_degrees": 29.0, "location": "Marwari Upper Sector"},
+    {"lat": 30.538, "lng": 79.543, "elevation": 1680.0, "slope_degrees": 22.0, "location": "Sunil Village"},
+    {"lat": 30.593, "lng": 79.756, "elevation": 2200.0, "slope_degrees": 32.0, "location": "Reni Gorge"},
+    {"lat": 30.510, "lng": 79.510, "elevation": 1450.0, "slope_degrees": 24.0, "location": "Helang Shelf"},
+    {"lat": 30.528, "lng": 79.565, "elevation": 2519.0, "slope_degrees": 14.0, "location": "Auli Rural"},
+    {"lat": 30.615, "lng": 79.495, "elevation": 3100.0, "slope_degrees": 12.0, "location": "Auli Plateau Upper"},
+    {"lat": 30.429, "lng": 79.431, "elevation": 1260.0, "slope_degrees": 7.5, "location": "Pipalkoti Safe Haven"},
+    {"lat": 30.430, "lng": 79.430, "elevation": 1260.0, "slope_degrees": 8.5, "location": "Pipalkoti Valley Terrace"},
+    {"lat": 30.528, "lng": 79.072, "elevation": 1319.0, "slope_degrees": 18.0, "location": "Guptkashi Hill"},
+    {"lat": 30.392, "lng": 79.025, "elevation": 750.0, "slope_degrees": 16.0, "location": "Augustmuni Market"},
+    {"lat": 30.490, "lng": 79.060, "elevation": 980.0, "slope_degrees": 7.0, "location": "Agastyamuni Floodplain Buffer"},
+    {"lat": 30.735, "lng": 79.066, "elevation": 3583.0, "slope_degrees": 31.0, "location": "Kedarnath Settlement"},
+    {"lat": 30.640, "lng": 79.500, "elevation": 1950.0, "slope_degrees": 6.5, "location": "Ravigram Safe Ground"},
+    {"lat": 30.520, "lng": 79.530, "elevation": 1580.0, "slope_degrees": 9.0, "location": "Animath Terrace"},
+    {"lat": 30.185, "lng": 79.185, "elevation": 800.0, "slope_degrees": 4.5, "location": "Gauchar Airstrip Ground"},
+    {"lat": 30.350, "lng": 78.980, "elevation": 920.0, "slope_degrees": 6.0, "location": "Tilwara Relief Staging Ground"},
+    {"lat": 30.405, "lng": 79.330, "elevation": 1150.0, "slope_degrees": 7.0, "location": "Chamoli Town Plateau"},
+    {"lat": 30.565, "lng": 79.575, "elevation": 1370.0, "slope_degrees": 26.0, "location": "Vishnuprayag Gauge"},
+    {"lat": 30.260, "lng": 79.220, "elevation": 780.0, "slope_degrees": 11.0, "location": "Karnaprayag Confluence"}
+  ]
+}

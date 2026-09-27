@@ -1,0 +1,81 @@
+{
+  "type": "FeatureCollection",
+  "name": "GSI_NLSM_Landslide_Susceptibility_Zones",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "gsi-nlsm-joshimath-high",
+      "properties": {
+        "id": "gsi-nlsm-joshimath-high",
+        "name": "GSI NLSM: Joshimath Severe Landslide Susceptibility Zone",
+        "type": "landslide",
+        "severity": "red",
+        "source": "GSI BhuKosh / NLSM Macro-Zonation 1:50000",
+        "description": "High susceptibility terrain comprised of fractured gneiss and old landslide debris with high seepage pressures.",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.535, 30.560],
+            [79.575, 30.565],
+            [79.585, 30.540],
+            [79.540, 30.530],
+            [79.535, 30.560]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "gsi-nlsm-helang-moderate",
+      "properties": {
+        "id": "gsi-nlsm-helang-moderate",
+        "name": "GSI NLSM: Helang - Gulabkoti Moderate Susceptibility Corridor",
+        "type": "landslide",
+        "severity": "orange",
+        "source": "GSI BhuKosh / National Landslide Susceptibility Mapping",
+        "description": "Moderate susceptibility slope along steep riverward escarpment prone to road-cut toe erosion.",
+        "visible": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.495, 30.510],
+            [79.525, 30.525],
+            [79.520, 30.495],
+            [79.490, 30.490],
+            [79.495, 30.510]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "gsi-nlsm-mct-fault",
+      "properties": {
+        "id": "gsi-nlsm-mct-fault",
+        "name": "GSI BhuKosh: Main Central Thrust (MCT) Seismic-Fault Shear Zone",
+        "type": "earthquake",
+        "severity": "red",
+        "source": "GSI BhuKosh Geological Map of India",
+        "description": "Major tectonic boundary between Lesser and Higher Himalayas; acts as regional weakness plane triggering secondary mass movements.",
+        "visible": false
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.420, 30.520],
+            [79.580, 30.580],
+            [79.600, 30.570],
+            [79.430, 30.510],
+            [79.420, 30.520]
+          ]
+        ]
+      }
+    }
+  ]
+}
